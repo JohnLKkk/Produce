@@ -1,0 +1,17 @@
+.topdeftoolbg {
+  background: rgba(66, 66, 66, 0.53);
+  width: 100%;
+  height: 20px;
+}
+.toptoolbg {
+  border-radius: 10px 10px 0 0;
+  background: rgba(66, 66, 66, 0.53);
+  width: 100%;
+  height: 20px;
+}
+.btmtoolbg {
+  border-radius: 10px 10px 0 0;
+  background: rgba(66, 66, 66, 0.53);
+  width: 100%;
+  height: 20px;
+}
