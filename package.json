@@ -14,8 +14,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "element": "^0.1.4",
+    "element-resize-detector": "^1.2.4",
     "splitpanes": "^2.3.8",
     "vue": "^2.5.2",
+    "vue-beauty": "^2.0.0-beta.19",
     "vue-drag-resize": "^1.5.4",
     "vue-router": "^3.0.1"
   },
@@ -66,6 +69,7 @@
     "selenium-server": "^3.0.1",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
+    "try3d": "^0.1.4",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
     "vue-jest": "^1.0.2",
