@@ -32,7 +32,7 @@
   import 'splitpanes/dist/splitpanes.css'
   import ShadingEdit from '@/components/ShadingEdit'
   import Viewer from '@/components/Viewer'
-  import LeadingPrinciples from '@/components/LeadingPrinciples'
+  import LeadingPrinciples from '@/components/leadingPrinciples'
 
   export default {
     name: 'Port',

@@ -6,6 +6,7 @@
 
 <script>
   import Try3d from "try3d/src/Try3d";
+  import {EditorContext} from '../editor/EditorContext'
 
   export default {
     name: 'Viewer',
@@ -72,6 +73,10 @@
         maker.listenTo(document.getElementById("div_viewer"), (element)=>{
           scene.getCanvas().resize(element.clientWidth, element.clientHeight);
         });
+
+        // 全局上下文
+        EditorContext.getInstance().setRenderer(this.renderer);
+        EditorContext.getInstance().notifyEvent(EditorContext.S_EVENT_SCENE_LOAD_END);
       }
     },
     mounted() {
