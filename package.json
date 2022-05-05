@@ -18,8 +18,8 @@
     "element-resize-detector": "^1.2.4",
     "splitpanes": "^2.3.8",
     "vue": "^2.5.2",
-    "vue-beauty": "^2.0.0-beta.19",
     "vue-drag-resize": "^1.5.4",
+    "vue-jstree": "^2.1.6",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

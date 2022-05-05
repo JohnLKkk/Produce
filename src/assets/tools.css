@@ -3,7 +3,27 @@
   width: 100%;
   height: 20px;
 }
-.toptoolbg {
+.transparent_div {
+  background-color: transparent;
+  width: 100%;
+  min-height: 100%;
+}
+/*滚动条样式*/
+.transparent_div::-webkit-scrollbar {/*滚动条整体样式*/
+  width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+  height: 4px;
+}
+.transparent_div::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.2);
+}
+.transparent_div::-webkit-scrollbar-track {/*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  border-radius: 0;
+  background: rgba(0,0,0,0.1);
+}
+.transparent_div {
   border-radius: 10px 10px 0 0;
   background: rgba(66, 66, 66, 0.53);
   width: 100%;
