@@ -16,7 +16,21 @@
 }
 
 .sg_model {
+  content: url('../core/icons/model.gif');
+  top: 5px;
+  max-width: 15px;
+  max-height: 15px;
+}
+
+.sg_geometry {
   content: url('../core/icons/geometry.gif');
+  top: 5px;
+  max-width: 15px;
+  max-height: 15px;
+}
+
+.sg_material {
+  content: url('../core/icons/material.gif');
   top: 5px;
   max-width: 15px;
   max-height: 15px;
@@ -31,6 +45,27 @@
 
 .sg_light {
   content: url('../core/icons/light.gif');
+  top: 5px;
+  max-width: 15px;
+  max-height: 15px;
+}
+
+.sg_texture {
+  content: url('../core/icons/image.gif');
+  top: 5px;
+  max-width: 15px;
+  max-height: 15px;
+}
+
+.sg_scene {
+  content: url('../core/icons/scene.gif');
+  top: 5px;
+  max-width: 15px;
+  max-height: 15px;
+}
+
+.sg_eye {
+  content: url('../core/icons/eye.gif');
   top: 5px;
   max-width: 15px;
   max-height: 15px;

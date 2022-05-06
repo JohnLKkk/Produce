@@ -36,7 +36,7 @@
         // 基本部件
         // 轴网
         let colorDef = Try3d.MaterialDef.parse(Try3d.Internal.S_COLOR_DEF_DATA);
-        let grid = new Try3d.Grid(scene, {id:'grid', width:500, height:500, widthSegments:250, heightSegments:250});
+        let grid = new Try3d.Grid(scene, {id:'grid', width:1000, height:1000, widthSegments:250, heightSegments:250});
         let defaultColor = new Try3d.Material(scene, {id:"defaultColor", materialDef:colorDef});
         defaultColor.setParam('color', new Try3d.Vec4Vars().valueFromXYZW(1.0, 1.0, 1.0, 1.0));
         grid.setMaterial(defaultColor);

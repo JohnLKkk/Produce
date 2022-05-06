@@ -49,7 +49,7 @@ export default class LeadingPrinciples {
       case 'Sphere':
       case 'Plane':
       case 'SkyBox':
-        return 'sg_model';
+        return 'sg_geometry';
       case 'Light':
       case 'DirectionalLight':
       case 'PointLight':
