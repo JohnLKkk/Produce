@@ -3,6 +3,12 @@
   width: 100%;
   height: 20px;
 }
+.topdeftoolbg2 {
+  border-radius: 10px 10px 0 0;
+  background: rgba(66, 66, 66, 0.53);
+  width: 100%;
+  height: 20px;
+}
 .transparent_div {
   background-color: transparent;
   width: 100%;

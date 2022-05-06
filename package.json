@@ -20,6 +20,7 @@
     "vue": "^2.5.2",
     "vue-drag-resize": "^1.5.4",
     "vue-jstree": "^2.1.6",
+    "vue-nav-tabs": "^0.5.7",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

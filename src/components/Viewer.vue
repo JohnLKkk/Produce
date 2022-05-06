@@ -1,6 +1,9 @@
 <template>
-  <div id="div_viewer" class="window">
-    <canvas id="canvas_viewer" style="padding: 0px;margin: 0px;position:absolute;left: 0px;top: 0px;background-color: aliceblue" tabindex="0"></canvas>
+  <div class="window">
+    <div class="topdeftoolbg2"></div>
+    <div id="div_viewer" style="height: calc(100% - 30px)">
+      <canvas id="canvas_viewer" style="padding: 0px;margin: 0px;position:absolute;left: 0px;top: 0px;background-color: aliceblue" tabindex="0"></canvas>
+    </div>
   </div>
 </template>
 
@@ -24,7 +27,7 @@
         let canvas = document.getElementById('canvas_viewer');
         let scene = new Try3d.Scene({cavnas:document.getElementById('canvas_viewer')});
         scene.getRender().setGammaFactor(1.0);
-        scene.getCanvas().setClearColor(0.3, 0.3, 0.3, 1.0);
+        scene.getCanvas().setClearColor(0.18, 0.18, 0.18, 0.53);
 
         // 定义一个根节点
         let rootNode = new Try3d.Node(scene, {id:'rootNode'});
@@ -40,17 +43,27 @@
         rootNode.addChildren(grid);
 
         // 创建一个box
-        let box1Mat = new Try3d.Material(scene, {id:'box1Mat', materialDef:colorDef});
+        let box1Mat = new Try3d.Material(scene, {id:'box1Mat', materialDef:Try3d.MaterialDef.parse(Try3d.Internal.S_BASIC_LIGHTING_DEF_DATA)});
         let box = new Try3d.Box(scene, {id:'box_' + 0 + '_' + 0, xHalf:0.2, yHalf:0.2, zHalf:0.2});
-        box1Mat.setParam('color', new Try3d.Vec4Vars().valueFromXYZW(0.0, 0, 1.0, 1.0));
+        box1Mat.setParam('ambientColor', new Try3d.Vec4Vars().valueFromXYZW(0.25, 0.25, 0.25, 1.0));
+        box1Mat.setParam('diffuseColor', new Try3d.Vec4Vars().valueFromXYZW(0.0, 0, 1.0, 1.0));
+        box1Mat.setParam('specularColor', new Try3d.Vec4Vars().valueFromXYZW(1.0, 1.0, 1.0, 1.0));
+        box1Mat.setParam('shininess', new Try3d.FloatVars().valueOf(64.0));
         box.setMaterial(box1Mat);
         let list = new Try3d.Node(scene, {id:'default-list'});
         list.addChildren(box);
         rootNode.addChildren(list);
 
+        // 创建一个directionalLight
+        let dirLight = new Try3d.DirectionalLight(scene, {id:'dirLight'});
+        dirLight.setDirectionXYZ(1, -1, 1);
+        dirLight.setColorRGBA(1.0, 1.0, 1.0, 1.0);
+        rootNode.addChildren(dirLight);
+
         // 创建一个控制器
         let sceneControl = new Try3d.SceneBrowsingController(scene, {id:'control'});
         sceneControl.lookScene(list);
+        sceneControl.setTargetDistance(3);
         sceneControl.setMaxDistance(100);
         sceneControl.setMinDistance(1);
         sceneControl.setZoomSpeed(10);
@@ -91,7 +104,7 @@
     height: 100%;
     margin-right: 1px;
     margin-bottom: 1px;
-    border-radius: 0 0 10px 10px;
+    border-radius: 10px;
     background: rgba(66, 66, 66, 0.53);
   }
   .canvas{

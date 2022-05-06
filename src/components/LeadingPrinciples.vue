@@ -1,6 +1,6 @@
 <template>
     <div class="window">
-      <div class="topdeftoolbg"></div>
+      <div class="topdeftoolbg2"></div>
       <div class="leadingBg">
         <v-jstree :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" style="overflow-y:auto;"></v-jstree>
       </div>
@@ -9,6 +9,7 @@
 
 <script>
   import '../assets/tools.css'
+  import '../assets/core/icons.css'
 
   import VJstree from 'vue-jstree'
   import {EditorContext} from '../editor/EditorContext'
@@ -37,7 +38,7 @@
     },
     methods: {
       itemClick (node) {
-        console.log(node.model.text + ' clicked !')
+        console.log(node.model.value)
       }
     }
   }
@@ -51,6 +52,8 @@
     margin-bottom: 1px;
   }
   .leadingBg{
+    color: #c2c2c2;
+    font-style: normal;
     border-radius: 0 0 10px 10px;
     width: 100%;
     min-height: 80%;

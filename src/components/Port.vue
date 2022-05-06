@@ -20,7 +20,7 @@
           <LeadingPrinciples></LeadingPrinciples>
         </pane>
         <pane :size="btmSize">
-
+          <Attributes></Attributes>
         </pane>
       </splitpanes>
     </pane>
@@ -33,10 +33,11 @@
   import ShadingEdit from '@/components/ShadingEdit'
   import Viewer from '@/components/Viewer'
   import LeadingPrinciples from '@/components/leadingPrinciples'
+  import Attributes from './Attributes'
 
   export default {
     name: 'Port',
-    components: {LeadingPrinciples, Viewer, ShadingEdit, Splitpanes, Pane },
+    components: {Attributes, LeadingPrinciples, Viewer, ShadingEdit, Splitpanes, Pane },
     data () {
       return {
         topSize: 60

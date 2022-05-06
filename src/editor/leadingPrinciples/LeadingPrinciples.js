@@ -22,7 +22,7 @@ export default class LeadingPrinciples {
         "id": node.getId(),
         "text": node.getName(),
         "value": node.getName(),
-        "icon": "", // 后续根据node.getType()区分图标
+        "icon": this._getTypeIcon(node.getType()), // 后续根据node.getType()区分图标
         "opened": true,
         "selected": false,
         "disabled": false,
@@ -38,6 +38,25 @@ export default class LeadingPrinciples {
       node.getChildren().forEach(c=>{
         this._getSceneData(newNode.children, c);
       });
+    }
+  }
+  _getTypeIcon(type){
+    switch (type) {
+      case 'Node':
+        return 'sg_node';
+      case 'Geometry':
+      case 'Box':
+      case 'Sphere':
+      case 'Plane':
+      case 'SkyBox':
+        return 'sg_model';
+      case 'Light':
+      case 'DirectionalLight':
+      case 'PointLight':
+      case 'SportLight':
+        return 'sg_light';
+      default:
+        return '';
     }
   }
 
