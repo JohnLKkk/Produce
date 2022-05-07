@@ -9,23 +9,28 @@
                 style="min-height: 100%"
       >
         <v-tab id="renderer_pro" icon="sg_eye" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
-          渲染属性(各种后处理)
+<!--          渲染属性(各种后处理)-->
+          <component v-bind:is="currentRendererProTabComponent" class="attributes_tab"></component>
         </v-tab>
 
         <v-tab id="scene_pro" icon="sg_scene" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
-          场景属性
+<!--          场景属性-->
+          <component v-bind:is="currentObjectAttrTabComponent" class="attributes_tab"></component>
         </v-tab>
 
         <v-tab id="object_pro" icon="sg_model" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
-          物体属性
+<!--          物体属性-->
+          <component v-bind:is="currentObjectAttrTabComponent" class="attributes_tab"></component>
         </v-tab>
 
         <v-tab id="material_pro" icon="sg_material" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
-          材质数据(只有geometry才有)
+<!--          材质数据(只有geometry才有)-->
+          <component v-bind:is="currentObjectAttrTabComponent" class="attributes_tab"></component>
         </v-tab>
 
         <v-tab id="texture_pro" icon="sg_texture" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
-          纹理属性
+<!--          纹理属性-->
+          <component v-bind:is="currentObjectAttrTabComponent" class="attributes_tab"></component>
         </v-tab>
 
       </vue-tabs>
@@ -40,11 +45,63 @@
 
   import {VueTabs, VTab} from 'vue-nav-tabs'
   import '../assets/attributes-tabs.css'
+  import OBJ_Geometry from './attributes/object/OBJ_Geometry'
+  import OBJ_Node from './attributes/object/OBJ_Node'
+  import OBJ_Light from './attributes/object/OBJ_Light'
+  import OBJ_None from './attributes/object/OBJ_None'
+  import {EditorContext} from '../editor/EditorContext'
+  import LeadingPrinciples from '../editor/leadingPrinciples/LeadingPrinciples'
+  import Utils from '../editor/utils/Utils'
   export default {
     name: 'Attributes',
     components: {
       VueTabs,
-      VTab
+      VTab,
+
+      OBJ_Node,
+      OBJ_Geometry,
+      OBJ_Light,
+      OBJ_None,
+    },
+    data(){
+      return {
+        currentObjectAttrTab: 'OBJ_None',
+      }
+    },
+    beforeCreate () {
+      EditorContext.getInstance().registerEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, (obj)=>{
+        switch (Utils.getObjectType(obj.getType())) {
+          case 'Node':
+            this.currentObjectAttrTab = 'OBJ_Node';
+            break;
+          case 'Geometry':
+            this.currentObjectAttrTab = 'OBJ_Geometry';
+            break;
+          case 'Light':
+            this.currentObjectAttrTab = 'OBJ_Light';
+            break;
+          default:
+            this.currentObjectAttrTab = 'OBJ_None';
+            break;
+        }
+      });
+    },
+    computed: {
+      /**
+       * 渲染面板。<br/>
+       * @returns {string}
+       */
+      currentRendererProTabComponent: function(){
+        return 'OBJ_None';
+      },
+
+      /**
+       * 物体属性面板。<br/>
+       * @returns {string}
+       */
+      currentObjectAttrTabComponent: function() {
+        return this.currentObjectAttrTab;
+      }
     }
   }
 </script>
@@ -57,6 +114,10 @@
     margin-bottom: 1px;
     border-radius: 10px;
     background-color: rgba(41, 41, 41, 0.53);
+  }
+  .attributes_tab{
+    width: 100%;
+    height: 100%;
   }
   .attributes_content{
     overflow-y: auto;

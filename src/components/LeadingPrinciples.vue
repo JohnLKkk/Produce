@@ -2,7 +2,7 @@
     <div class="window">
       <div class="topdeftoolbg2"></div>
       <div class="leadingBg">
-        <v-jstree :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" style="overflow-y:auto;"></v-jstree>
+        <v-jstree class="leadingBg" :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" style="overflow-y:auto;"></v-jstree>
       </div>
     </div>
 </template>
@@ -39,6 +39,7 @@
     methods: {
       itemClick (node) {
         console.log(node.model.value)
+        EditorContext.getInstance().notifyEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, [node.model.value]);
       }
     }
   }

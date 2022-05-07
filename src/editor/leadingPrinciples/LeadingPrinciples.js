@@ -6,6 +6,8 @@ import {EditorContext} from '../EditorContext'
  * @date 2022年5月5日16点48分
  */
 export default class LeadingPrinciples {
+  // EVENTs
+  static S_LEADINGPRINCIPLES_EVENT_SELECTED = 'S_LEADINGPRINCIPLES_EVENT_SELECTED';
   constructor () {
   }
 
@@ -21,7 +23,7 @@ export default class LeadingPrinciples {
       let newNode = {
         "id": node.getId(),
         "text": node.getName(),
-        "value": node.getName(),
+        "value": node,
         "icon": this._getTypeIcon(node.getType()), // 后续根据node.getType()区分图标
         "opened": true,
         "selected": false,
