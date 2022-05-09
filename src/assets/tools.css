@@ -41,3 +41,72 @@
   width: 100%;
   height: 20px;
 }
+
+.attr_item_top {
+  font-size: 12px;
+  text-align: left;
+  line-height: 20px;
+  color: #cbcbcb;
+  border-radius: 5px 5px 0 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: 2px;
+  background: rgba(97, 97, 97, 0.53);
+  /* -50px 是为了属性面板左侧tabs图标大小以及tabContent内部padding*/
+  width: calc(100% - 50px);
+  height: 20px;
+
+  /*  文字不被选中*/
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+
+.attr_item_content {
+  width: calc(100% - 50px);
+  border-radius: 0 0 5px 5px;
+  padding-bottom: 15px;
+  background: rgba(97, 97, 97, 0.53);
+}
+
+.attr_item {
+  font-size: 12px;
+  text-align: left;
+  line-height: 20px;
+  color: #cbcbcb;
+  border-radius: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: 2px;
+  background: rgba(97, 97, 97, 0.53);
+  /* -50px 是为了属性面板左侧tabs图标大小以及tabContent内部padding*/
+  width: calc(100% - 50px);
+  height: 20px;
+
+  /*  文字不被选中*/
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+
+.attr_item_btm {
+  border-radius: 0 0 10px 10px;
+  background: white;
+  /* -30px 是为了属性面板左侧tabs图标大小*/
+  width: calc(100% - 30px);
+  height: 20px;
+}
+
+.component_input{
+  border: 0px;
+  border-radius: 2px;
+  outline-style: none;
+  background: #777777;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.component_input:hover{
+  background: #383838;
+}

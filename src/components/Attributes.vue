@@ -20,7 +20,7 @@
 
         <v-tab id="object_pro" icon="sg_model" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
 <!--          物体属性-->
-          <component v-bind:is="currentObjectAttrTabComponent" class="attributes_tab"></component>
+          <component v-bind:is="currentObjectAttrTabComponent" class="attributes_tab" v-bind:obj="currentObjData"></component>
         </v-tab>
 
         <v-tab id="material_pro" icon="sg_material" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
@@ -65,11 +65,14 @@
     },
     data(){
       return {
+        obj:null,
         currentObjectAttrTab: 'OBJ_None',
       }
     },
     beforeCreate () {
       EditorContext.getInstance().registerEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, (obj)=>{
+        console.log('obj:',obj);
+        this.obj = obj;
         switch (Utils.getObjectType(obj.getType())) {
           case 'Node':
             this.currentObjectAttrTab = 'OBJ_Node';
@@ -87,6 +90,14 @@
       });
     },
     computed: {
+      /**
+       * 返回当前选中的物体。<br/>
+       * @returns {Object}
+       */
+      currentObjData: function(){
+        return this.obj;
+      },
+
       /**
        * 渲染面板。<br/>
        * @returns {string}
@@ -118,6 +129,7 @@
   .attributes_tab{
     width: 100%;
     height: 100%;
+    padding: 10px;
   }
   .attributes_content{
     overflow-y: auto;
