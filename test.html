@@ -1,49 +1,31 @@
-
-<html>
-
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-
-  <title>通过百分比控制文字垂直居中</title>
-
-  <style type="text/css">
-
-    .table {
-
-      width:100%;
-
-      height:100%;
-
-      position:absolute;
-
-      display:table;
-
-    }
-
-    .cell {
-
-      display:table-cell;
-
-      vertical-align:middle;
-
-      width:100%;
-
-      height:100%;
-
-    }
-
-  </style>
-
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <style>
+      .box {
+        width: 0;
+        height: 0;
+        border: 5px solid transparent;
+        border-color: gray transparent transparent transparent;
+      }
+    </style>
 </head>
-
-<body>
-
-<div class="table">
-
-  <div class="cell">通过百分比控制文字垂直居中</div>
-
-</div>
+<body onkeydown="return false;">
+  <script>
+    function keyhandler(event){
+      console.log('event.ctrlKey:' + event.ctrlKey + ";event.key:" + event.key);
+      if(event.ctrlKey && event.key == 'z'){
+        console.log('sssss');
+        return false;
+      }
+      return true;
+    }
+  </script>
+  <input type="number" onkeydown="return keyhandler(event)">
+  // html代码
+  <div class="box"></div>
 
 </body>
-
 </html>

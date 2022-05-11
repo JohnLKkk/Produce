@@ -23,7 +23,7 @@
           this.content = [];
           // 对于Node,我们只允许编辑translation,rotation以及scale
           this.content.push({
-            type:'Transform',
+            type:'Translation',
             data:[
               {
                 content:{

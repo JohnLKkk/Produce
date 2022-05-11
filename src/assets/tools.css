@@ -113,3 +113,24 @@
 .component_input:hover{
   background: #383838;
 }
+
+.icon_right {
+  width: 0;
+  height: 0;
+  display: block;
+  float: left;
+  transform: rotate(-90deg);
+  border: 5px solid transparent;
+  border-color: gray transparent transparent transparent;
+  margin: 5px;
+}
+
+.icon_btm {
+  width: 0;
+  height: 0;
+  display: block;
+  float: left;
+  border: 5px solid transparent;
+  border-color: gray transparent transparent transparent;
+  margin: 7px 5px 5px 5px;
+}

@@ -7,6 +7,14 @@
   </head>
   <body style="height: 100%;">
     <div id="Produce" style="height: 100%;"></div>
+<!--    拦截默认的ctrl+z和ctrl+y事件-->
+    <script>
+      document.onkeydown = function(e) {
+        if ((e.ctrlKey && e.key) === 'z' || (e.ctrlKey && e.key === 'y')) {
+          e.preventDefault();
+        }
+      }
+    </script>
     <!-- built files will be auto injected -->
   </body>
 </html>

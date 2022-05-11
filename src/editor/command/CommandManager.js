@@ -42,6 +42,9 @@ export default class CommandManager {
     if(command){
       command.redo();
       this._addToUndos(command);
+      // 一旦开始执行命令,意味着开始一个新命令集,所以清除旧的Redos列表
+      if(this._m_Redos.length)
+        this._m_Redos = [];
     }
   }
 

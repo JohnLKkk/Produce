@@ -11,17 +11,21 @@ export default {
   name: 'Produce',
   mounted () {
     window.addEventListener('keyup', this.keyupHandler);
+    window.addEventListener('keydown', this.keyupHandler);
   },
   destroyed () {
     window.removeEventListener('keyup', this.keyupHandler);
+    window.removeEventListener('keydown', this.keyupHandler);
   },
   methods: {
     keyupHandler :function(event) {
       if (event.ctrlKey && event.code === 'KeyZ') {
         this.undoHandler();
+        event.preventDefault();
       }
       else if (event.ctrlKey && event.code === 'KeyY') {
         this.redoHandler();
+        event.preventDefault();
       }
     },
     undoHandler :function() {
