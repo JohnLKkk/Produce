@@ -5,8 +5,34 @@
 </template>
 
 <script>
+import CommandManager from './editor/command/CommandManager'
+
 export default {
-  name: 'Produce'
+  name: 'Produce',
+  mounted () {
+    window.addEventListener('keyup', this.keyupHandler);
+  },
+  destroyed () {
+    window.removeEventListener('keyup', this.keyupHandler);
+  },
+  methods: {
+    keyupHandler :function(event) {
+      if (event.ctrlKey && event.code === 'KeyZ') {
+        this.undoHandler();
+      }
+      else if (event.ctrlKey && event.code === 'KeyY') {
+        this.redoHandler();
+      }
+    },
+    undoHandler :function() {
+      // console.log('undo');
+      CommandManager.getInstance().undoLastCommand();
+    },
+    redoHandler :function() {
+      // console.log('redo');
+      CommandManager.getInstance().redoLastCommand();
+    }
+  },
 }
 </script>
 

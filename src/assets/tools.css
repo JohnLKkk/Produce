@@ -89,6 +89,9 @@
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
+
+/*  shadow*/
+  box-shadow:0 0 2px #222222;
 }
 
 .attr_item_btm {

@@ -18,4 +18,24 @@ export default class Utils {
         return '';
     }
   }
+
+  /**
+   * 复制一个对象。<br/>
+   * @param {Object}[object]
+   * @param {String}[filterKey 过滤key]
+   * @param {Object}[filterValue 过滤key对应的value]
+   * @returns {{}}
+   */
+  static copyObj(object, filterKey, filterValue){
+    let result = {};
+    for(let k in object){
+      if(k == filterKey){
+        result[k] = filterValue;
+      }
+      else{
+        result[k] = object[k];
+      }
+    }
+    return result;
+  }
 }
