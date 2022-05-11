@@ -4,7 +4,7 @@
       <li v-for="(item, item_index) in content">
         <div @click="show(item_index)" class="attr_item" ref="show"><span ref="item_icon" class="icon_right"></span>{{item.type}}</div>
         <div ref="item_content" class='attr_item_content' style="display: none">
-          <VectorComponent v-bind="item.data"></VectorComponent>
+          <component v-bind:is="item.component" v-bind:content="item.data"></component>
         </div>
       </li>
     </ol>
@@ -13,14 +13,14 @@
 
 <script>
   import '../../assets/tools.css'
-  import VectorComponent from '../common/VectorComponent'
+  import TransformComponent from '../common/TransformComponent'
   export default {
     name: 'AttrItem',
     props: {
       content:'null'
     },
     components:{
-      VectorComponent
+      TransformComponent,
     },
     mounted() {
     },

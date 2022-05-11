@@ -22,10 +22,15 @@
           // 构造数据编辑组件数据
           this.content = [];
           // 对于Node,我们只允许编辑translation,rotation以及scale
+          let angles = [];
+          this.obj.getLocalRotation().toAngles(angles);
           this.content.push({
-            type:'Translation',
+            // Transform
+            type:'Transform',
+            component:'TransformComponent',
             data:[
               {
+                type:'translation',
                 content:{
                   x:this.obj.getLocalTranslation()._m_X,
                   y:this.obj.getLocalTranslation()._m_Y,
@@ -34,15 +39,9 @@
                 set:(v)=>{
                   this.obj.setLocalTranslationXYZ(v.x, v.y, v.z);
                 }
-              }
-            ]
-          });
-          let angles = [];
-          this.obj.getLocalRotation().toAngles(angles);
-          this.content.push({
-            type:'Rotation',
-            data:[
+              },
               {
+                type:'rotation',
                 content:{
                   x:MoreMath.toAngle(angles[0]).toFixed(2),
                   y:MoreMath.toAngle(angles[1]).toFixed(2),
@@ -51,13 +50,9 @@
                 set:(v)=>{
                   this.obj.setLocalRotationFromEuler(MoreMath.toRadians(v.x), MoreMath.toRadians(v.y), MoreMath.toRadians(v.z));
                 }
-              }
-            ]
-          });
-          this.content.push({
-            type:'Scale',
-            data:[
+              },
               {
+                type:'scale',
                 content:{
                   x:this.obj.getLocalScale()._m_X,
                   y:this.obj.getLocalScale()._m_Y,
@@ -69,6 +64,9 @@
               }
             ]
           });
+
+
+          // 剔除模式
         }
       }
     },
