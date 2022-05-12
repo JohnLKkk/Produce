@@ -13,19 +13,14 @@
     </style>
 </head>
 <body onkeydown="return false;">
-  <script>
-    function keyhandler(event){
-      console.log('event.ctrlKey:' + event.ctrlKey + ";event.key:" + event.key);
-      if(event.ctrlKey && event.key == 'z'){
-        console.log('sssss');
-        return false;
-      }
-      return true;
-    }
-  </script>
-  <input type="number" onkeydown="return keyhandler(event)">
-  // html代码
-  <div class="box"></div>
+<div>
+  <select>
+    <option value ="volvo">Volvo</option>
+    <option value ="saab">Saab</option>
+    <option value="opel">Opel</option>
+    <option value="audi">Audi</option>
+  </select>
+</div>
 
 </body>
 </html>

@@ -14,12 +14,18 @@
 <script>
   import '../../assets/tools.css'
   import TransformComponent from '../common/TransformComponent'
+  import SelectComponent from '../common/SelectComponent'
+  import BoolComponent from '../common/BoolComponent'
+  import BoolGroupComponent from '../common/BoolGroupComponent'
   export default {
     name: 'AttrItem',
     props: {
       content:'null'
     },
     components:{
+      SelectComponent,
+      BoolGroupComponent,
+      BoolComponent,
       TransformComponent,
     },
     mounted() {

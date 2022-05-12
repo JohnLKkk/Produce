@@ -114,6 +114,25 @@
   background: #383838;
 }
 
+.component_select{
+  border: 0px;
+  border-radius: 2px;
+  outline-style: none;
+  background: #383838;
+  min-width: 100px;
+  margin-left: 4px;
+  margin-right: 4px;
+  color: #cbcbcb;font-size: 12px;
+}
+
+.component_select:hover{
+  background: #777777;
+}
+
+.input[type='checkbox']:checked + label:before{
+  background: #4cd764;
+}
+
 .icon_right {
   width: 0;
   height: 0;

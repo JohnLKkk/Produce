@@ -11,11 +11,11 @@ export default {
   name: 'Produce',
   mounted () {
     window.addEventListener('keyup', this.keyupHandler);
-    window.addEventListener('keydown', this.keyupHandler);
+    // window.addEventListener('keydown', this.keyupHandler);
   },
   destroyed () {
     window.removeEventListener('keyup', this.keyupHandler);
-    window.removeEventListener('keydown', this.keyupHandler);
+    // window.removeEventListener('keydown', this.keyupHandler);
   },
   methods: {
     keyupHandler :function(event) {
