@@ -1,7 +1,6 @@
 <template>
-  <div style="text-align: start">
-    <input type="checkbox" id="content.typename" v-model="content.content.checked">
-    <label for="content.typename" style="color: #cbcbcb;font-size: 12px;">{{ content.typename }}</label>
+  <div>
+    <div style="text-align: left;margin: 0 auto;width: 40%"><input type="checkbox" id="content.typename" v-model="content.content.checked"><label for="content.typename" style="color: #cbcbcb;font-size: 12px;">{{ content.typename }}</label></div>
   </div>
 </template>
 

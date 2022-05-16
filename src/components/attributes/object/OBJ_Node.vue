@@ -22,7 +22,7 @@
         if(this.obj){
           // 构造数据编辑组件数据
           this.content = [];
-          // 对于Node,我们只允许编辑translation,rotation以及scale
+          // 对于Node,我们只允许编辑Transform,Visibility culling以及shadow
           let angles = [];
           this.obj.getLocalRotation().toAngles(angles);
           this.content.push({
