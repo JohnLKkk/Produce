@@ -29,6 +29,8 @@ export default class LeadingPrinciples {
         "selected": false,
         "disabled": false,
         "loading": false,
+        "dragDisabled": !this._canDrag(node.getType()),
+        "dropDisabled": !this._canDrop(node.getType()),
         "children": [
         ]
       };
@@ -42,6 +44,16 @@ export default class LeadingPrinciples {
       });
     }
   }
+
+  _canDrag(type){
+    return true;
+  }
+
+  _canDrop(type){
+    if(type == 'Node')return true;
+    return false;
+  }
+
   _getTypeIcon(type){
     switch (type) {
       case 'Node':

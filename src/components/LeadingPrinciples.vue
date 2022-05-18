@@ -2,7 +2,7 @@
     <div class="window">
       <div class="topdeftoolbg2"></div>
       <div class="leadingBg">
-        <v-jstree class="leadingBg" :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" style="overflow-y:auto;"></v-jstree>
+        <v-jstree class="leadingBg" :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" @item-drag-start="itemDragStart" @item-drop-before="itemDropBefore" style="overflow-y:auto;"></v-jstree>
       </div>
     </div>
 </template>
@@ -14,6 +14,8 @@
   import VJstree from 'vue-jstree'
   import {EditorContext} from '../editor/EditorContext'
   import LeadingPrinciples from '../editor/leadingPrinciples/LeadingPrinciples'
+  import CommandManager from '../editor/command/CommandManager'
+  import BaseCommand from '../editor/command/BaseCommand'
   export default {
     name: 'LeadingPrinciples',
     components: {
@@ -21,6 +23,7 @@
     },
     data(){
       return {
+        _temp: null,
         data: [],
         leadingPrinciplesEditor: null,
       }
@@ -38,9 +41,46 @@
     },
     methods: {
       itemClick (node) {
-        console.log(node.model.value)
+        // console.log(node.model.value)
         EditorContext.getInstance().notifyEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, [node.model.value]);
-      }
+      },
+      itemDragStart (node) {
+        // console.log('dragStart:',node);
+        // 记录父节点
+        if(node.$parent && node.$parent.model){
+          this._temp = {parent:node.$parent.model.value, node:node.model.value};
+        }
+      },
+      changeParent(preParent, nextParent, node){
+        // 从当前父节点移除该节点
+        preParent.removeChildren(node);
+        // 将其添加到新的父节点
+        nextParent.addChildren(node);
+        // 更新数据结构
+        this.data = this.leadingPrinciplesEditor.getData();
+      },
+      itemDropBefore (node) {
+        // 调整父节点
+        // console.log('dragEnd:',node);
+        // 说明是合法节点
+        if(this._temp != null && (this._temp.parent != node.model.value)){
+          let preParent = this._temp.parent;
+          let nextParent = node.model.value;
+          let n = this._temp.node;
+          CommandManager.getInstance().executeCommand(new BaseCommand({
+            redo: (v)=>{this.changeParent(v.preParent, v.nextParent, v.node);},
+            undo: (v)=>{this.changeParent(v.preParent, v.nextParent, v.node);},
+            redoData: {preParent, nextParent, node:n},
+            undoData: {preParent:nextParent, nextParent:preParent, node:n}
+          }));
+        }
+        else{
+          // 同个父节点,不做任何操作
+          // console.log('移动失败');
+        }
+        // 重置
+        this._temp = null;
+      },
     }
   }
 </script>
