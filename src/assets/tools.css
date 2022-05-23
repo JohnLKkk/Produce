@@ -153,3 +153,29 @@
   border-color: gray transparent transparent transparent;
   margin: 7px 5px 5px 5px;
 }
+
+/*context menu*/
+.vue-contextmenu-listWrapper {
+  margin: 0;
+  background: #fff;
+  z-index: 3000;
+  position: absolute;
+  list-style-type: none;
+  padding: 5px 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  min-width: 150px;
+  color: #c2c2c2;
+  box-shadow: 4px 4px 5px 0 rgba(0, 0, 0, 0.84);
+  background-color: #0c0c0c;
+}
+
+.vue-contextmenu-listWrapper .context-menu-list {
+  margin: 0;
+  cursor: pointer;
+}
+
+.vue-contextmenu-listWrapper .context-menu-list:hover {
+  background: #777777;
+}

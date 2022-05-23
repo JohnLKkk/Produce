@@ -18,6 +18,18 @@ export class EditorContext {
     return EditorContext._s_Instance;
   }
 
+  /**
+   * 返回指定scene,默认返回第0个scene。<br/>
+   * @param {Number}[index]
+   */
+  static getScene(index){
+    // 这里暂时只返回第0个。
+    if(EditorContext._s_Instance.getRenderer()){
+      return EditorContext._s_Instance.getRenderer()._scene;
+    }
+    return null;
+  }
+
   constructor () {
     // 所有工作区
     this.m_Workspaces = {};

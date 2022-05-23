@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import ProduceEdit from 'vue-router'
 import Port from '@/components/Port'
+import ContextMenu from '../components/ui/ContextMenu'
 
+Vue.component('VueContextMenu', ContextMenu)
 Vue.use(ProduceEdit)
 /**
  * Produce编辑器。<br/>

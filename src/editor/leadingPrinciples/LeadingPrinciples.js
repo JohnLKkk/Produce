@@ -1,4 +1,6 @@
 import {EditorContext} from '../EditorContext'
+import Try3d from 'try3d/src/Try3d'
+import Utils from '../utils/Utils'
 
 /**
  * 大纲编辑器。<br/>
@@ -89,5 +91,15 @@ export default class LeadingPrinciples {
       this._getSceneData(data, scene);
     }
     return data;
+  }
+
+  newNode(options){
+    // 创建一个node
+    let scene = EditorContext.getScene(0);
+    if(scene){
+      let newNode = new Try3d.Node(scene, {id:'node_' + Utils.nextId()});
+      return newNode;
+    }
+    return null;
   }
 }

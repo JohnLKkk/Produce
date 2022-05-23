@@ -1,4 +1,9 @@
 export default class Utils {
+  static _s_Id = -1;
+  static nextId(){
+    return Utils._s_Id++;
+  }
+
   static getObjectType(type){
     switch (type) {
       case 'Node':
