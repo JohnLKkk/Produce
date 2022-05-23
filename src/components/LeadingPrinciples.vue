@@ -1,8 +1,8 @@
 <template>
     <div class="window">
       <div class="topdeftoolbg2"></div>
-      <div class="leadingBg" @contextmenu.prevent="showMenu($event)">
-        <v-jstree ref="scenes" class="leadingBg" :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" @item-drag-start="itemDragStart" @item-drop-before="itemDropBefore" style="overflow-y:auto;"></v-jstree>
+      <div class="leadingBg" @contextmenu.prevent="showMenu($event)" ref="scenes">
+        <v-jstree class="leadingBg" :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" @item-drag-start="itemDragStart" @item-drop-before="itemDropBefore" style="overflow-y:auto;"></v-jstree>
         <vue-context-menu :contextMenuData="contextMenuData"
                           @addNode="addNode" @deleteObject="deleteObject"></vue-context-menu>
       </div>
@@ -129,13 +129,22 @@
           x, y
         }
 
-        // 触发一次鼠标左键点击,模拟选中object操作
-        const ev = new MouseEvent('click', {
-          view: window,
-          bubbles: true,
-          cancelable: true,
-        });
-        document.dispatchEvent(ev);
+        // 将事件转发为鼠标左键点击,以便我们可以获取当前右键选中的object
+        e.target.click();
+        // // 触发一次鼠标左键点击,模拟选中object操作
+        // let ev = document.createEvent('MouseEvent');
+        // ev.initMouseEvent(
+        //   "click",
+        //   true,
+        //   true,
+        //   document.defaultView,
+        //   0,
+        //   0, 0, 0, 0,
+        //   false, false, false, false,
+        //   0,
+        //   null
+        // );
+        // this.$refs.scenes.dispatchEvent(ev);
       },
       addNode(){
         // 创建一个随机名称节点
