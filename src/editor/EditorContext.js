@@ -1,6 +1,9 @@
 import Events from 'try3d/src/Core/Util/Events'
 
 export class EditorContext {
+  // 默认辅助几何,不会出现在大纲编辑器列表中
+  static S_HELPER_GRID = '_helper_grid';
+
   // EVENTS
   static S_EVENT_SCENE_LOAD_END = "S_EVENT_SCENE_LOAD_END";
 

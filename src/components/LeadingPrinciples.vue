@@ -4,7 +4,7 @@
       <div class="leadingBg" @contextmenu.prevent="showMenu($event)" ref="scenes">
         <v-jstree class="leadingBg" :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" @item-drag-start="itemDragStart" @item-drop-before="itemDropBefore" style="overflow-y:auto;"></v-jstree>
         <vue-context-menu :contextMenuData="contextMenuData"
-                          @addNode="addNode" @deleteObject="deleteObject"></vue-context-menu>
+                          @addNode="addNode" @addBox="addBox" @deleteObject="deleteObject"></vue-context-menu>
       </div>
     </div>
 </template>
@@ -30,72 +30,75 @@
         _tempSelect: null,
         data: [],
         leadingPrinciplesEditor: null,
+        addShape:{
+          btnName: 'addShape...',
+          children:[
+            {
+              btnName: 'Node',
+              fnHandler: 'addNode'
+            },
+            {
+              btnName: 'Box',
+              fnHandler: 'addBox'
+            },
+            {
+              btnName: 'Sphere',
+              fnHandler: 'addShape(2)'
+            },
+            {
+              btnName: 'Plane',
+              fnHandler: 'addShape(3)'
+            },
+            {
+              btnName: 'Cylinder',
+              fnHandler: 'addShape(4)'
+            },
+            {
+              btnName: 'Teapot',
+              fnHandler: 'addShape(5)'
+            },
+            {
+              btnName: 'Torus',
+              fnHandler: 'addShape(6)'
+            }
+          ]
+        },
+        addLight:{
+          btnName: 'addLight...',
+          children: [
+            {
+              fnHandler: 'addDirectionalLight',
+              btnName: 'DirectionalLight',
+            },
+            {
+              fnHandler: 'addPointLight',
+              btnName: 'PointLight',
+            },
+            {
+              fnHandler: 'addSpotLight',
+              btnName: 'SpotLight',
+            },
+            {
+              fnHandler: 'addGIProbe',
+              btnName: 'GIProbe',
+            },
+            {
+              fnHandler: 'addRefProbe',
+              btnName: 'RefProbe',
+            }
+          ]
+        },
+        delete:{
+          btnName: 'delete',
+          fnHandler: 'deleteObject'
+        },
         contextMenuData: {
           menuName: 'LeadingPrinciplesContextMenu',
           axis: {
             x: null,
             y: null
           },
-          menulists: [{
-            btnName: 'addShape...',
-            children:[
-              {
-                btnName: 'Node',
-                fnHandler: 'addNode'
-              },
-              {
-                btnName: 'Box',
-                fnHandler: 'addShape(1)'
-              },
-              {
-                btnName: 'Sphere',
-                fnHandler: 'addShape(2)'
-              },
-              {
-                btnName: 'Plane',
-                fnHandler: 'addShape(3)'
-              },
-              {
-                btnName: 'Cylinder',
-                fnHandler: 'addShape(4)'
-              },
-              {
-                btnName: 'Teapot',
-                fnHandler: 'addShape(5)'
-              },
-              {
-                btnName: 'Torus',
-                fnHandler: 'addShape(6)'
-              }
-            ]
-          }, {
-            btnName: 'addLight...',
-            children: [
-              {
-                fnHandler: 'addDirectionalLight',
-                btnName: 'DirectionalLight',
-              },
-              {
-                fnHandler: 'addPointLight',
-                btnName: 'PointLight',
-              },
-              {
-                fnHandler: 'addSpotLight',
-                btnName: 'SpotLight',
-              },
-              {
-                fnHandler: 'addGIProbe',
-                btnName: 'GIProbe',
-              },
-              {
-                fnHandler: 'addRefProbe',
-                btnName: 'RefProbe',
-              }
-            ]
-          },{
-            btnName: 'delete',
-            fnHandler: 'deleteObject'
-          }]
+          menulists: []
         }
       }
     },
@@ -129,42 +132,61 @@
           x, y
         }
 
+        // 右键菜单时,先将选中节点设回根节点,以便选中空白时可以弹出有效菜单
+        let editorContext = EditorContext.getInstance();
+        let sceneRoot = editorContext.getRenderer()._scene.getSceneNode(0);
+        this._tempSelect = sceneRoot;
         // 将事件转发为鼠标左键点击,以便我们可以获取当前右键选中的object
         e.target.click();
-        // // 触发一次鼠标左键点击,模拟选中object操作
-        // let ev = document.createEvent('MouseEvent');
-        // ev.initMouseEvent(
-        //   "click",
-        //   true,
-        //   true,
-        //   document.defaultView,
-        //   0,
-        //   0, 0, 0, 0,
-        //   false, false, false, false,
-        //   0,
-        //   null
-        // );
-        // this.$refs.scenes.dispatchEvent(ev);
+
+        let currentSelectObject = this.getCurrentSelectObject();
+        let data = [];
+        switch (this.leadingPrinciplesEditor.getType(currentSelectObject.getType())) {
+          case LeadingPrinciples.SG_NODE:
+            data.push(this.addShape);
+            data.push(this.addLight);
+            break;
+        }
+        if(editorContext.getRenderer() && editorContext.getRenderer()._scene) {
+          if (currentSelectObject != sceneRoot) {
+            // 不显示删除
+            data.push(this.delete);
+          }
+        }
+        this.contextMenuData.menulists = data;
+      },
+      addShapeFun(parentNode, shape){
+        CommandManager.getInstance().executeCommand(new BaseCommand({
+          redo: (v)=>{v.parentNode.addChildren(v.node);this.data = this.leadingPrinciplesEditor.getData();},
+          undo: (v)=>{v.parentNode.removeChildren(v.node);this.data = this.leadingPrinciplesEditor.getData();},
+          redoData: {parentNode, node:shape},
+          undoData: {parentNode, node:shape}
+        }));
       },
       addNode(){
         // 创建一个随机名称节点
         let parentNode = this.getCurrentSelectObject();
         if(parentNode){
           let n = this.leadingPrinciplesEditor.newNode();
-          CommandManager.getInstance().executeCommand(new BaseCommand({
-            redo: (v)=>{v.parentNode.addChildren(v.node);this.data = this.leadingPrinciplesEditor.getData();},
-            undo: (v)=>{v.parentNode.removeChildren(v.node);this.data = this.leadingPrinciplesEditor.getData();},
-            redoData: {parentNode, node:n},
-            undoData: {parentNode, node:n}
-          }));
+          this.addShapeFun(parentNode, n);
+        }
+      },
+      addBox(){
+        // 创建一个随机名称box
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let n = this.leadingPrinciplesEditor.newBox();
+          this.addShapeFun(parentNode, n);
         }
       },
       deleteObject(){
+        // 为了稳妥一点,在这里再进行判断是否删除的根节点
         let editorContext = EditorContext.getInstance();
         if(editorContext.getRenderer() && editorContext.getRenderer()._scene){
           let sceneRoot = editorContext.getRenderer()._scene.getSceneNode(0);
           let currentSelectObject = this.getCurrentSelectObject();
           if(currentSelectObject != sceneRoot){
+            // 弹出提示框提示是否删除?
             // 删除操作
             let n = currentSelectObject;
             let parentNode = n.getParent();

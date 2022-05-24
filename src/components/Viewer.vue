@@ -10,6 +10,7 @@
 <script>
   import Try3d from "try3d/src/Try3d";
   import {EditorContext} from '../editor/EditorContext'
+  import Material from '../editor/common/Material'
 
   export default {
     name: 'Viewer',
@@ -36,23 +37,21 @@
         // 基本部件
         // 轴网
         let colorDef = Try3d.MaterialDef.parse(Try3d.Internal.S_COLOR_DEF_DATA);
-        let grid = new Try3d.Grid(scene, {id:'grid', width:1000, height:1000, widthSegments:250, heightSegments:250});
+        let grid = new Try3d.Grid(scene, {id:EditorContext.S_HELPER_GRID, width:1000, height:1000, widthSegments:250, heightSegments:250});
         let defaultColor = new Try3d.Material(scene, {id:"defaultColor", materialDef:colorDef});
         defaultColor.setParam('color', new Try3d.Vec4Vars().valueFromXYZW(1.0, 1.0, 1.0, 1.0));
         grid.setMaterial(defaultColor);
         rootNode.addChildren(grid);
 
         // 创建一个box
-        let box1Mat = new Try3d.Material(scene, {id:'box1Mat', materialDef:Try3d.MaterialDef.parse(Try3d.Internal.S_BASIC_LIGHTING_DEF_DATA)});
+        let box1Mat = Material.getBasicLightingMatIns(scene, true);
         let box = new Try3d.Box(scene, {id:'box_' + 0 + '_' + 0, xHalf:0.2, yHalf:0.2, zHalf:0.2});
         box1Mat.setParam('ambientColor', new Try3d.Vec4Vars().valueFromXYZW(0.25, 0.25, 0.25, 1.0));
-        box1Mat.setParam('diffuseColor', new Try3d.Vec4Vars().valueFromXYZW(0.0, 0, 1.0, 1.0));
+        box1Mat.setParam('diffuseColor', new Try3d.Vec4Vars().valueFromXYZW(1, 1, 1, 1.0));
         box1Mat.setParam('specularColor', new Try3d.Vec4Vars().valueFromXYZW(1.0, 1.0, 1.0, 1.0));
         box1Mat.setParam('shininess', new Try3d.FloatVars().valueOf(64.0));
         box.setMaterial(box1Mat);
-        let list = new Try3d.Node(scene, {id:'default-list'});
-        list.addChildren(box);
-        rootNode.addChildren(list);
+        rootNode.addChildren(box);
 
         // 创建一个directionalLight
         let dirLight = new Try3d.DirectionalLight(scene, {id:'dirLight'});
@@ -62,7 +61,7 @@
 
         // 创建一个控制器
         let sceneControl = new Try3d.SceneBrowsingController(scene, {id:'control'});
-        sceneControl.lookScene(list);
+        sceneControl.lookScene(grid);
         sceneControl.setTargetDistance(3);
         sceneControl.setMaxDistance(100);
         sceneControl.setMinDistance(1);
