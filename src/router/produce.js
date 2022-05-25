@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import ProduceEdit from 'vue-router'
 import Port from '@/components/Port'
+import vcolorpicker from 'vcolorpicker'
 import ContextMenu from '../components/ui/ContextMenu'
 
 Vue.component('VueContextMenu', ContextMenu)
+Vue.use(vcolorpicker)
 Vue.use(ProduceEdit)
 /**
  * Produce编辑器。<br/>

@@ -17,6 +17,7 @@
   import SelectComponent from '../common/SelectComponent'
   import BoolComponent from '../common/BoolComponent'
   import BoolGroupComponent from '../common/BoolGroupComponent'
+  import ColorComponent from '../common/ColorComponent'
   export default {
     name: 'AttrItem',
     props: {
@@ -27,6 +28,7 @@
       BoolGroupComponent,
       BoolComponent,
       TransformComponent,
+      ColorComponent,
     },
     mounted() {
     },
