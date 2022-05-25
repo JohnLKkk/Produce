@@ -38,4 +38,19 @@ export default class Material {
     return Material._S_BASIC_LIGHTING_MAT_INS;
   }
 
+  /**
+   * 返回一个WhiteBasicLightingMatIns。<br/>
+   * @param {Scene}[scene]
+   * @param {Boolean}[make]
+   * @returns {Material}
+   */
+  static getWhiteBasicLightingMatIns(scene, make){
+    let matIns = Material.getBasicLightingMatIns(scene, make);
+    matIns.setParam('ambientColor', new Try3d.Vec4Vars().valueFromXYZW(0.25, 0.25, 0.25, 1.0));
+    matIns.setParam('diffuseColor', new Try3d.Vec4Vars().valueFromXYZW(1, 1, 1, 1.0));
+    matIns.setParam('specularColor', new Try3d.Vec4Vars().valueFromXYZW(1.0, 1.0, 1.0, 1.0));
+    matIns.setParam('shininess', new Try3d.FloatVars().valueOf(64.0));
+    return matIns;
+  }
+
 }

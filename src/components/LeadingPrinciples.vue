@@ -4,7 +4,14 @@
       <div class="leadingBg" @contextmenu.prevent="showMenu($event)" ref="scenes">
         <v-jstree class="leadingBg" :data="data" noDots draggable allow-batch whole-row @item-click="itemClick" @item-drag-start="itemDragStart" @item-drop-before="itemDropBefore" style="overflow-y:auto;"></v-jstree>
         <vue-context-menu :contextMenuData="contextMenuData"
-                          @addNode="addNode" @addBox="addBox" @deleteObject="deleteObject"></vue-context-menu>
+                          @addNode="addNode"
+                          @addBox="addBox"
+                          @addSphere="addSphere"
+                          @addPlane="addPlane"
+                          @addCylinder="addCylinder"
+                          @addTeapot="addTeapot"
+                          @addTorus="addTorus"
+                          @deleteObject="deleteObject"></vue-context-menu>
       </div>
     </div>
 </template>
@@ -19,6 +26,7 @@
   import CommandManager from '../editor/command/CommandManager'
   import BaseCommand from '../editor/command/BaseCommand'
   import Light from 'try3d/src/Core/Light/Light'
+  import ShapeFactory from '../editor/common/ShapeFactory'
   export default {
     name: 'LeadingPrinciples',
     components: {
@@ -43,23 +51,23 @@
             },
             {
               btnName: 'Sphere',
-              fnHandler: 'addShape(2)'
+              fnHandler: 'addSphere'
             },
             {
               btnName: 'Plane',
-              fnHandler: 'addShape(3)'
+              fnHandler: 'addPlane'
             },
             {
               btnName: 'Cylinder',
-              fnHandler: 'addShape(4)'
+              fnHandler: 'addCylinder'
             },
             {
               btnName: 'Teapot',
-              fnHandler: 'addShape(5)'
+              fnHandler: 'addTeapot'
             },
             {
               btnName: 'Torus',
-              fnHandler: 'addShape(6)'
+              fnHandler: 'addTorus'
             }
           ]
         },
@@ -176,6 +184,41 @@
         let parentNode = this.getCurrentSelectObject();
         if(parentNode){
           let n = this.leadingPrinciplesEditor.newBox();
+          this.addShapeFun(parentNode, n);
+        }
+      },
+      addSphere(){
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let n = ShapeFactory.createSphere();
+          this.addShapeFun(parentNode, n);
+        }
+      },
+      addPlane(){
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let n = ShapeFactory.createPlane();
+          this.addShapeFun(parentNode, n);
+        }
+      },
+      addCylinder(){
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let n = ShapeFactory.createCylinder();
+          this.addShapeFun(parentNode, n);
+        }
+      },
+      addTeapot(){
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let n = ShapeFactory.createTeapot();
+          this.addShapeFun(parentNode, n);
+        }
+      },
+      addTorus(){
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let n = ShapeFactory.createTorus();
           this.addShapeFun(parentNode, n);
         }
       },
