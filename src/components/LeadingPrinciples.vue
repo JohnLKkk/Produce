@@ -11,6 +11,9 @@
                           @addCylinder="addCylinder"
                           @addTeapot="addTeapot"
                           @addTorus="addTorus"
+                          @addDirectionalLight="addDirectionalLight"
+                          @addPointLight="addPointLight"
+                          @addSpotLight="addSpotLight"
                           @deleteObject="deleteObject"></vue-context-menu>
       </div>
     </div>
@@ -27,6 +30,7 @@
   import BaseCommand from '../editor/command/BaseCommand'
   import Light from 'try3d/src/Core/Light/Light'
   import ShapeFactory from '../editor/common/ShapeFactory'
+  import LightFactory from '../editor/common/LightFactory'
   export default {
     name: 'LeadingPrinciples',
     components: {
@@ -243,13 +247,54 @@
               undo: (v)=>{
                 v.parentNode.addChildren(v.node);this.data = this.leadingPrinciplesEditor.getData();
                 if(v.node instanceof Light){
-                  v.node.enable();
+                  if(v.node._edit != undefined){
+                    if(v.node._edit){
+                      v.node.enable();
+                    }
+                  }
+                  else
+                    v.node.enable();
                 }
               },
               redoData: {parentNode, node:n},
               undoData: {parentNode, node:n}
             }));
           }
+        }
+      },
+      addLightFun(parentNode, light){
+        CommandManager.getInstance().executeCommand(new BaseCommand({
+          redo: (v)=>{v.parentNode.addChildren(v.node);if(v.node._edit != undefined){
+            if(v.node._edit){
+              v.node.enable();
+            }
+          }
+          else
+            v.node.enable();this.data = this.leadingPrinciplesEditor.getData();},
+          undo: (v)=>{v.parentNode.removeChildren(v.node);if(!v.node._edit)v.node.disable();this.data = this.leadingPrinciplesEditor.getData();},
+          redoData: {parentNode, node:light},
+          undoData: {parentNode, node:light}
+        }));
+      },
+      addDirectionalLight(){
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let light = LightFactory.createDirectionalLight({scene:EditorContext.getScene(0)});
+          this.addLightFun(parentNode, light);
+        }
+      },
+      addPointLight(){
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let light = LightFactory.createPointLight({scene:EditorContext.getScene(0)});
+          this.addLightFun(parentNode, light);
+        }
+      },
+      addSpotLight(){
+        let parentNode = this.getCurrentSelectObject();
+        if(parentNode){
+          let light = LightFactory.createSpotLight({scene:EditorContext.getScene(0)});
+          this.addLightFun(parentNode, light);
         }
       },
       // 右键菜单----------------------------------------↑

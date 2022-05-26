@@ -34,6 +34,137 @@
               }
             }
           });
+          // 根据光源类型设置不同属性编辑
+          switch(this.obj.getType()){
+            case 'DirectionalLight':
+              this.content.push({
+                // Direction
+                type:'Direction',
+                component:'TransformComponent',
+                data:[
+                  {
+                    content:{
+                      x:this.obj.getDirection()._m_X,
+                      y:this.obj.getDirection()._m_Y,
+                      z:this.obj.getDirection()._m_Z
+                    },
+                    set:(v)=>{
+                      this.obj.setDirectionXYZ(v.x, v.y, v.z);
+                    }
+                  }
+                ]
+              });
+              break;
+            case 'PointLight':
+              this.content.push({
+                // Position
+                type:'Position',
+                component:'TransformComponent',
+                data:[
+                  {
+                    content:{
+                      x:this.obj.getPosition()._m_X,
+                      y:this.obj.getPosition()._m_Y,
+                      z:this.obj.getPosition()._m_Z
+                    },
+                    set:(v)=>{
+                      this.obj.setPositionXYZ(v.x, v.y, v.z);
+                    }
+                  }
+                ]
+              });
+              this.content.push(
+                {
+                  // Radius
+                  type:'Radius',
+                  component:'TransformComponent',
+                  data:[
+                    {
+                      content:{r:this.obj.getRadius()},
+                      set:(v)=>{
+                        this.obj.setRadius(v.r);
+                      }
+                    }
+                  ]
+                }
+              );
+              break;
+            case 'SpotLight':
+              this.content.push({
+                // Position
+                type:'Position',
+                component:'TransformComponent',
+                data:[
+                  {
+                    content:{
+                      x:this.obj.getPosition()._m_X,
+                      y:this.obj.getPosition()._m_Y,
+                      z:this.obj.getPosition()._m_Z
+                    },
+                    set:(v)=>{
+                      this.obj.setPositionXYZ(v.x, v.y, v.z);
+                    }
+                  }
+                ]
+              });
+              this.content.push({
+                // Direction
+                type:'Direction',
+                component:'TransformComponent',
+                data:[
+                  {
+                    content:{
+                      x:this.obj.getDirection()._m_X,
+                      y:this.obj.getDirection()._m_Y,
+                      z:this.obj.getDirection()._m_Z
+                    },
+                    set:(v)=>{
+                      this.obj.setDirectionXYZ(v.x, v.y, v.z);
+                    }
+                  }
+                ]
+              });
+              this.content.push({
+                // SpotRange, InnerAngle, OuterAngle
+                type:'Spot Properties',
+                component:'TransformComponent',
+                data:[
+                  {
+                    content:{
+                      spotRange:this.obj.getSpotRange(),
+                      innerAngle:Try3d.MoreMath.toAngle(this.obj.getInnerAngle()),
+                      outerAngle:Try3d.MoreMath.toAngle(this.obj.getOuterAngle())
+                    },
+                    set:(v)=>{
+                      this.obj.setSpotRange(v.spotRange);
+                      this.obj.setInnerAngle(Try3d.MoreMath.toRadians(v.innerAngle));
+                      this.obj.setOuterAngle(Try3d.MoreMath.toRadians(v.outerAngle));
+                    }
+                  }
+                ]
+              });
+              break;
+          }
+          // 禁用和开启
+          this.content.push({
+            // enabled
+            type:'Enabled',
+            component:'BoolComponent',
+            data:{
+              typename:'status',
+              content:{checked:this.obj.isEnable()},
+              set:(v)=>{
+                if(v){
+                  this.obj.enable();
+                  this.obj._edit = true;
+                }
+                else{
+                  this.obj.disable();
+                  this.obj._edit = false;
+                }
+              }
+            }
+          });
         }
       }
     },
