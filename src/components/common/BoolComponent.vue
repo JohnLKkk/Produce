@@ -30,7 +30,6 @@
         let oldValue = o;
         // new Value
         let newValue = v;
-        console.log('checked:',v);
         if(this.isCommand){
           CommandManager.getInstance().executeCommand(new BaseCommand({
             redo: (v)=>{this.content.set(v);this.isCommand = false;this.content.content.checked = v;},

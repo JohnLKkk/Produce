@@ -52,11 +52,14 @@
   import {EditorContext} from '../editor/EditorContext'
   import LeadingPrinciples from '../editor/leadingPrinciples/LeadingPrinciples'
   import Utils from '../editor/utils/Utils'
+  import RendererProperty from './attributes/renderer/RendererProperty'
   export default {
     name: 'Attributes',
     components: {
       VueTabs,
       VTab,
+
+      RendererProperty,
 
       OBJ_Node,
       OBJ_Geometry,
@@ -103,7 +106,7 @@
        * @returns {string}
        */
       currentRendererProTabComponent: function(){
-        return 'OBJ_None';
+        return 'RendererProperty';
       },
 
       /**

@@ -145,6 +145,7 @@
               });
               break;
           }
+          // 阴影部分
           // 禁用和开启
           this.content.push({
             // enabled
