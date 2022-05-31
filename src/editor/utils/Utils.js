@@ -17,7 +17,7 @@ export default class Utils {
       case 'Light':
       case 'DirectionalLight':
       case 'PointLight':
-      case 'SportLight':
+      case 'SpotLight':
         return 'Light';
       default:
         return '';

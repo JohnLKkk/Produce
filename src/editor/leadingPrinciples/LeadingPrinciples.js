@@ -83,7 +83,7 @@ export default class LeadingPrinciples {
       case 'Light':
       case 'DirectionalLight':
       case 'PointLight':
-      case 'SportLight':
+      case 'SpotLight':
         return 'sg_light';
       default:
         return '';

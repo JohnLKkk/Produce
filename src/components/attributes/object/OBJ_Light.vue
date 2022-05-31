@@ -146,6 +146,228 @@
               break;
           }
           // 阴影部分
+          switch (this.obj.getType()) {
+            case 'DirectionalLight':
+              this.content.push({
+                type:'Shadow',
+                component:'CombinationComponent',
+                data:[
+                  {
+                    component:'BoolComponent',
+                    data:{
+                      typename:'proShadow',
+                      content:{checked:this.obj.isProShadow()},
+                      set:(v)=>{
+                        this.obj.proShadow(v);
+                      }
+                    }
+                  },
+                  // {
+                  //   component:'SelectComponent',
+                  //   data:{
+                  //     selected:'4',
+                  //     typename:'shadow split num',
+                  //     content:[
+                  //       {text:'1', value:1},
+                  //       {text:'2', value:2},
+                  //       {text:'3', value:3},
+                  //       {text:'4', value:4}
+                  //     ],
+                  //     set:(v)=>{
+                  //       this.obj.setShadowSplitNum(v);
+                  //     }
+                  //   }
+                  // },
+                  // {
+                  //   component:'SelectComponent',
+                  //   data:{
+                  //     selected:1024,
+                  //     typename:'shadow map size',
+                  //     content:[
+                  //       {text:'512x512', value:512},
+                  //       {text:'1024x1024', value:1024},
+                  //       {text:'2048x2048', value:2048}
+                  //     ],
+                  //     set:(v)=>{
+                  //       this.obj.setShadowMapSize(v);
+                  //     }
+                  //   }
+                  // },
+                  {
+                    component:'BoolComponent',
+                    data:{
+                      typename:'backfaceShadows',
+                      content:{checked:this.obj.getShadow().isBackfaceShadows()},
+                      set:(v)=>{
+                        this.obj.getShadow().setBackfaceShadows(v);
+                      }
+                    },
+                    set:(v)=>{
+                      this.obj.getShadow().setBackfaceShadows(v.backfaceShadows);
+                    }
+                  },
+                  {
+                    component:'TransformComponent',
+                    data:[
+                      {
+                        type:'',
+                        content:{
+                          biasFactor:this.obj.getShadow().getBiasFactor()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setBias(v.biasFactor, this.obj.getShadow().getBiasUnits());
+                        }
+                      },
+                      {
+                        type:'',
+                        content:{
+                          biasUnits:this.obj.getShadow().getBiasUnits()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setBias(v.getShadow().getBiasFactor(), v.biasUnits);
+                        }
+                      },
+                      {
+                        type:'',
+                        content:{
+                          shadowIntensity:this.obj.getShadow().getShadowIntensity()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setShadowIntensity(v.shadowIntensity);
+                        }
+                      }
+                    ]
+                  }
+                ]
+              });
+              break;
+            case 'PointLight':
+              this.content.push({
+                type:'Shadow',
+                component:'CombinationComponent',
+                data:[
+                  {
+                    component:'BoolComponent',
+                    data:{
+                      typename:'proShadow',
+                      content:{checked:this.obj.isProShadow()},
+                      set:(v)=>{
+                        this.obj.proShadow(v);
+                      }
+                    }
+                  },
+                  {
+                    component:'BoolComponent',
+                    data:{
+                      typename:'backfaceShadows',
+                      content:{checked:this.obj.getShadow().isBackfaceShadows()},
+                      set:(v)=>{
+                        this.obj.getShadow().setBackfaceShadows(v);
+                      }
+                    },
+                    set:(v)=>{
+                      this.obj.getShadow().setBackfaceShadows(v.backfaceShadows);
+                    }
+                  },
+                  {
+                    component:'TransformComponent',
+                    data:[
+                      {
+                        type:'',
+                        content:{
+                          biasFactor:this.obj.getShadow().getBiasFactor()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setBias(v.biasFactor, this.obj.getShadow().getBiasUnits());
+                        }
+                      },
+                      {
+                        type:'',
+                        content:{
+                          biasUnits:this.obj.getShadow().getBiasUnits()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setBias(v.getShadow().getBiasFactor(), v.biasUnits);
+                        }
+                      },
+                      {
+                        type:'',
+                        content:{
+                          shadowIntensity:this.obj.getShadow().getShadowIntensity()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setShadowIntensity(v.shadowIntensity);
+                        }
+                      }
+                    ]
+                  }
+                ]
+              });
+              break;
+            case 'SpotLight':
+              this.content.push({
+                type:'Shadow',
+                component:'CombinationComponent',
+                data:[
+                  {
+                    component:'BoolComponent',
+                    data:{
+                      typename:'proShadow',
+                      content:{checked:this.obj.isProShadow()},
+                      set:(v)=>{
+                        this.obj.proShadow(v);
+                      }
+                    }
+                  },
+                  {
+                    component:'BoolComponent',
+                    data:{
+                      typename:'backfaceShadows',
+                      content:{checked:this.obj.getShadow().isBackfaceShadows()},
+                      set:(v)=>{
+                        this.obj.getShadow().setBackfaceShadows(v);
+                      }
+                    },
+                    set:(v)=>{
+                      this.obj.getShadow().setBackfaceShadows(v.backfaceShadows);
+                    }
+                  },
+                  {
+                    component:'TransformComponent',
+                    data:[
+                      {
+                        type:'',
+                        content:{
+                          biasFactor:this.obj.getShadow().getBiasFactor()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setBias(v.biasFactor, this.obj.getShadow().getBiasUnits());
+                        }
+                      },
+                      {
+                        type:'',
+                        content:{
+                          biasUnits:this.obj.getShadow().getBiasUnits()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setBias(v.getShadow().getBiasFactor(), v.biasUnits);
+                        }
+                      },
+                      {
+                        type:'',
+                        content:{
+                          shadowIntensity:this.obj.getShadow().getShadowIntensity()
+                        },
+                        set:(v)=>{
+                          this.obj.getShadow().setShadowIntensity(v.shadowIntensity);
+                        }
+                      }
+                    ]
+                  }
+                ]
+              });
+              break;
+          }
           // 禁用和开启
           this.content.push({
             // enabled

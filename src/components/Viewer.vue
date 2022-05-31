@@ -41,6 +41,8 @@
         let defaultColor = new Try3d.Material(scene, {id:"defaultColor", materialDef:colorDef});
         defaultColor.setParam('color', new Try3d.Vec4Vars().valueFromXYZW(1.0, 1.0, 1.0, 1.0));
         grid.setMaterial(defaultColor);
+        grid.castShadow(false);
+        grid.receiveShadow(false);
         rootNode.addChildren(grid);
 
         // 创建一个box
@@ -57,6 +59,9 @@
         let dirLight = new Try3d.DirectionalLight(scene, {id:'dirLight'});
         dirLight.setDirectionXYZ(1, -1, 1);
         dirLight.setColorRGBA(1.0, 1.0, 1.0, 1.0);
+        dirLight.setShadowMapSize(1024);
+        dirLight.setShadowSplitNum(4);
+        dirLight.proShadow(true);
         rootNode.addChildren(dirLight);
 
         // 创建一个控制器
