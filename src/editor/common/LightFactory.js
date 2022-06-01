@@ -41,9 +41,11 @@ export default class LightFactory {
    */
   static createSpotLight(options){
     let spotLight = new Try3d.SpotLight(options.scene, {id:'spotLight_' + Utils.nextId()});
-    spotLight.setInnerAngle(Try3d.MoreMath.toRadians(5));
-    spotLight.setOuterAngle(Try3d.MoreMath.toRadians(25));
-    spotLight.setSpotRange(50);
+    spotLight.setPositionXYZ(-3.5459878, 16.842323, 0.31434864);
+    spotLight.setDirectionXYZ(0.5, -1, 0);
+    spotLight.setInnerAngle(Try3d.MoreMath.toRadians(10));
+    spotLight.setOuterAngle(Try3d.MoreMath.toRadians(35));
+    spotLight.setSpotRange(500);
     spotLight.setColorRGBA(1, 1, 1, 1.0);
     spotLight.proShadow(true);
     return spotLight;

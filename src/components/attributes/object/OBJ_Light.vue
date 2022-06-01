@@ -8,6 +8,7 @@
   import AttrItem from '../AttrItem'
   import Utils from '../../../editor/utils/Utils'
   import ColorMath from '../../../editor/utils/ColorMath'
+  import Try3d from 'try3d/src/Try3d'
 
   export default {
     name: 'OBJ_Light',
