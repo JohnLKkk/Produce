@@ -5,6 +5,9 @@ export default class Material {
   static S_COLOR_MAT = Try3d.MaterialDef.parse(Try3d.Internal.S_COLOR_DEF_DATA);
   static S_BASIC_LIGHTING_MAT = Try3d.MaterialDef.parse(Try3d.Internal.S_BASIC_LIGHTING_DEF_DATA);
   static _S_WHITE_COLOR_MAT_INS = null;
+  static _S_RED_COLOR_MAT_INS = null;
+  static _S_GREEN_COLOR_MAT_INS = null;
+  static _S_BLUE_COLOR_MAT_INS = null;
   static _S_BASIC_LIGHTING_MAT_INS = null;
   constructor (props) {
   }
@@ -18,8 +21,51 @@ export default class Material {
   static getWhiteColorMatIns(scene, make){
     if(!Material._S_WHITE_COLOR_MAT_INS){
       Material._S_WHITE_COLOR_MAT_INS = new Try3d.Material(scene, {id:"white_color", materialDef:Material.S_COLOR_MAT});
+      Material._S_WHITE_COLOR_MAT_INS.setParam("color", new Try3d.Vec4Vars().valueFromXYZW(1, 1, 1, 1.0));
     }
     return Material._S_WHITE_COLOR_MAT_INS;
+  }
+
+  /**
+   * 返回RedColorMatIns。<br/>
+   * @param scene
+   * @param {Boolean}[make 是否创建新的]
+   * @returns {null}
+   */
+  static getRedColorMatIns(scene, make){
+    if(!Material._S_RED_COLOR_MAT_INS){
+      Material._S_RED_COLOR_MAT_INS = new Try3d.Material(scene, {id:"red_color", materialDef:Material.S_COLOR_MAT});
+      Material._S_RED_COLOR_MAT_INS.setParam("color", new Try3d.Vec4Vars().valueFromXYZW(1, 0, 0, 1.0));
+    }
+    return Material._S_RED_COLOR_MAT_INS;
+  }
+
+  /**
+   * 返回GreenColorMatIns。<br/>
+   * @param scene
+   * @param {Boolean}[make 是否创建新的]
+   * @returns {null}
+   */
+  static getGreenColorMatIns(scene, make){
+    if(!Material._S_GREEN_COLOR_MAT_INS){
+      Material._S_GREEN_COLOR_MAT_INS = new Try3d.Material(scene, {id:"green_color", materialDef:Material.S_COLOR_MAT});
+      Material._S_GREEN_COLOR_MAT_INS.setParam("color", new Try3d.Vec4Vars().valueFromXYZW(0, 1, 0, 1.0));
+    }
+    return Material._S_GREEN_COLOR_MAT_INS;
+  }
+
+  /**
+   * 返回BlueColorMatIns。<br/>
+   * @param scene
+   * @param {Boolean}[make 是否创建新的]
+   * @returns {null}
+   */
+  static getBlueColorMatIns(scene, make){
+    if(!Material._S_BLUE_COLOR_MAT_INS){
+      Material._S_BLUE_COLOR_MAT_INS = new Try3d.Material(scene, {id:"blue_color", materialDef:Material.S_COLOR_MAT});
+      Material._S_BLUE_COLOR_MAT_INS.setParam("color", new Try3d.Vec4Vars().valueFromXYZW(0, 0, 1, 1.0));
+    }
+    return Material._S_BLUE_COLOR_MAT_INS;
   }
 
   /**

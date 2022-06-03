@@ -2,9 +2,34 @@ import {EditorContext} from '../EditorContext'
 import Material from './Material'
 import Try3d from 'try3d/src/Try3d'
 import Utils from '../utils/Utils'
+import Arrow from '../Arrow'
 
 export default class ShapeFactory {
   constructor (props) {
+  }
+  static createArrow(options){
+    let scene = options.scene || EditorContext.getScene(0);
+    let arrow = new Arrow(scene, {id:options.id || 'arrow_' + Utils.nextId(), extent:options.extent});
+    let mat = null;
+    if(options.matStrId){
+      switch (options.matStrId) {
+        case 'x':
+          mat = Material.getRedColorMatIns(scene, false);
+          break;
+        case 'y':
+          mat = Material.getGreenColorMatIns(scene, false);
+          break;
+        case 'z':
+          mat = Material.getBlueColorMatIns(scene, false);
+          break;
+        case 'light':
+        default:
+          mat = Material.getWhiteColorMatIns(scene, false);
+          break;
+      }
+    }
+    arrow.setMaterial(mat);
+    return arrow;
   }
 
   /**

@@ -11,6 +11,7 @@
   import Try3d from "try3d/src/Try3d";
   import {EditorContext} from '../editor/EditorContext'
   import Material from '../editor/common/Material'
+  import ShapeFactory from '../editor/common/ShapeFactory'
 
   export default {
     name: 'Viewer',
@@ -34,7 +35,8 @@
         let rootNode = new Try3d.Node(scene, {id:'rootNode'});
         scene.addSceneNode(rootNode);
 
-        // 基本部件
+        // helper部件
+        let helperNode = new Try3d.Node(scene, {id:EditorContext.S_HELPER_NODE});
         // 轴网
         let colorDef = Try3d.MaterialDef.parse(Try3d.Internal.S_COLOR_DEF_DATA);
         let grid = new Try3d.Grid(scene, {id:EditorContext.S_HELPER_GRID, width:1000, height:1000, widthSegments:250, heightSegments:250});
@@ -43,7 +45,13 @@
         grid.setMaterial(defaultColor);
         grid.castShadow(false);
         grid.receiveShadow(false);
-        rootNode.addChildren(grid);
+        helperNode.addChildren(grid);
+        rootNode.addChildren(helperNode);
+        // arrow
+        let xArrow = ShapeFactory.createArrow({scene, id:'xArrow', extent:new Try3d.Vector3(1, 0, 0), matStrId:"x"});
+        xArrow.castShadow(false);
+        xArrow.receiveShadow(false);
+        helperNode.addChildren(xArrow);
 
         // 创建一个box
         let box1Mat = Material.getBasicLightingMatIns(scene, true);
@@ -66,7 +74,7 @@
 
         // 创建一个控制器
         let sceneControl = new Try3d.SceneBrowsingController(scene, {id:'control'});
-        sceneControl.lookScene(grid);
+        sceneControl.lookScene(helperNode);
         sceneControl.setTargetDistance(3);
         sceneControl.setMaxDistance(100);
         sceneControl.setMinDistance(1);

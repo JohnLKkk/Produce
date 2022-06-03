@@ -2,7 +2,11 @@ import Events from 'try3d/src/Core/Util/Events'
 
 export class EditorContext {
   // 默认辅助几何,不会出现在大纲编辑器列表中
+  static S_HELPER_NODE = '_helper_node';
   static S_HELPER_GRID = '_helper_grid';
+  static S_HELPER_X_AXIS = '_helper_x_axis';
+  static S_HELPER_Y_AXIS = '_helper_y_axis';
+  static S_HELPER_Z_AXIS = '_helper_z_axis';
 
   // EVENTS
   static S_EVENT_SCENE_LOAD_END = "S_EVENT_SCENE_LOAD_END";

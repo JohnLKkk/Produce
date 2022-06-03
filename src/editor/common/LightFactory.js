@@ -4,6 +4,21 @@ import Utils from '../utils/Utils'
 export default class LightFactory {
   constructor (props) {
   }
+  static makeLabel(options){
+    let light = options.light;
+    if(light){
+      // 根据光源类型添加label
+      switch (light.getType()) {
+        case 'DirectionalLight':
+          // 添加方向标记
+          break;
+        case 'PointLight':
+          break;
+        case 'SpotLight':
+          break;
+      }
+    }
+  }
 
   /**
    * 创建一个DirectionalLight。<br/>
