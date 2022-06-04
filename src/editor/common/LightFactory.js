@@ -1,5 +1,6 @@
 import Try3d from 'try3d/src/Try3d'
 import Utils from '../utils/Utils'
+import GlobalConfig from "../GlobalConfig";
 
 export default class LightFactory {
   constructor (props) {
@@ -30,6 +31,7 @@ export default class LightFactory {
     let directionalLight = new Try3d.DirectionalLight(options.scene, {id:'directionalLight_' + Utils.nextId()});
     directionalLight.setDirectionXYZ(-1, -1, -1);
     directionalLight.setColorRGBA(1, 1, 1, 1);
+    directionalLight.setShadowMapSize(GlobalConfig.S_DEFAULT_SHADOW_MAP_SIZE);
     directionalLight.proShadow(true);
     return directionalLight;
   }
@@ -45,6 +47,7 @@ export default class LightFactory {
     pointLight.setRadius(10);
     pointLight.setPositionXYZ(-5, 5, 0);
     pointLight.setColorRGBA(1, 1, 1, 1.0);
+    pointLight.setShadowMapSize(GlobalConfig.S_DEFAULT_SHADOW_MAP_SIZE);
     pointLight.proShadow(true);
     return pointLight;
   }
@@ -62,6 +65,7 @@ export default class LightFactory {
     spotLight.setOuterAngle(Try3d.MoreMath.toRadians(35));
     spotLight.setSpotRange(500);
     spotLight.setColorRGBA(1, 1, 1, 1.0);
+    spotLight.setShadowMapSize(GlobalConfig.S_DEFAULT_SHADOW_MAP_SIZE);
     spotLight.proShadow(true);
     return spotLight;
   }

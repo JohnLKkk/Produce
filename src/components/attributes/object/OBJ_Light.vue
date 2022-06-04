@@ -31,7 +31,7 @@
               type:'',
               content:ColorMath.rgb_to_hex(lightColor._m_X, lightColor._m_Y, lightColor._m_Z),
               set:(v)=>{
-                this.obj.setColorRGBA(v.r, v.g, v.b, 1.0);
+                this.obj.setColorRGBA(Number(v.r), Number(v.g), Number(v.b), 1.0);
               }
             }
           });
@@ -50,7 +50,7 @@
                       z:this.obj.getDirection()._m_Z
                     },
                     set:(v)=>{
-                      this.obj.setDirectionXYZ(v.x, v.y, v.z);
+                      this.obj.setDirectionXYZ(Number(v.x), Number(v.y), Number(v.z));
                     }
                   }
                 ]
@@ -69,7 +69,7 @@
                       z:this.obj.getPosition()._m_Z
                     },
                     set:(v)=>{
-                      this.obj.setPositionXYZ(v.x, v.y, v.z);
+                      this.obj.setPositionXYZ(Number(v.x), Number(v.y), Number(v.z));
                     }
                   }
                 ]
@@ -83,7 +83,7 @@
                     {
                       content:{r:this.obj.getRadius()},
                       set:(v)=>{
-                        this.obj.setRadius(v.r);
+                        this.obj.setRadius(Number(v.r));
                       }
                     }
                   ]
@@ -103,7 +103,7 @@
                       z:this.obj.getPosition()._m_Z
                     },
                     set:(v)=>{
-                      this.obj.setPositionXYZ(v.x, v.y, v.z);
+                      this.obj.setPositionXYZ(Number(v.x), Number(v.y), Number(v.z));
                     }
                   }
                 ]
@@ -120,7 +120,7 @@
                       z:this.obj.getDirection()._m_Z
                     },
                     set:(v)=>{
-                      this.obj.setDirectionXYZ(v.x, v.y, v.z);
+                      this.obj.setDirectionXYZ(Number(v.x), Number(v.y), Number(v.z));
                     }
                   }
                 ]
@@ -216,7 +216,7 @@
                           biasFactor:this.obj.getShadow().getBiasFactor()
                         },
                         set:(v)=>{
-                          this.obj.getShadow().setBias(v.biasFactor, this.obj.getShadow().getBiasUnits());
+                          this.obj.getShadow().setBias(Number(v.biasFactor), Number(this.obj.getShadow().getBiasUnits()));
                         }
                       },
                       {
@@ -225,7 +225,7 @@
                           biasUnits:this.obj.getShadow().getBiasUnits()
                         },
                         set:(v)=>{
-                          this.obj.getShadow().setBias(v.getShadow().getBiasFactor(), v.biasUnits);
+                          this.obj.getShadow().setBias(Number(v.getShadow().getBiasFactor()), Number(v.biasUnits));
                         }
                       },
                       {
@@ -279,7 +279,7 @@
                           biasFactor:this.obj.getShadow().getBiasFactor()
                         },
                         set:(v)=>{
-                          this.obj.getShadow().setBias(v.biasFactor, this.obj.getShadow().getBiasUnits());
+                          this.obj.getShadow().setBias(Number(v.biasFactor), Number(this.obj.getShadow().getBiasUnits()));
                         }
                       },
                       {
@@ -288,7 +288,7 @@
                           biasUnits:this.obj.getShadow().getBiasUnits()
                         },
                         set:(v)=>{
-                          this.obj.getShadow().setBias(v.getShadow().getBiasFactor(), v.biasUnits);
+                          this.obj.getShadow().setBias(Number(v.getShadow().getBiasFactor()), Number(v.biasUnits));
                         }
                       },
                       {
@@ -342,7 +342,7 @@
                           biasFactor:this.obj.getShadow().getBiasFactor()
                         },
                         set:(v)=>{
-                          this.obj.getShadow().setBias(v.biasFactor, this.obj.getShadow().getBiasUnits());
+                          this.obj.getShadow().setBias(Number(v.biasFactor), Number(this.obj.getShadow().getBiasUnits()));
                         }
                       },
                       {
@@ -351,7 +351,7 @@
                           biasUnits:this.obj.getShadow().getBiasUnits()
                         },
                         set:(v)=>{
-                          this.obj.getShadow().setBias(v.getShadow().getBiasFactor(), v.biasUnits);
+                          this.obj.getShadow().setBias(Number(v.getShadow().getBiasFactor()), Number(v.biasUnits));
                         }
                       },
                       {
