@@ -243,6 +243,17 @@
                 if(v.node instanceof Light){
                   v.node.disable();
                 }
+                let trData = (nodes)=>{
+                  if(nodes){
+                    nodes.forEach(c=>{
+                      if(c instanceof Light){
+                        c.disable();
+                      }
+                      trData(c.getChildren());
+                    });
+                  }
+                };
+                trData(v.node.getChildren());
                 },
               undo: (v)=>{
                 v.parentNode.addChildren(v.node);this.data = this.leadingPrinciplesEditor.getData();
@@ -255,6 +266,23 @@
                   else
                     v.node.enable();
                 }
+                let trData = (nodes)=>{
+                  if(nodes){
+                    nodes.forEach(c=>{
+                      if(c instanceof Light){
+                        if(c._edit != undefined){
+                          if(c._edit){
+                            c.enable();
+                          }
+                        }
+                        else
+                          c.enable();
+                      }
+                      trData(c.getChildren());
+                    });
+                  }
+                };
+                trData(v.node.getChildren());
               },
               redoData: {parentNode, node:n},
               undoData: {parentNode, node:n}

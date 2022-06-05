@@ -50,6 +50,7 @@
                       z:this.obj.getDirection()._m_Z
                     },
                     set:(v)=>{
+                      console.log('v:',v);
                       this.obj.setDirectionXYZ(Number(v.x), Number(v.y), Number(v.z));
                     }
                   }

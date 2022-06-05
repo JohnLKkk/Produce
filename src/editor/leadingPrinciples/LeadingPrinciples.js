@@ -47,13 +47,15 @@ export default class LeadingPrinciples {
         parent.push(newNode);
       }
 
-      // 查找所有子节点
-      node.getChildren().forEach(c=>{
-        // 跳过这个节点
-        if(c.getName() != EditorContext.S_HELPER_NODE){
-          this._getSceneData(newNode.children, c);
-        }
-      });
+      if(!(node instanceof Try3d.Light)){
+        // 查找所有子节点
+        node.getChildren().forEach(c=>{
+          // 跳过这个节点
+          if(c.getName() != EditorContext.S_HELPER_NODE){
+            this._getSceneData(newNode.children, c);
+          }
+        });
+      }
     }
   }
 

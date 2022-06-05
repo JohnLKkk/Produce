@@ -47,11 +47,7 @@
         grid.receiveShadow(false);
         helperNode.addChildren(grid);
         rootNode.addChildren(helperNode);
-        // arrow
-        let xArrow = ShapeFactory.createArrow({scene, id:'xArrow', extent:new Try3d.Vector3(1, 0, 0), matStrId:"x"});
-        xArrow.castShadow(false);
-        xArrow.receiveShadow(false);
-        helperNode.addChildren(xArrow);
+
 
         // 创建一个box
         let box1Mat = Material.getBasicLightingMatIns(scene, true);
@@ -71,6 +67,11 @@
         dirLight.setShadowSplitNum(4);
         dirLight.proShadow(true);
         rootNode.addChildren(dirLight);
+        // lightDirArrow
+        let lightDirArrow = ShapeFactory.createArrow({scene, id:'xArrow', extent:new Try3d.Vector3(0, 0, 1), matStrId:"light"});
+        lightDirArrow.castShadow(false);
+        lightDirArrow.receiveShadow(false);
+        dirLight.addChildren(lightDirArrow);
 
         // 创建一个控制器
         let sceneControl = new Try3d.SceneBrowsingController(scene, {id:'control'});
