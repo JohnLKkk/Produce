@@ -12,6 +12,7 @@
   import {EditorContext} from '../editor/EditorContext'
   import Material from '../editor/common/Material'
   import ShapeFactory from '../editor/common/ShapeFactory'
+  import LightFactory from '../editor/common/LightFactory'
 
   export default {
     name: 'Viewer',
@@ -53,6 +54,16 @@
         xArrow.receiveShadow(false);
         helperNode.addChildren(xArrow);
 
+        let yArrow = ShapeFactory.createArrow({scene, id:'yArrow', extent:new Try3d.Vector3(0, 1, 0), matStrId:"y"});
+        yArrow.castShadow(false);
+        yArrow.receiveShadow(false);
+        helperNode.addChildren(yArrow);
+
+        let zArrow = ShapeFactory.createArrow({scene, id:'zArrow', extent:new Try3d.Vector3(0, 0, 1), matStrId:"z"});
+        zArrow.castShadow(false);
+        zArrow.receiveShadow(false);
+        helperNode.addChildren(zArrow);
+
         // 创建一个box
         let box1Mat = Material.getBasicLightingMatIns(scene, true);
         let box = new Try3d.Box(scene, {id:'box_' + 0 + '_' + 0, xHalf:0.2, yHalf:0.2, zHalf:0.2});
@@ -64,13 +75,7 @@
         rootNode.addChildren(box);
 
         // 创建一个directionalLight
-        let dirLight = new Try3d.DirectionalLight(scene, {id:'dirLight'});
-        dirLight.setDirectionXYZ(1, -1, 1);
-        dirLight.setColorRGBA(1.0, 1.0, 1.0, 1.0);
-        dirLight.setShadowMapSize(1024);
-        dirLight.setShadowSplitNum(4);
-        dirLight.proShadow(true);
-        rootNode.addChildren(dirLight);
+        rootNode.addChildren(LightFactory.createDirectionalLight({scene}));
 
         // 创建一个控制器
         let sceneControl = new Try3d.SceneBrowsingController(scene, {id:'control'});
@@ -79,6 +84,7 @@
         sceneControl.setMaxDistance(100);
         sceneControl.setMinDistance(1);
         sceneControl.setZoomSpeed(10);
+        sceneControl.setTargetAngle(Try3d.MoreMath.toRadians(45));
         sceneControl.setMinVerticalRotation(0.1);
 
         // 创建渲染器

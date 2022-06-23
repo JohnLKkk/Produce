@@ -26,7 +26,16 @@ export default class Arrow extends Try3d.Geometry{
     this._m_TempVec = new Try3d.Vector3();
 
     let len = cfg.extent.length();
-    this.lookAt(this._m_TempQuat, cfg.extent, Try3d.Vector3.S_UNIT_AXIS_Y);
+    let up = Try3d.Vector3.S_UNIT_AXIS_Y;
+    let dot = cfg.extent.dot(up);
+    // 说明几乎朝向平行
+    if(dot >= 0.9){
+      up = Try3d.Vector3.S_UNIT_AXIS_NEGATIVE_Z;
+    }
+    else if(dot <= -0.9){
+      up = Try3d.Vector3.S_UNIT_AXIS_Z;
+    }
+    this.lookAt(this._m_TempQuat, cfg.extent, up);
     let mesh = new Try3d.Mesh();
     const positions = [];
     const indices = [0, 1,

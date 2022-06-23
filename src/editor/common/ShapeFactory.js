@@ -31,6 +31,17 @@ export default class ShapeFactory {
     arrow.setMaterial(mat);
     return arrow;
   }
+  static createRound(options){
+    let radiusMesh = Try3d.MeshFactor.createRoundMesh(3, options.dashed);
+    let radius = new Try3d.Geometry(options.scene, {id:'radius_' + Utils.nextId()});
+    radius.receiveShadow(false);
+    radius.castShadow(false);
+    radius.setMesh(radiusMesh);
+    radius.setMaterial(new Try3d.Material(options.scene, {id:'radiusMat_' + Utils.nextId(), materialDef:Material.S_COLOR_MAT}));
+    radius.updateBound();
+    radius.setLocalRotationFromEuler(Try3d.MoreMath.toRadians(90), 0, 0);
+    return radius;
+  }
 
   /**
    * 创建Box。<br/>

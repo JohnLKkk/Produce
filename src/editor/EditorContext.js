@@ -8,6 +8,9 @@ export class EditorContext {
   static S_HELPER_Y_AXIS = '_helper_y_axis';
   static S_HELPER_Z_AXIS = '_helper_z_axis';
 
+  // 一些全局配置信息
+  static S_LIGHT_BULB_SIZE = 0.3;
+
   // EVENTS
   static S_EVENT_SCENE_LOAD_END = "S_EVENT_SCENE_LOAD_END";
 
