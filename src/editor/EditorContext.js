@@ -1,6 +1,11 @@
 import Events from 'try3d/src/Core/Util/Events'
+import ObjControl from './utils/ObjControl'
 
 export class EditorContext {
+  // 场景根节点
+  static S_ROOT_NODE = '_root_Node';
+  // 世界根节点
+  static S_WORLD_ROOT_NODE = '_world_root_node';
   // 默认辅助几何,不会出现在大纲编辑器列表中
   static S_HELPER_NODE = '_helper_node';
   static S_HELPER_GRID = '_helper_grid';
@@ -79,6 +84,13 @@ export class EditorContext {
 
   setRenderer(renderer){
     this.m_Renderer = renderer;
+  }
+
+  /**
+   * 初始化编辑器。<br/>
+   */
+  initEditor(){
+    let objControl = new ObjControl(EditorContext.getScene(0), {id:'OBJ_CONTROL'});
   }
 
   getRenderer(){return this.m_Renderer;}

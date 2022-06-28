@@ -20,6 +20,7 @@ class LightBulbHelper {
     lightBulb.castShadow(false);
     lightBulb.setLocalRotationFromEuler(Try3d.MoreMath.toRadians(90), 0, 0);
     lightBulb.setLocalScaleXYZ(0.1, 0.1, 0.1);
+    lightBulb.setIsPickable(false);
     return lightBulb;
   }
   static makeDirectionalLightLabel(options){

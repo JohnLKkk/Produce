@@ -13,11 +13,14 @@
   import Material from '../editor/common/Material'
   import ShapeFactory from '../editor/common/ShapeFactory'
   import LightFactory from '../editor/common/LightFactory'
+  import Viewer from '../editor/viewer/Viewer'
+  import LeadingPrinciples from '../editor/leadingPrinciples/LeadingPrinciples'
 
   export default {
     name: 'Viewer',
     data(){
       return {
+        viewerEditor:null,
         renderer:{
           _scene:null,
           _engine:null,
@@ -26,15 +29,19 @@
     },
     methods:{
       init(){
+        this.viewerEditor = new Viewer();
         // 创建场景对象(渲染器至少包含一个scene,否则,将什么事情都不做)
         let canvas = document.getElementById('canvas_viewer');
         let scene = new Try3d.Scene({cavnas:document.getElementById('canvas_viewer')});
         scene.getRender().setGammaFactor(1.0);
         scene.getCanvas().setClearColor(0.18, 0.18, 0.18, 0.53);
+        this.setupPick(scene);
 
         // 定义一个根节点
-        let rootNode = new Try3d.Node(scene, {id:'rootNode'});
-        scene.addSceneNode(rootNode);
+        let rootNode = new Try3d.Node(scene, {id:EditorContext.S_ROOT_NODE});
+        let worldRootNode = new Try3d.Node(scene, {id:EditorContext.S_WORLD_ROOT_NODE});
+        worldRootNode.addChildren(rootNode);
+        scene.addSceneNode(worldRootNode);
 
         // helper部件
         let helperNode = new Try3d.Node(scene, {id:EditorContext.S_HELPER_NODE});
@@ -47,22 +54,8 @@
         grid.castShadow(false);
         grid.receiveShadow(false);
         helperNode.addChildren(grid);
-        rootNode.addChildren(helperNode);
-        // arrow
-        let xArrow = ShapeFactory.createArrow({scene, id:'xArrow', extent:new Try3d.Vector3(1, 0, 0), matStrId:"x"});
-        xArrow.castShadow(false);
-        xArrow.receiveShadow(false);
-        helperNode.addChildren(xArrow);
+        worldRootNode.addChildren(helperNode);
 
-        let yArrow = ShapeFactory.createArrow({scene, id:'yArrow', extent:new Try3d.Vector3(0, 1, 0), matStrId:"y"});
-        yArrow.castShadow(false);
-        yArrow.receiveShadow(false);
-        helperNode.addChildren(yArrow);
-
-        let zArrow = ShapeFactory.createArrow({scene, id:'zArrow', extent:new Try3d.Vector3(0, 0, 1), matStrId:"z"});
-        zArrow.castShadow(false);
-        zArrow.receiveShadow(false);
-        helperNode.addChildren(zArrow);
 
         // 创建一个box
         let box1Mat = Material.getBasicLightingMatIns(scene, true);
@@ -105,13 +98,48 @@
           scene.getCanvas().resize(element.clientWidth, element.clientHeight);
         });
 
+
         // 全局上下文
         EditorContext.getInstance().setRenderer(this.renderer);
+        // 一些创建初始化工作...
+        EditorContext.getInstance().initEditor();
         EditorContext.getInstance().notifyEvent(EditorContext.S_EVENT_SCENE_LOAD_END);
+      },
+      setupPick(scene){
+        let mainCamera = scene.getComponent('mainCamera');
+        let PICKABLE = new Try3d.Pickable(scene, {id:'PICKABLE'});
+        mainCamera.addFilter(PICKABLE, 0);
+        let SELECTED = new Try3d.SelectedFilter(scene, {id:'SELECTED'});
+        mainCamera.addFilter(SELECTED, 0);
+        SELECTED.getMaterial().setParam('outlineColor', new Try3d.Vec4Vars().valueFromXYZW(0, 0, 1, 1));
+        mainCamera.lookAt(new Try3d.Vector3(2.950315, 1.5485021, -0.06550171), new Try3d.Vector3(-3.8440266, -1.997144, 0.06595602), new Try3d.Vector3(-0.44864178, 0.8937116, 2.2803247E-4));
+
+
+        let input = Try3d.Input.getInput(scene, {id:scene.getId()});
+        EditorContext.getInstance().registerEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, (result)=>{
+          SELECTED.clearOutlineDrawables();
+          if(!(result instanceof Try3d.Light)){
+            SELECTED.pushOutlineDrawable(result);
+          }
+        });
+        PICKABLE.on(Try3d.Pickable.S_EVENT_PICK_LISTENER, (id, result)=>{
+          SELECTED.clearOutlineDrawables();
+          SELECTED.pushOutlineDrawable(result);
+          EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [result]);
+        });
+        input.on('mousedown', (buttonId)=>{
+          if(buttonId == Try3d.Input.S_MOUSE_BUTTON2_DOWN){
+            let uv = input.getMouseCoords();
+            PICKABLE.pick(uv[0], uv[1]);
+          }
+          // 以便用于清空回调
+          // EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [null]);
+        });
       }
     },
     mounted() {
       this.init();
+      // this.setupPick();
     }
   }
 </script>
