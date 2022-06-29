@@ -12,6 +12,7 @@ export class EditorContext {
   static S_HELPER_X_AXIS = '_helper_x_axis';
   static S_HELPER_Y_AXIS = '_helper_y_axis';
   static S_HELPER_Z_AXIS = '_helper_z_axis';
+  static S_PICKABLE = 'S_PICKABLE';
 
   // 一些全局配置信息
   static S_LIGHT_BULB_SIZE = 0.3;

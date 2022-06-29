@@ -15,6 +15,7 @@
   import LightFactory from '../editor/common/LightFactory'
   import Viewer from '../editor/viewer/Viewer'
   import LeadingPrinciples from '../editor/leadingPrinciples/LeadingPrinciples'
+  import ObjControl from '../editor/utils/ObjControl'
 
   export default {
     name: 'Viewer',
@@ -107,7 +108,7 @@
       },
       setupPick(scene){
         let mainCamera = scene.getComponent('mainCamera');
-        let PICKABLE = new Try3d.Pickable(scene, {id:'PICKABLE'});
+        let PICKABLE = new Try3d.Pickable(scene, {id:EditorContext.S_PICKABLE});
         mainCamera.addFilter(PICKABLE, 0);
         let SELECTED = new Try3d.SelectedFilter(scene, {id:'SELECTED'});
         mainCamera.addFilter(SELECTED, 0);
@@ -123,6 +124,7 @@
           }
         });
         PICKABLE.on(Try3d.Pickable.S_EVENT_PICK_LISTENER, (id, result)=>{
+          if(ObjControl.S_GIZMO_MAP.indexOf(result.getName()) > -1)return;
           SELECTED.clearOutlineDrawables();
           SELECTED.pushOutlineDrawable(result);
           EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [result]);
