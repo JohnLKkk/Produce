@@ -57,6 +57,7 @@ export default class ObjControl extends Try3d.Component{
     this._m_P1 = new Try3d.Vector3();
     this._m_P2 = new Try3d.Vector3();
     this._m_P3 = new Try3d.Vector3();
+    this._m_WorldAxis = new Try3d.Vector3();
     this._m_ActionMode = ObjControl.S_ACTION_MODE_TRANSLATE;
     this._createGizmo();
     this._m_LastObj = null;
@@ -240,6 +241,9 @@ export default class ObjControl extends Try3d.Component{
     }
   }
   _dragTranslate(baseAxis, fromMouse, toMouse){
+    let rotate = this._m_LastObj.getWorldRotation();
+    rotate.multVec3(baseAxis, this._m_WorldAxis);
+    baseAxis = this._m_WorldAxis;
     // 获取当前baseAxis所在平面的法线
     const planeNormal = this._getPlaneNormal(baseAxis);
     // 获取平面坐标下转换到baseAxis所在平面的交点
