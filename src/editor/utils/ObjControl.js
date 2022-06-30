@@ -52,6 +52,11 @@ export default class ObjControl extends Try3d.Component{
     this._m_ScaleAction = null;
     this._m_GizmoMap = {};
     this._m_GizmoDrawables = [];
+    this._m_Forward = new Try3d.Vector3();
+    this._m_PlaneNormal = new Try3d.Vector3();
+    this._m_P1 = new Try3d.Vector3();
+    this._m_P2 = new Try3d.Vector3();
+    this._m_P3 = new Try3d.Vector3();
     this._m_ActionMode = ObjControl.S_ACTION_MODE_TRANSLATE;
     this._createGizmo();
     this._m_LastObj = null;
@@ -72,18 +77,91 @@ export default class ObjControl extends Try3d.Component{
     // hit
     let PICKABLE = this._m_Scene.getComponent(EditorContext.S_PICKABLE);
     let input = Try3d.Input.getInput(this._m_Scene, {id:this._m_Scene.getId()});
+    let lastHit = null;
+    let action = null;
+    let grabbed = false;
+    let lastCanvasPos = [0, 0];
+    this._m_XBaseAxis = new Try3d.Vector3(1, 0, 0);
+    this._m_YBaseAxis = new Try3d.Vector3(0, 1, 0);
+    this._m_ZBaseAxis = new Try3d.Vector3(0, 0, 1);
     input.on('mousemove', (uv)=>{
-      // 实时pick
-      // 以便进行高亮显示
-      let result = PICKABLE.immediatelyPick(uv[0], uv[1], this._m_GizmoDrawables);
-      if(result){
+      if(grabbed){
+        // 根据action进行操作
+        let baseAxis = this._getBaseAxis(lastHit.getName());
+        if(baseAxis){
+          this._handlerAction(baseAxis, lastCanvasPos, uv);
+        }
       }
+      else{
+        // 实时pick
+        // 以便进行高亮显示
+        let result = PICKABLE.immediatelyPick(uv[0], uv[1], this._m_GizmoDrawables);
+        if(result){
+          lastHit = result.pickResult;
+          lastHit.getMaterial().setParam('highlightColor', new Try3d.Vec4Vars().valueFromXYZW(1.0,215/255.0,0));
+        }
+        else if(lastHit){
+          lastHit.getMaterial().clearParam('highlightColor');
+        }
+      }
+      lastCanvasPos[0] = uv[0];
+      lastCanvasPos[1] = uv[1];
     });
     input.on('mousedown', (buttonId)=>{
       if(buttonId == Try3d.Input.S_MOUSE_BUTTON0_DOWN){
-        let uv = input.getMouseCoords();
+        grabbed = lastHit ? true : false;
       }
     });
+    input.on('mouseup', (buttonId)=>{
+      if(buttonId == Try3d.Input.S_MOUSE_BUTTON0_UP){
+        grabbed = false;
+        if(lastHit){
+          lastHit.getMaterial().clearParam('highlightColor');
+        }
+        lastHit = null;
+      }
+    });
+  }
+
+  /**
+   * 处理action。<br/>
+   * @param {Vector3}[baseAxis]
+   * @param {Number[]}[m0]
+   * @param {Number[]}[m1]
+   * @private
+   */
+  _handlerAction(baseAxis, m0, m1){
+    switch (this._m_ActionMode) {
+      case ObjControl.S_ACTION_MODE_TRANSLATE:
+        let translateOff = this._dragTranslate(baseAxis, m0, m1);
+        this._m_LastObj.setLocalTranslation(this._m_LastObj.getLocalTranslation().add(translateOff));
+        break;
+      case ObjControl.S_ACTION_MODE_ROTATE:
+        break;
+      case ObjControl.S_ACTION_MODE_SCALE:
+        break;
+    }
+  }
+
+  /**
+   * 返回操作轴。<br/>
+   * @param {String}[id]
+   * @return {null|Vector3}
+   * @private
+   */
+  _getBaseAxis(id){
+    switch (id) {
+      case ObjControl.S_AXIS_X:
+      case ObjControl.S_ARROW_HEAD_X:
+        return this._m_XBaseAxis;
+      case ObjControl.S_AXIS_Y:
+      case ObjControl.S_ARROW_HEAD_Y:
+        return this._m_YBaseAxis;
+      case ObjControl.S_AXIS_Z:
+      case ObjControl.S_ARROW_HEAD_Z:
+        return this._m_ZBaseAxis;
+    }
+    return null;
   }
 
   /**
@@ -91,15 +169,89 @@ export default class ObjControl extends Try3d.Component{
    * @param {Object}[actionMode 只能未ObjControl的枚举]
    */
   setActionMode(actionMode){
+    if(this._m_Gizmo.getChildren().length){
+      this._m_Gizmo.removeChildren(this._m_Gizmo.getChildrenAtIndex(0));
+    }
     switch (actionMode) {
       case ObjControl.S_ACTION_MODE_TRANSLATE:
+        this._m_Gizmo.addChildren(this._m_TranslateAction);
         break;
       case ObjControl.S_ACTION_MODE_ROTATE:
+        this._m_Gizmo.addChildren(this._m_RotateAction);
         break;
       case ObjControl.S_ACTION_MODE_SCALE:
+        this._m_Gizmo.addChildren(this._m_ScaleAction);
         break;
     }
     this._m_ActionMode = actionMode;
+  }
+
+  /**
+   * 计算平面法线。<br/>
+   * @param {Vector3}[worldAxis]
+   * @return {Vector3}
+   * @private
+   */
+  _getPlaneNormal(worldAxis){
+    const absX = Math.abs(worldAxis._m_X);
+    // 计算平面forward分量
+    // 当x分量大于y,z时,使用标准Up
+    if(absX > Math.abs(worldAxis._m_Y) && absX > Math.abs(worldAxis._m_Z)){
+      worldAxis.cross(Try3d.Vector3.S_UNIT_AXIS_Y, this._m_Forward);
+    }
+    else{
+      // 使用标准Right避免与Up平行
+      worldAxis.cross(Try3d.Vector3.S_UNIT_AXIS_X, this._m_Forward);
+    }
+    this._m_Forward.normal();
+    // 计算平面up分量,也就是平面法线
+    this._m_Forward.cross(worldAxis, this._m_PlaneNormal);
+    this._m_PlaneNormal.normal();
+    return this._m_PlaneNormal;
+  }
+
+  /**
+   * 计算屏幕点在指定平面上的交点。<br/>
+   * @param {Number[]}[screenUV]
+   * @param {Vector3}[axis]
+   * @param {Vector3}[dest]
+   * @param {Number}[offset]
+   * @private
+   */
+  _getPointerPlaneIntersect(screenUV, axis, dest, offset){
+    offset = offset || 0;
+    let currentCamera = this._m_Scene.getMainCamera();
+    // 计算从当前视点到近截面的射线
+    let n = new Try3d.Vector3();
+    currentCamera.getWorldCoordinates(new Try3d.Vector2(screenUV[0], -screenUV[1]), 0, true, n);
+    const dir = new Try3d.Vector3();
+    let eye = currentCamera.getEye();
+    n.sub(eye, dir);
+
+    this._m_P3.setTo(this._m_Gizmo.getWorldTranslation());
+    let d = -this._m_P3.dot(axis) - offset;
+    let dot = axis.dot(dir);
+    // 只要不是垂直与axis,就可以进行拖拽
+    if(Math.abs(dot) > 0.005){
+      let t = -(axis.dot(eye) + d) / dot;
+      dir.multLength(t, dest);
+      dest.add(eye);
+      dest.sub(this._m_P3);
+    }
+  }
+  _dragTranslate(baseAxis, fromMouse, toMouse){
+    // 获取当前baseAxis所在平面的法线
+    const planeNormal = this._getPlaneNormal(baseAxis);
+    // 获取平面坐标下转换到baseAxis所在平面的交点
+    this._getPointerPlaneIntersect(fromMouse, planeNormal, this._m_P1);
+    this._getPointerPlaneIntersect(toMouse, planeNormal, this._m_P2);
+    // 计算拖拽方向
+    this._m_P2.sub(this._m_P1);
+    const dot = this._m_P2.dot(baseAxis);
+    // 计算最终偏移pos
+    this._m_P1.setTo(baseAxis);
+    this._m_P1.multLength(dot);
+    return this._m_P1;
   }
 
   /**
@@ -196,7 +348,7 @@ export default class ObjControl extends Try3d.Component{
     // scaleAction
     this._m_ScaleAction = new Try3d.Node(this._m_Scene, {id:ObjControl.S_SCALE_ACTION});
 
-    this._m_Gizmo.addChildren(this._m_TranslateAction);
+    this.setActionMode(ObjControl.S_ACTION_MODE_TRANSLATE);
     let fixedControl2 = new Try3d.FixedControl(this._m_Gizmo, {id:'GIZMO_FIXED_CONTROL'});
     fixedControl2.setWorldSizeFactor(0.4);
   }

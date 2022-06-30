@@ -6,6 +6,7 @@ export default class Material {
     'Def GizmoDef{\n' +
     '    Params{\n' +
     '        vec4 color;\n' +
+    '        vec4 highlightColor;\n' +
     '    }\n' +
     '    SubTechnology NormPass{\n' +
     '        Vars{\n' +
@@ -22,6 +23,10 @@ export default class Material {
     '                // 使用自定义颜色输出\n' +
     '                #ifdef Params.color\n' +
     '                    Context.OutColor *= Params.color;\n' +
+    '                #endif\n' +
+    '                // 高亮\n' +
+    '                #ifdef Params.highlightColor\n' +
+    '                    Context.OutColor = mix(Context.OutColor, Params.highlightColor, 0.85f);\n' +
     '                #endif\n' +
     '            }\n' +
     '        }\n' +

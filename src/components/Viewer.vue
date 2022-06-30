@@ -80,6 +80,7 @@
         sceneControl.setZoomSpeed(10);
         sceneControl.setTargetAngle(Try3d.MoreMath.toRadians(45));
         sceneControl.setMinVerticalRotation(0.1);
+        sceneControl._m_CanRotate = false;
 
         // 创建渲染器
         let renderEngine = new Try3d.RenderEngine();

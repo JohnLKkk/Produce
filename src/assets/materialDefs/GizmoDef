@@ -2,6 +2,7 @@
 Def GizmoDef{
     Params{
         vec4 color;
+        vec4 highlightColor;
     }
     SubTechnology NormPass{
         Vars{
@@ -18,6 +19,10 @@ Def GizmoDef{
                 // 使用自定义颜色输出
                 #ifdef Params.color
                     Context.OutColor *= Params.color;
+                #endif
+                // 高亮
+                #ifdef Params.highlightColor
+                    Context.OutColor = mix(Context.OutColor, Params.highlightColor, 0.85f);
                 #endif
             }
         }
