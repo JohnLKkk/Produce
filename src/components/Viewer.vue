@@ -138,6 +138,18 @@
           // 以便用于清空回调
           // EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [null]);
         });
+        // input.on('keyup', (keyCode)=>{
+        //   switch (keyCode) {
+        //     case 26:// q
+        //       break;
+        //     case 32:// w
+        //       break;
+        //     case 14:// e
+        //       break;
+        //     case 27:// r
+        //       break;
+        //   }
+        // });
       }
     },
     mounted() {
