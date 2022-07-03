@@ -103,7 +103,7 @@ export default class LeadingPrinciples {
     if(editorContext.getRenderer() && editorContext.getRenderer()._scene){
       // 开始转换
       // 这里暂时只读取一个scene,后续可以增加为多个scene
-      let scene = editorContext.getRenderer()._scene.getSceneNode(0);
+      let scene = editorContext.getRenderer()._scene.getSceneNode(0).getChildrenAtName(EditorContext.S_ROOT_NODE);
       this._getSceneData(data, scene);
     }
     return data;

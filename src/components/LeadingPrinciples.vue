@@ -31,6 +31,7 @@
   import Light from 'try3d/src/Core/Light/Light'
   import ShapeFactory from '../editor/common/ShapeFactory'
   import LightFactory from '../editor/common/LightFactory'
+  import Viewer from '../editor/viewer/Viewer'
   export default {
     name: 'LeadingPrinciples',
     components: {
@@ -132,6 +133,12 @@
           document.body.removeEventListener('click', this.closeMenu);
         }
       });
+
+      // 监听事件
+      EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_EVENT_SELECTED, (selObj)=>{
+        EditorContext.getInstance().notifyEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, [selObj]);
+        this._tempSelect = selObj;
+      });
     },
     methods: {
       // 右键菜单----------------------------------------↓
@@ -146,7 +153,7 @@
 
         // 右键菜单时,先将选中节点设回根节点,以便选中空白时可以弹出有效菜单
         let editorContext = EditorContext.getInstance();
-        let sceneRoot = editorContext.getRenderer()._scene.getSceneNode(0);
+        let sceneRoot = editorContext.getRenderer()._scene.getSceneNode(0).getChildrenAtName(EditorContext.S_ROOT_NODE);
         this._tempSelect = sceneRoot;
         // 将事件转发为鼠标左键点击,以便我们可以获取当前右键选中的object
         e.target.click();
@@ -230,7 +237,7 @@
         // 为了稳妥一点,在这里再进行判断是否删除的根节点
         let editorContext = EditorContext.getInstance();
         if(editorContext.getRenderer() && editorContext.getRenderer()._scene){
-          let sceneRoot = editorContext.getRenderer()._scene.getSceneNode(0);
+          let sceneRoot = editorContext.getRenderer()._scene.getSceneNode(0).getChildrenAtName(EditorContext.S_ROOT_NODE);
           let currentSelectObject = this.getCurrentSelectObject();
           if(currentSelectObject != sceneRoot){
             // 弹出提示框提示是否删除?
@@ -332,7 +339,7 @@
           let editorContext = EditorContext.getInstance();
           if(editorContext.getRenderer() && editorContext.getRenderer()._scene){
             // 这里暂时只读取一个scene,后续可以增加为多个scene
-            this._tempSelect = editorContext.getRenderer()._scene.getSceneNode(0);
+            this._tempSelect = editorContext.getRenderer()._scene.getSceneNode(0).getChildrenAtName(EditorContext.S_ROOT_NODE);
           }
         }
         return this._tempSelect;

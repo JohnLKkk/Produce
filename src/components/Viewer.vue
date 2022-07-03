@@ -12,11 +12,16 @@
   import {EditorContext} from '../editor/EditorContext'
   import Material from '../editor/common/Material'
   import ShapeFactory from '../editor/common/ShapeFactory'
+  import LightFactory from '../editor/common/LightFactory'
+  import Viewer from '../editor/viewer/Viewer'
+  import LeadingPrinciples from '../editor/leadingPrinciples/LeadingPrinciples'
+  import ObjControl from '../editor/utils/ObjControl'
 
   export default {
     name: 'Viewer',
     data(){
       return {
+        viewerEditor:null,
         renderer:{
           _scene:null,
           _engine:null,
@@ -25,15 +30,19 @@
     },
     methods:{
       init(){
+        this.viewerEditor = new Viewer();
         // 创建场景对象(渲染器至少包含一个scene,否则,将什么事情都不做)
         let canvas = document.getElementById('canvas_viewer');
         let scene = new Try3d.Scene({cavnas:document.getElementById('canvas_viewer')});
         scene.getRender().setGammaFactor(1.0);
         scene.getCanvas().setClearColor(0.18, 0.18, 0.18, 0.53);
+        this.setupPick(scene);
 
         // 定义一个根节点
-        let rootNode = new Try3d.Node(scene, {id:'rootNode'});
-        scene.addSceneNode(rootNode);
+        let rootNode = new Try3d.Node(scene, {id:EditorContext.S_ROOT_NODE});
+        let worldRootNode = new Try3d.Node(scene, {id:EditorContext.S_WORLD_ROOT_NODE});
+        worldRootNode.addChildren(rootNode);
+        scene.addSceneNode(worldRootNode);
 
         // helper部件
         let helperNode = new Try3d.Node(scene, {id:EditorContext.S_HELPER_NODE});
@@ -46,7 +55,7 @@
         grid.castShadow(false);
         grid.receiveShadow(false);
         helperNode.addChildren(grid);
-        rootNode.addChildren(helperNode);
+        worldRootNode.addChildren(helperNode);
 
 
         // 创建一个box
@@ -60,18 +69,7 @@
         rootNode.addChildren(box);
 
         // 创建一个directionalLight
-        let dirLight = new Try3d.DirectionalLight(scene, {id:'dirLight'});
-        dirLight.setDirectionXYZ(1, -1, 1);
-        dirLight.setColorRGBA(1.0, 1.0, 1.0, 1.0);
-        dirLight.setShadowMapSize(1024);
-        dirLight.setShadowSplitNum(4);
-        dirLight.proShadow(true);
-        rootNode.addChildren(dirLight);
-        // lightDirArrow
-        let lightDirArrow = ShapeFactory.createArrow({scene, id:'xArrow', extent:new Try3d.Vector3(0, 0, 1), matStrId:"light"});
-        lightDirArrow.castShadow(false);
-        lightDirArrow.receiveShadow(false);
-        dirLight.addChildren(lightDirArrow);
+        rootNode.addChildren(LightFactory.createDirectionalLight({scene}));
 
         // 创建一个控制器
         let sceneControl = new Try3d.SceneBrowsingController(scene, {id:'control'});
@@ -80,7 +78,9 @@
         sceneControl.setMaxDistance(100);
         sceneControl.setMinDistance(1);
         sceneControl.setZoomSpeed(10);
+        sceneControl.setTargetAngle(Try3d.MoreMath.toRadians(45));
         sceneControl.setMinVerticalRotation(0.1);
+        sceneControl._m_CanRotate = false;
 
         // 创建渲染器
         let renderEngine = new Try3d.RenderEngine();
@@ -100,13 +100,61 @@
           scene.getCanvas().resize(element.clientWidth, element.clientHeight);
         });
 
+
         // 全局上下文
         EditorContext.getInstance().setRenderer(this.renderer);
+        // 一些创建初始化工作...
+        EditorContext.getInstance().initEditor();
         EditorContext.getInstance().notifyEvent(EditorContext.S_EVENT_SCENE_LOAD_END);
+      },
+      setupPick(scene){
+        let mainCamera = scene.getComponent('mainCamera');
+        let PICKABLE = new Try3d.Pickable(scene, {id:EditorContext.S_PICKABLE});
+        mainCamera.addFilter(PICKABLE, 0);
+        let SELECTED = new Try3d.SelectedFilter(scene, {id:'SELECTED'});
+        mainCamera.addFilter(SELECTED, 0);
+        SELECTED.getMaterial().setParam('outlineColor', new Try3d.Vec4Vars().valueFromXYZW(0, 0, 1, 1));
+        mainCamera.lookAt(new Try3d.Vector3(2.950315, 1.5485021, -0.06550171), new Try3d.Vector3(-3.8440266, -1.997144, 0.06595602), new Try3d.Vector3(-0.44864178, 0.8937116, 2.2803247E-4));
+
+
+        let input = Try3d.Input.getInput(scene, {id:scene.getId()});
+        EditorContext.getInstance().registerEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, (result)=>{
+          SELECTED.clearOutlineDrawables();
+          if(!(result instanceof Try3d.Light) && result.getBoundingVolume() != null){
+            SELECTED.pushOutlineDrawable(result);
+          }
+        });
+        PICKABLE.on(Try3d.Pickable.S_EVENT_PICK_LISTENER, (id, result)=>{
+          if(ObjControl.S_GIZMO_MAP.indexOf(result.getName()) > -1)return;
+          SELECTED.clearOutlineDrawables();
+          SELECTED.pushOutlineDrawable(result);
+          EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [result]);
+        });
+        input.on('mousedown', (buttonId)=>{
+          if(buttonId == Try3d.Input.S_MOUSE_BUTTON2_DOWN){
+            let uv = input.getMouseCoords();
+            PICKABLE.pick(uv[0], uv[1]);
+          }
+          // 以便用于清空回调
+          // EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [null]);
+        });
+        // input.on('keyup', (keyCode)=>{
+        //   switch (keyCode) {
+        //     case 26:// q
+        //       break;
+        //     case 32:// w
+        //       break;
+        //     case 14:// e
+        //       break;
+        //     case 27:// r
+        //       break;
+        //   }
+        // });
       }
     },
     mounted() {
       this.init();
+      // this.setupPick();
     }
   }
 </script>
