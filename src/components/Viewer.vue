@@ -72,15 +72,15 @@
         rootNode.addChildren(LightFactory.createDirectionalLight({scene}));
 
         // 创建一个控制器
-        let sceneControl = new Try3d.SceneBrowsingController(scene, {id:'control'});
-        sceneControl.lookScene(helperNode);
+        let sceneControl = new Try3d.SceneBrowsingController(scene, {id:EditorContext.S_MAIN_CONTROL});
+        sceneControl.setupFreeMode(3);
         sceneControl.setTargetDistance(3);
-        sceneControl.setMaxDistance(100);
+        sceneControl.setMaxDistance(50);
         sceneControl.setMinDistance(1);
         sceneControl.setZoomSpeed(10);
+        sceneControl.setMoveSpeed(0.2);
+        sceneControl.enableSmoothMotion(false);
         sceneControl.setTargetAngle(Try3d.MoreMath.toRadians(45));
-        sceneControl.setMinVerticalRotation(0.1);
-        sceneControl._m_CanRotate = false;
 
         // 创建渲染器
         let renderEngine = new Try3d.RenderEngine();
@@ -138,18 +138,6 @@
           // 以便用于清空回调
           // EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [null]);
         });
-        // input.on('keyup', (keyCode)=>{
-        //   switch (keyCode) {
-        //     case 26:// q
-        //       break;
-        //     case 32:// w
-        //       break;
-        //     case 14:// e
-        //       break;
-        //     case 27:// r
-        //       break;
-        //   }
-        // });
       }
     },
     mounted() {

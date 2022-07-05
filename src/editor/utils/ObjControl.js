@@ -97,11 +97,17 @@ export default class ObjControl extends Try3d.Component{
     this._m_XBaseAxis = new Try3d.Vector3(1, 0, 0);
     this._m_YBaseAxis = new Try3d.Vector3(0, 1, 0);
     this._m_ZBaseAxis = new Try3d.Vector3(0, 0, 1);
+
+    let mainControl = this._m_Scene.getComponent(EditorContext.S_MAIN_CONTROL);
     input.on('mousemove', (uv)=>{
       if(grabbed){
         // 根据action进行操作
         let baseAxis = this._getBaseAxis(lastHit.getName());
         if(baseAxis){
+          // 禁用主控制器
+          if(mainControl){
+            mainControl.setEnabled(false);
+          }
           this._handlerAction(baseAxis, lastCanvasPos, uv);
         }
       }
@@ -121,6 +127,10 @@ export default class ObjControl extends Try3d.Component{
           lastHit.getMaterial().clearParam('highlightColor');
           lastHit = null;
         }
+        // 启用主控制器
+        if(mainControl){
+          mainControl.setEnabled(true);
+        }
       }
       lastCanvasPos[0] = uv[0];
       lastCanvasPos[1] = uv[1];
@@ -138,6 +148,10 @@ export default class ObjControl extends Try3d.Component{
         lastHit.getMaterial().clearParam('highlightColor');
       }
       lastHit = null;
+      // 启用主控制器
+      if(mainControl){
+        mainControl.setEnabled(true);
+      }
     });
     input.on('keyup', (keyCode)=>{
       switch (keyCode) {

@@ -2,6 +2,7 @@ import Events from 'try3d/src/Core/Util/Events'
 import ObjControl from './utils/ObjControl'
 
 export class EditorContext {
+  static S_MAIN_CONTROL = 'S_MAIN_CONTROL';
   // 场景根节点
   static S_ROOT_NODE = '_root_Node';
   // 世界根节点
