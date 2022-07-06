@@ -7,14 +7,18 @@ export default class Material {
     '    Params{\n' +
     '        vec4 color;\n' +
     '        vec4 highlightColor;\n' +
+    '        sampler2D colorMap;\n' +
+    '        float alphaDiscard;\n' +
     '    }\n' +
     '    SubTechnology NormPass{\n' +
     '        Vars{\n' +
     '            vec4 wordPosition;\n' +
+    '            vec2 uv0;\n' +
     '        }\n' +
     '        Vs_Shader{\n' +
     '            void main(){\n' +
     '                Context.OutPosition = Context.ProjectMatrix * Context.ViewMatrix * Context.ModelMatrix * vec4(Context.InPosition, 1.0f);\n' +
+    '                uv0 = Context.InUv0;\n' +
     '            }\n' +
     '        }\n' +
     '        Fs_Shader{\n' +
@@ -23,6 +27,14 @@ export default class Material {
     '                // 使用自定义颜色输出\n' +
     '                #ifdef Params.color\n' +
     '                    Context.OutColor *= Params.color;\n' +
+    '                #endif\n' +
+    '                #ifdef Params.colorMap\n' +
+    '                    Context.OutColor *= texture(Params.colorMap, uv0);\n' +
+    '                #endif\n' +
+    '                #ifdef Params.alphaDiscard\n' +
+    '                    if(Context.OutColor.a < Params.alphaDiscard){\n' +
+    '                      discard;\n' +
+    '                    }\n' +
     '                #endif\n' +
     '                // 高亮\n' +
     '                #ifdef Params.highlightColor\n' +
@@ -93,6 +105,7 @@ export default class Material {
   static _S_GREEN_COLOR_MAT_INS = null;
   static _S_BLUE_COLOR_MAT_INS = null;
   static _S_BASIC_LIGHTING_MAT_INS = null;
+  static _S_WHITE_GIZMO_MAT_INS = null;
   constructor (props) {
   }
 
@@ -108,6 +121,14 @@ export default class Material {
       Material._S_WHITE_COLOR_MAT_INS.setParam("color", new Try3d.Vec4Vars().valueFromXYZW(1, 1, 1, 1.0));
     }
     return Material._S_WHITE_COLOR_MAT_INS;
+  }
+
+  static getGizmoDefIns(scene, make){
+    if(!Material._S_WHITE_GIZMO_MAT_INS){
+      Material._S_WHITE_GIZMO_MAT_INS = new Try3d.Material(scene, {id:"white_gizmo", materialDef:Material.S_GIZMO_DEF});
+      Material._S_WHITE_GIZMO_MAT_INS.setParam("color", new Try3d.Vec4Vars().valueFromXYZW(1, 1, 1, 1.0));
+    }
+    return Material._S_WHITE_GIZMO_MAT_INS;
   }
 
   /**

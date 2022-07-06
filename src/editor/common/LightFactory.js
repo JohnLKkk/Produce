@@ -9,7 +9,7 @@ import GlobalConfig from "../GlobalConfig";
 class LightBulbHelper {
   static makeLightBulb(options){
     let scene = options.scene;
-    let lightMat = new Try3d.Material(scene, {id:'lightBulbMat_' + Utils.nextId(), materialDef:Material.S_COLOR_MAT});
+    let lightMat = new Try3d.Material(scene, {id:'lightBulbMat_' + Utils.nextId(), materialDef:Material.S_GIZMO_DEF});
     let colorMap = new Try3d.Texture2DVars(scene);
     colorMap.setPreloadColor(scene, new Try3d.Vector4(0.2, 0.2, 0.2, 1.0));
     colorMap.setWrap(scene, Try3d.Texture2DVars.S_WRAPS.S_CLAMP_TO_EDGE, Try3d.Texture2DVars.S_WRAPS.S_CLAMP_TO_EDGE);
@@ -179,22 +179,43 @@ class LightBulbHelper {
 export default class LightFactory {
   constructor (props) {
   }
+
+  static _linkToLight(scene, light, lightLabel){
+    let helperNode = scene.getSceneNode(0).getChildrenAtName(EditorContext.S_HELPER_NODE);
+    if(helperNode){
+      lightLabel.setLocalTranslation(light.getWorldTranslation());
+      lightLabel.setLocalRotation(light.getWorldRotation());
+      lightLabel.setLocalScale(light.getWorldScale());
+      let _fun = ()=>{
+        lightLabel.setLocalTranslation(light.getWorldTranslation());
+        lightLabel.setLocalRotation(light.getWorldRotation());
+        lightLabel.setLocalScale(light.getWorldScale());
+      };
+      helperNode.addChildren(lightLabel);
+      light.on(Try3d.Node.S_WORLD_MATRIX_UPDATE, _fun);
+    }
+  }
+
   static makeLabel(options){
     let light = options.light;
+    let lb = null;
     if(light){
       // 根据光源类型添加label
       switch (light.getType()) {
         case 'DirectionalLight':
           // 添加方向标记
-          light.addChildren(LightBulbHelper.makeDirectionalLightLabel(options));
+          lb = LightBulbHelper.makeDirectionalLightLabel(options);
           break;
         case 'PointLight':
-          light.addChildren(LightBulbHelper.makePointLightLabel(options));
+          lb = LightBulbHelper.makePointLightLabel(options);
           break;
         case 'SpotLight':
-          light.addChildren(LightBulbHelper.makeSpotLightLabel(options));
+          lb = LightBulbHelper.makeSpotLightLabel(options);
           break;
       }
+    }
+    if(lb){
+      LightFactory._linkToLight(options.scene, light, lb);
     }
   }
 

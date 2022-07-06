@@ -78,7 +78,7 @@
         sceneControl.setMaxDistance(50);
         sceneControl.setMinDistance(1);
         sceneControl.setZoomSpeed(10);
-        sceneControl.setMoveSpeed(0.2);
+        sceneControl.setMoveSpeed(0.5);
         sceneControl.enableSmoothMotion(false);
         sceneControl.setTargetAngle(Try3d.MoreMath.toRadians(45));
 

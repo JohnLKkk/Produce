@@ -24,7 +24,7 @@ export default class ShapeFactory {
           break;
         case 'light':
         default:
-          mat = Material.getWhiteColorMatIns(scene, false);
+          mat = Material.getGizmoDefIns(scene, false);
           break;
       }
     }
