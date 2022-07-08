@@ -228,6 +228,8 @@ export default class LightFactory {
     // 定义一个directionalLight
     let directionalLight = new Try3d.DirectionalLight(options.scene, {id:'directionalLight_' + Utils.nextId()});
     directionalLight.setDirectionXYZ(1, -1, 1);
+    // 目的是为了在编辑器中看到合适的光位置
+    directionalLight.setLocalTranslationXYZ(0, 1, 0);
     directionalLight.setColorRGBA(1.0, 1.0, 1.0, 1.0);
     directionalLight.setShadowMapSize(1024);
     directionalLight.proShadow(true);

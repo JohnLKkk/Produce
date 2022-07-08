@@ -144,7 +144,9 @@ export default class ObjControl extends Try3d.Component{
       if(buttonId == Try3d.Input.S_MOUSE_BUTTON0_DOWN){
         // 处理开始
         grabbed = lastHit ? true : false;
-        oldValue = this._getValueFromAction();
+        let obj = this._m_LastObj;
+        let mode = this._m_ActionMode;
+        oldValue = {value:this._getValueFromAction(), obj, mode};
         CommandFactory.setIsCommand(false);
       }
     });
@@ -156,11 +158,12 @@ export default class ObjControl extends Try3d.Component{
         if(oldValue && newValue){
           let obj = this._m_LastObj;
           let mode = this._m_ActionMode;
+          newValue = {value:this._getValueFromAction(), obj, mode};
           CommandFactory.setIsCommand(true);
           CommandFactory.createFastCommand(oldValue, (value)=>{
-            this._setValueFromAction(obj, value, mode);
+            this._setValueFromAction(value.obj, value.value, value.mode);
           }, newValue, (value)=>{
-            this._setValueFromAction(obj, value, mode);
+            this._setValueFromAction(value.obj, value.value, value.mode);
           }, false);
         }
       }
@@ -509,6 +512,7 @@ export default class ObjControl extends Try3d.Component{
     let xAxisHelper = new Try3d.Node(this._m_Scene, {id:'X_AXIS_HELPER'});
     let arrowHeadX = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_ARROW_HEAD_X, radiusTop:0.001, radiusBottom:arrowRadius, height:0.2});
     arrowHeadX.setMaterial(redMat);
+    arrowHeadX.setFilterFlag(Try3d.Node.S_NEVER);
     arrowHeadX.receiveShadow(false);
     arrowHeadX.castShadow(false);
     arrowHeadX.setFilterFlag(Try3d.Node.S_NEVER);
@@ -518,6 +522,7 @@ export default class ObjControl extends Try3d.Component{
     this._m_GizmoTranslateDrawables.push(arrowHeadX);
     let axisX = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_AXIS_X, radiusTop:tubeRadius, radiusBottom:tubeRadius, height:1.0});
     axisX.setMaterial(redMat);
+    axisX.setFilterFlag(Try3d.Node.S_NEVER);
     axisX.receiveShadow(false);
     axisX.castShadow(false);
     axisX.setFilterFlag(Try3d.Node.S_NEVER);
@@ -531,6 +536,7 @@ export default class ObjControl extends Try3d.Component{
     let yAxisHelper = new Try3d.Node(this._m_Scene, {id:'Y_AXIS_HELPER'});
     let arrowHeadY = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_ARROW_HEAD_Y, radiusTop:0.001, radiusBottom:arrowRadius, height:0.2});
     arrowHeadY.setMaterial(greenMat);
+    arrowHeadY.setFilterFlag(Try3d.Node.S_NEVER);
     arrowHeadY.receiveShadow(false);
     arrowHeadY.castShadow(false);
     arrowHeadY.setFilterFlag(Try3d.Node.S_NEVER);
@@ -540,6 +546,7 @@ export default class ObjControl extends Try3d.Component{
     this._m_GizmoTranslateDrawables.push(arrowHeadY);
     let axisY = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_AXIS_Y, radiusTop:tubeRadius, radiusBottom:tubeRadius, height:1.0});
     axisY.setMaterial(greenMat);
+    axisY.setFilterFlag(Try3d.Node.S_NEVER);
     axisY.receiveShadow(false);
     axisY.castShadow(false);
     axisY.setFilterFlag(Try3d.Node.S_NEVER);
@@ -552,6 +559,7 @@ export default class ObjControl extends Try3d.Component{
     let zAxisHelper = new Try3d.Node(this._m_Scene, {id:'Z_AXIS_HELPER'});
     let arrowHeadZ = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_ARROW_HEAD_Z, radiusTop:0.001, radiusBottom:arrowRadius, height:0.2});
     arrowHeadZ.setMaterial(blueMat);
+    arrowHeadZ.setFilterFlag(Try3d.Node.S_NEVER);
     arrowHeadZ.receiveShadow(false);
     arrowHeadZ.castShadow(false);
     arrowHeadZ.setFilterFlag(Try3d.Node.S_NEVER);
@@ -561,6 +569,7 @@ export default class ObjControl extends Try3d.Component{
     zAxisHelper.addChildren(arrowHeadZ);
     let axisZ = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_AXIS_Z, radiusTop:tubeRadius, radiusBottom:tubeRadius, height:1.0});
     axisZ.setMaterial(blueMat);
+    axisZ.setFilterFlag(Try3d.Node.S_NEVER);
     axisZ.receiveShadow(false);
     axisZ.castShadow(false);
     axisZ.setFilterFlag(Try3d.Node.S_NEVER);
@@ -576,6 +585,7 @@ export default class ObjControl extends Try3d.Component{
     // xRotate
     let xRotate = new Try3d.Torus(this._m_Scene, {id:ObjControl.S_ROTATE_X, tube:tubeRadius + 0.005, radius:radius - 0.2, segmentsR:64, segmentsT:64});
     xRotate.receiveShadow(false);
+    xRotate.setFilterFlag(Try3d.Node.S_NEVER);
     xRotate.castShadow(false);
     xRotate.setMaterial(redMat);
     xRotate.setLocalRotationFromEuler(0, Try3d.MoreMath.toRadians(90), 0);
@@ -585,6 +595,7 @@ export default class ObjControl extends Try3d.Component{
 
     // yRotate
     let yRotate = new Try3d.Torus(this._m_Scene, {id:ObjControl.S_ROTATE_Y, tube:tubeRadius + 0.005, radius:radius - 0.2, segmentsR:64, segmentsT:64});
+    yRotate.setFilterFlag(Try3d.Node.S_NEVER);
     yRotate.receiveShadow(false);
     yRotate.castShadow(false);
     yRotate.setMaterial(greenMat);
@@ -595,6 +606,7 @@ export default class ObjControl extends Try3d.Component{
 
     // zRotate
     let zRotate = new Try3d.Torus(this._m_Scene, {id:ObjControl.S_ROTATE_Z, tube:tubeRadius + 0.005, radius:radius - 0.2, segmentsR:64, segmentsT:64});
+    zRotate.setFilterFlag(Try3d.Node.S_NEVER);
     zRotate.receiveShadow(false);
     zRotate.castShadow(false);
     zRotate.setMaterial(blueMat);
@@ -609,6 +621,7 @@ export default class ObjControl extends Try3d.Component{
     let xScaleAxisHelper = new Try3d.Node(this._m_Scene, {id:'X_SCALE_AXIS_HELPER'});
     let arrowScaleHeadX = new Try3d.Box(this._m_Scene, {id:ObjControl.S_SCALE_X, xHalf:arrowRadius + 0.02, yHalf:arrowRadius + 0.02, zHalf:arrowRadius + 0.02});
     arrowScaleHeadX.setMaterial(redMat);
+    arrowScaleHeadX.setFilterFlag(Try3d.Node.S_NEVER);
     arrowScaleHeadX.receiveShadow(false);
     arrowScaleHeadX.castShadow(false);
     arrowScaleHeadX.setFilterFlag(Try3d.Node.S_NEVER);
@@ -618,6 +631,7 @@ export default class ObjControl extends Try3d.Component{
     this._m_GizmoScaleDrawables.push(arrowScaleHeadX);
     let axisScaleX = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_SCALE_AXIS_X, radiusTop:tubeRadius, radiusBottom:tubeRadius, height:1.0});
     axisScaleX.setMaterial(redMat);
+    axisScaleX.setFilterFlag(Try3d.Node.S_NEVER);
     axisScaleX.receiveShadow(false);
     axisScaleX.castShadow(false);
     axisScaleX.setFilterFlag(Try3d.Node.S_NEVER);
@@ -632,6 +646,7 @@ export default class ObjControl extends Try3d.Component{
     let yScaleAxisHelper = new Try3d.Node(this._m_Scene, {id:'Y_SCALE_AXIS_HELPER'});
     let arrowScaleHeadY = new Try3d.Box(this._m_Scene, {id:ObjControl.S_SCALE_Y, xHalf:arrowRadius + 0.02, yHalf:arrowRadius + 0.02, zHalf:arrowRadius + 0.02});
     arrowScaleHeadY.setMaterial(greenMat);
+    arrowScaleHeadY.setFilterFlag(Try3d.Node.S_NEVER);
     arrowScaleHeadY.receiveShadow(false);
     arrowScaleHeadY.castShadow(false);
     arrowScaleHeadY.setFilterFlag(Try3d.Node.S_NEVER);
@@ -641,6 +656,7 @@ export default class ObjControl extends Try3d.Component{
     this._m_GizmoScaleDrawables.push(arrowScaleHeadY);
     let axisScaleY = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_SCALE_AXIS_Y, radiusTop:tubeRadius, radiusBottom:tubeRadius, height:1.0});
     axisScaleY.setMaterial(greenMat);
+    axisScaleY.setFilterFlag(Try3d.Node.S_NEVER);
     axisScaleY.receiveShadow(false);
     axisScaleY.castShadow(false);
     axisScaleY.setFilterFlag(Try3d.Node.S_NEVER);
@@ -654,6 +670,7 @@ export default class ObjControl extends Try3d.Component{
     let zScaleAxisHelper = new Try3d.Node(this._m_Scene, {id:'Z_SCALE_AXIS_HELPER'});
     let arrowScaleHeadZ = new Try3d.Box(this._m_Scene, {id:ObjControl.S_SCALE_Z, xHalf:arrowRadius + 0.02, yHalf:arrowRadius + 0.02, zHalf:arrowRadius + 0.02});
     arrowScaleHeadZ.setMaterial(blueMat);
+    arrowScaleHeadZ.setFilterFlag(Try3d.Node.S_NEVER);
     arrowScaleHeadZ.receiveShadow(false);
     arrowScaleHeadZ.castShadow(false);
     arrowScaleHeadZ.setFilterFlag(Try3d.Node.S_NEVER);
@@ -663,6 +680,7 @@ export default class ObjControl extends Try3d.Component{
     this._m_GizmoScaleDrawables.push(arrowScaleHeadZ);
     let axisScaleZ = new Try3d.Cylinder(this._m_Scene, {id:ObjControl.S_SCALE_AXIS_Z, radiusTop:tubeRadius, radiusBottom:tubeRadius, height:1.0});
     axisScaleZ.setMaterial(blueMat);
+    axisScaleZ.setFilterFlag(Try3d.Node.S_NEVER);
     axisScaleZ.receiveShadow(false);
     axisScaleZ.castShadow(false);
     axisScaleZ.setFilterFlag(Try3d.Node.S_NEVER);
