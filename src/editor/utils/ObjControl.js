@@ -174,18 +174,31 @@ export default class ObjControl extends Try3d.Component{
       }
     });
     input.on('keyup', (keyCode)=>{
+      let actionMode = null;
       switch (keyCode) {
         case 26:// q
           break;
         case 32:// w
-          this.setActionMode(ObjControl.S_ACTION_MODE_TRANSLATE);
+          actionMode = ObjControl.S_ACTION_MODE_TRANSLATE;
           break;
         case 14:// e
-          this.setActionMode(ObjControl.S_ACTION_MODE_ROTATE);
+          actionMode = ObjControl.S_ACTION_MODE_ROTATE;
           break;
         case 27:// r
-          this.setActionMode(ObjControl.S_ACTION_MODE_SCALE);
+          actionMode = ObjControl.S_ACTION_MODE_SCALE;
           break;
+      }
+      if(actionMode){
+        if(!this._m_PreActionMode){
+          this._m_PreActionMode = ObjControl.S_ACTION_MODE_TRANSLATE;
+        }
+        CommandFactory.createFastCommand(this._m_PreActionMode, (value)=>{
+          this.setActionMode(value);
+          this._m_PreActionMode = value;
+        }, actionMode, (value)=>{
+          this.setActionMode(value);
+          this._m_PreActionMode = value;
+        });
       }
     });
   }
