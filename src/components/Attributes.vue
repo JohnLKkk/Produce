@@ -74,7 +74,7 @@
     },
     beforeCreate () {
       EditorContext.getInstance().registerEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, (obj)=>{
-        console.log('obj:',obj);
+        // console.log('obj:',obj);
         this.obj = obj;
         switch (Utils.getObjectType(obj.getType())) {
           case 'Node':

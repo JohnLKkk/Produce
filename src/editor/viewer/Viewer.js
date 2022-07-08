@@ -5,6 +5,8 @@
  */
 export default class Viewer {
   static S_VIEWER_EVENT_SELECTED = 'S_VIEWER_EVENT_SELECTED';
+  static S_VIEWER_EVENT_SELECTED2 = 'S_VIEWER_EVENT_SELECTED2';
+  static S_VIEWER_OBJECT_UPDATE = 'S_VIEWER_OBJECT_UPDATE';
   // todo:
   // 封装Viewer部分常见操作
 }

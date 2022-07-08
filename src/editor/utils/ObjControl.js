@@ -9,6 +9,7 @@ import {EditorContext} from '../EditorContext'
 import LeadingPrinciples from '../leadingPrinciples/LeadingPrinciples'
 import Material from '../common/Material'
 import Viewer from '../viewer/Viewer'
+import CommandFactory from '../command/CommandFactory'
 
 export default class ObjControl extends Try3d.Component{
   // GizmoID
@@ -87,6 +88,7 @@ export default class ObjControl extends Try3d.Component{
     // 事件处理
     EditorContext.getInstance().registerEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, (obj)=>{this.handler(obj);});
     EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_EVENT_SELECTED, (obj)=>{this.handler(obj);});
+    EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_EVENT_SELECTED2, (obj)=>{this.handler(obj);});
     // hit
     let PICKABLE = this._m_Scene.getComponent(EditorContext.S_PICKABLE);
     let input = Try3d.Input.getInput(this._m_Scene, {id:this._m_Scene.getId()});
@@ -99,8 +101,10 @@ export default class ObjControl extends Try3d.Component{
     this._m_ZBaseAxis = new Try3d.Vector3(0, 0, 1);
 
     let mainControl = this._m_Scene.getComponent(EditorContext.S_MAIN_CONTROL);
+    let oldValue = null, newValue = null;
     input.on('mousemove', (uv)=>{
       if(grabbed){
+        // 处理中...
         // 根据action进行操作
         let baseAxis = this._getBaseAxis(lastHit.getName());
         if(baseAxis){
@@ -109,6 +113,7 @@ export default class ObjControl extends Try3d.Component{
             mainControl.setEnabled(false);
           }
           this._handlerAction(baseAxis, lastCanvasPos, uv);
+          EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_OBJECT_UPDATE, this._m_LastObj);
         }
       }
       else{
@@ -137,12 +142,27 @@ export default class ObjControl extends Try3d.Component{
     });
     input.on('mousedown', (buttonId)=>{
       if(buttonId == Try3d.Input.S_MOUSE_BUTTON0_DOWN){
+        // 处理开始
         grabbed = lastHit ? true : false;
+        oldValue = this._getValueFromAction();
+        CommandFactory.setIsCommand(false);
       }
     });
     input.on('mouseup', (buttonId)=>{
       if(buttonId == Try3d.Input.S_MOUSE_BUTTON0_UP){
         grabbed = false;
+        // 处理结束
+        newValue = this._getValueFromAction();
+        if(oldValue && newValue){
+          let obj = this._m_LastObj;
+          let mode = this._m_ActionMode;
+          CommandFactory.setIsCommand(true);
+          CommandFactory.createFastCommand(oldValue, (value)=>{
+            this._setValueFromAction(obj, value, mode);
+          }, newValue, (value)=>{
+            this._setValueFromAction(obj, value, mode);
+          }, false);
+        }
       }
       if(lastHit){
         lastHit.getMaterial().clearParam('highlightColor');
@@ -168,6 +188,49 @@ export default class ObjControl extends Try3d.Component{
           break;
       }
     });
+  }
+  _setValueFromAction(obj, value, action){
+    switch (action) {
+      case ObjControl.S_ACTION_MODE_TRANSLATE:
+        obj.setLocalTranslation(value);
+        break;
+      case ObjControl.S_ACTION_MODE_ROTATE:
+        obj.setLocalRotation(value);
+        break;
+      case ObjControl.S_ACTION_MODE_SCALE:
+        obj.setLocalScale(value);
+        break;
+    }
+  }
+
+  /**
+   * 返回当前模式下当前选中对象的一个值。<br/>
+   * @return {null}
+   * @private
+   */
+  _getValueFromAction(){
+    if(!this._m_LastObj){
+      return;
+    }
+    let r = null;
+    switch (this._m_ActionMode) {
+      case ObjControl.S_ACTION_MODE_TRANSLATE:
+        let tran = this._m_LastObj.getLocalTranslation();
+        r = new Try3d.Vector3();
+        r.setTo(tran);
+        break;
+      case ObjControl.S_ACTION_MODE_ROTATE:
+        let rota = this._m_LastObj.getLocalRotation();
+        r = new Try3d.Quaternion();
+        r.setTo(rota);
+        break;
+      case ObjControl.S_ACTION_MODE_SCALE:
+        let scale = this._m_LastObj.getLocalScale();
+        r = new Try3d.Vector3();
+        r.setTo(scale);
+        break;
+    }
+    return r;
   }
 
   /**

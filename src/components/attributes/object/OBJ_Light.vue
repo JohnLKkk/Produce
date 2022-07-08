@@ -9,12 +9,17 @@
   import Utils from '../../../editor/utils/Utils'
   import ColorMath from '../../../editor/utils/ColorMath'
   import Try3d from 'try3d/src/Try3d'
+  import {EditorContext} from '../../../editor/EditorContext'
+  import Viewer from '../../../editor/viewer/Viewer'
 
   export default {
     name: 'OBJ_Light',
     created () {
       // 第一次加载时刷新一次视图
       this.updateView();
+      EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_OBJECT_UPDATE, ()=>{
+        this.updateView();
+      });
     },
     methods:{
       updateView:function(){

@@ -9,11 +9,16 @@
   import AttrItem from '../AttrItem'
   import MoreMath from 'try3d/src/Core/Math3d/MoreMath'
   import Try3d from 'try3d/src/Try3d'
+  import {EditorContext} from '../../../editor/EditorContext'
+  import Viewer from '../../../editor/viewer/Viewer'
   export default {
     name: 'OBJ_Node',
     created () {
       // 第一次加载时刷新一次视图
       this.updateView();
+      EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_OBJECT_UPDATE, ()=>{
+        this.updateView();
+      });
     },
     mounted() {
     },

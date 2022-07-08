@@ -16,6 +16,7 @@
   import Viewer from '../editor/viewer/Viewer'
   import LeadingPrinciples from '../editor/leadingPrinciples/LeadingPrinciples'
   import ObjControl from '../editor/utils/ObjControl'
+  import CommandFactory from '../editor/command/CommandFactory'
 
   export default {
     name: 'Viewer',
@@ -119,16 +120,48 @@
 
         let input = Try3d.Input.getInput(scene, {id:scene.getId()});
         EditorContext.getInstance().registerEvent(LeadingPrinciples.S_LEADINGPRINCIPLES_EVENT_SELECTED, (result)=>{
-          SELECTED.clearOutlineDrawables();
-          if(!(result instanceof Try3d.Light) && result.getBoundingVolume() != null){
-            SELECTED.pushOutlineDrawable(result);
-          }
+          CommandFactory.createFastCommand(SELECTED._m_LastResult, (value)=>{
+            SELECTED.clearOutlineDrawables();
+            if(value){
+              if(!(value instanceof Try3d.Light) && value.getBoundingVolume() != null){
+                SELECTED.pushOutlineDrawable(value);
+              }
+              // 使用S_VIEWER_EVENT_SELECTED2防止嵌套Notify
+              EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED2, [value]);
+            }
+            SELECTED._m_LastResult = value;
+          }, result, (value)=>{
+            SELECTED.clearOutlineDrawables();
+            if(value){
+              if(!(value instanceof Try3d.Light) && value.getBoundingVolume() != null){
+                SELECTED.pushOutlineDrawable(value);
+              }
+              EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED2, [value]);
+            }
+            SELECTED._m_LastResult = value;
+          });
         });
         PICKABLE.on(Try3d.Pickable.S_EVENT_PICK_LISTENER, (id, result)=>{
           if(ObjControl.S_GIZMO_MAP.indexOf(result.getName()) > -1)return;
-          SELECTED.clearOutlineDrawables();
-          SELECTED.pushOutlineDrawable(result);
-          EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [result]);
+          CommandFactory.createFastCommand(SELECTED._m_LastResult, (value)=>{
+            SELECTED.clearOutlineDrawables();
+            if(value){
+              if(!(value instanceof Try3d.Light) && value.getBoundingVolume() != null){
+                SELECTED.pushOutlineDrawable(value);
+              }
+              EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [value]);
+            }
+            SELECTED._m_LastResult = value;
+          }, result, (value)=>{
+            SELECTED.clearOutlineDrawables();
+            if(value){
+              if(!(value instanceof Try3d.Light) && value.getBoundingVolume() != null){
+                SELECTED.pushOutlineDrawable(value);
+              }
+              EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_EVENT_SELECTED, [value]);
+            }
+            SELECTED._m_LastResult = value;
+          });
         });
         input.on('mousedown', (buttonId)=>{
           if(buttonId == Try3d.Input.S_MOUSE_BUTTON2_DOWN){
