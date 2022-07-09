@@ -1,0 +1,74 @@
+/*连接端口,这里设置height:10px防止样式冲突带来的插槽线条偏移*/
+.connection{
+  overflow: visible !important;
+  width: 1px;
+  height: 12px;
+}
+/*连接线条样式*/
+.connection .main-path{
+  fill: none;
+  stroke-width: 2px;
+  stroke: rgba(255, 255, 255, 100);
+}
+/*shader node默认样式*/
+.node {
+  background: #3e3e3e !important;
+  border: 0px solid #333 !important;
+  border-radius: 5px !important;
+  box-shadow: 0 0 15px #000;
+}
+/*进入shader node样式*/
+.node:hover {
+  background: rgba(120, 120, 120, 0.8) !important;
+}
+/*选中shader node样式*/
+.node.selected {
+  background: rgb(120, 120, 120) !important;
+  border: 2px solid white !important;
+}
+
+/*title部分*/
+.node .title {
+  color: #ffffff !important;
+}
+.node .input-title,
+.node .output-title {
+  margin: 0px 15px !important;
+}
+
+/*socket大小和默认颜色*/
+.socket {
+  width: 15px !important;
+  height: 15px !important;
+  margin-left: -7px !important;
+  background: #96b38a !important;
+}
+.socket.output {
+  margin-right: -7px !important;
+}
+
+
+/*内置节点title颜色*/
+.number .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: #2c98b0;
+}
+
+.add .title,
+.divide .title,
+.multiply .title,
+.subtract .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: #ee0343;
+}
+
+/*上下文菜单*/
+.context-menu .item {
+  background-color: #333333dd !important;
+  border: 0px solid white !important;
+  padding: 5px 10px !important;
+  font-family: sans-serif !important;
+}
+.context-menu .item:hover {
+  background-color: #2b5088 !important;
+}

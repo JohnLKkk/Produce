@@ -14,9 +14,16 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "@hscmap/vue-menu": "^2.10.1",
     "element": "^0.1.4",
     "element-resize-detector": "^1.2.4",
+    "rete": "^1.2.2",
+    "rete-connection-plugin": "^0.2.2",
+    "rete-context-menu-plugin": "^0.5.2",
+    "rete-vue-render-plugin": "^0.2.2",
+    "rete-history-plugin": "^0.2.2",
+    "rete-area-plugin": "^0.2.1",
     "splitpanes": "^2.3.8",
     "vcolorpicker": "^1.1.0",
     "vue": "^2.5.2",
