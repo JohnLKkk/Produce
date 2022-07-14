@@ -1,11 +1,10 @@
 <template>
-  <input type="number" class="control_component_input" :readonly="readonly" :value="value" @input="change($event)" @dblclick.stop=""/>
+    <canvas width="64" height="64" style="background-color: rgba(255, 0, 0, 255)"></canvas>
 </template>
 
 <script>
-  import '../../../assets/shadernodes/controls.css'
   export default {
-    name: "Number",
+    name: "Color",
     props: ['readonly', 'emitter', 'key', 'getData', 'putData'],
     data() {
       return {

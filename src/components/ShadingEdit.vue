@@ -31,6 +31,7 @@
   import MultiplyComponent from "../editor/shadernodes/math/MultiplyComponent";
   import DivideComponent from "../editor/shadernodes/math/DivideComponent";
   import '../assets/shadernodes/shadernodes.css'
+  import ShaderNodes from '../editor/shadernodes/ShaderNodes'
   export default {
     name: 'ShadingEdit',
     components: {ShaderNode},
@@ -42,21 +43,12 @@
       editor.use(HistoryPlugin);
       const engine = new Rete.Engine('ShadingEdit@0.1.0');
 
-      // math
-      let components = [
-        new NumberComponent(),
-        new AddComponent(),
-        new SubtractComponent(),
-        new MultiplyComponent(),
-        new DivideComponent()
-      ];
-
       editor.use(ContextMenuPlugin, {
         searchBar: false,
         delay: 1,
         searchKeep: title => true,
         items: {
-          'Click me'(){ console.log('Works!') }
+          // 'Click me'(){ console.log('Works!') }
         },
         nodeItems: {
           // 'Click me'(){ console.log('Works for node!') },
@@ -64,16 +56,13 @@
           'Clone': true
         },
         allocate(component) {
-          return ["+ Math"];
+          return [ShaderNodes.filter(component)];
         },
         rename(component) {
           return component.name;
         }
       });
-      components.map(c => {
-        editor.register(c);
-        engine.register(c);
-      });
+      ShaderNodes.registerShaderNodes(editor, engine);
 
       editor.on('process nodecreated noderemoved connectioncreated connectionremoved', async () => {
         await engine.abort();

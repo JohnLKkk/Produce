@@ -23,6 +23,10 @@ export default class MathComponent extends Rete.Component {
   }
 
   worker(node, inputs, outputs) {
+    // if(node.inputs.num1.connections.length){
+    //   let num1Node = this.editor.nodes.find(n=>n.id == node.inputs.num1.connections[0].node);
+    //   console.log('num1Node:',num1Node);
+    // }
     let n1 = inputs["num1"].length ? inputs["num1"][0] : node.data.num1;
     let n2 = inputs["num2"].length ? inputs["num2"][0] : node.data.num2;
     let sum = this.doOperation(n1, n2);

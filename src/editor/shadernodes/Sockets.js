@@ -7,4 +7,10 @@ import Rete from "rete";
  */
 export default class Sockets{
   static s_NumSocket = new Rete.Socket('s_NumSocket');
+  static s_UniversalSocket = new Rete.Socket('s_UniversalSocket');
+  static s_NumArraySocket = new Rete.Socket('s_NumArraySocket');
+  static s_Texture2DSocket = new Rete.Socket('s_Texture2DSocket');
+  static s_TextureCubeSocket = new Rete.Socket('s_TextureCubeSocket');
+  static s_Vector3Socket = new Rete.Socket('s_Vector3Socket');
+  static s_Vector4Socket = new Rete.Socket('s_Vector4Socket');
 }
