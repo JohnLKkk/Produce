@@ -1,7 +1,11 @@
 export default class Utils {
   static _s_Id = -1;
+  static _s_ShaderNodeId = 0;
   static nextId(){
     return Utils._s_Id++;
+  }
+  static nextShaderNodeId(){
+    return Utils._s_ShaderNodeId++;
   }
 
   static getObjectType(type){
