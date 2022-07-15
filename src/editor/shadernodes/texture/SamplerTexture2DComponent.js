@@ -39,9 +39,12 @@ export default class SamplerTexture2DComponent extends ShaderNode{
       .addOutput(bOut)
       .addOutput(aOut);
   }
+  _getNodeCodeString (node) {
+    return ' rgbaOut = texture( inTexture2D , inTexCoords ) ;\n';
+  }
+
   _worker (node, inputs, outputs, ...args) {
     // 正常输出用于节点展示
     outputs['rgba'] = node.data.rgba;
-    // 传递表达式
   }
 }

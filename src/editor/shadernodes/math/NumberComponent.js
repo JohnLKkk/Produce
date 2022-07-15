@@ -8,17 +8,22 @@ export default class NumberComponent extends ShaderNode {
   }
 
   _builder(node) {
-    let out = new Rete.Output('num', 'Result', Sockets.s_NumSocket);
+    let out = new Rete.Output('numOut', 'Result', Sockets.s_NumSocket);
 
-    node.addControl(new NumberControl(this.editor, "num"));
+    node.addControl(new NumberControl(this.editor, "numOut"));
     node.addOutput(out);
 
     // outputMap
-    this._m_OutputsMap['num'] = {type:'float', varname:this.getVarName('num'), defaultValue:'0.0f'};
+    node.data._m_Props._m_OutputsMap['numOut'] = {type:'float', varname:this.getVarName(node, 'numOut'), defaultValue:'0.0f'};
     return node;
+  }
+  _getNodeCodeString (node) {
+    let r = node.data.numOut != undefined ? 'float(' + node.data.numOut + ')' : '0.0f';
+    return ' numOut = ' + r + ' ;\n';
   }
 
   _worker(node, inputs, outputs) {
-    outputs['num'] = node.data.num;
+    outputs['numOut'] = node.data.numOut;
+    node.data._m_Props._m_RebuildCode = true;
   }
 }

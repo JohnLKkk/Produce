@@ -62,6 +62,11 @@
   background-color: #ee0343;
 }
 
+.samplertexture .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: #a176fc;
+}
+
 /*上下文菜单*/
 .context-menu .item {
   background-color: #333333dd !important;

@@ -7,4 +7,7 @@ export default class MultiplyComponent extends MathComponent {
   doOperation(v1, v2) {
     return v1 * v2;
   }
+  _getNodeCodeString (node) {
+    return ' numOut = inNum1 + inNum2 ;\n';
+  }
 }

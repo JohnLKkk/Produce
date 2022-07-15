@@ -7,12 +7,14 @@ export default class AddComponent extends MathComponent {
   doOperation(v1, v2) {
     return v1 + v2;
   }
-  _getNodeCode (node) {
-    let props = node.data._m_Props;
-    let inputs = props._m_InputsMap;
-    let outputs = props._m_OutputsMap;
 
-    let nodeCode = '' + outputs['numOut'].varname + ' = ' + inputs['inNum1'].varname + ' + ' + inputs['inNum2'].varname + ';\n';
-    return nodeCode;
+  /**
+   * 返回节点代码。<br/>
+   * @return {string}
+   * @private
+   */
+  _getNodeCodeString (node) {
+    return ' numOut = inNum1 + inNum2 ;\n';
   }
+
 }

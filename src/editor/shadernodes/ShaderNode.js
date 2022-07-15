@@ -26,11 +26,38 @@ export default class ShaderNode extends Rete.Component{
 
   /**
    * 返回节点代码。<br/>
+   * @param {Node}
+   * @return {string}
+   * @private
+   */
+  _getNodeCodeString(node){
+    return '';
+  }
+
+  /**
+   * 返回节点代码。<br/>
    * @return {string}
    * @private
    */
   _getNodeCode(node){
-    return '';
+    // 应该在需要rebuild时重建nodeCode
+    // 但这里先稳妥一点,每次调用都build一次nodeCode
+    let props = node.data._m_Props;
+    let inputs = props._m_InputsMap;
+    let outputs = props._m_OutputsMap;
+
+    // 模板替换
+    let codeStr = this._getNodeCodeString(node);
+    let regex = /[^0-9a-zA-A]?[^0-9a-zA-A]/g;
+    for(let input in inputs){
+      regex = new RegExp('[^0-9a-zA-A]' + input + '[^0-9a-zA-A]', 'g');
+      codeStr = codeStr.replace(regex, inputs[input].varname);
+    }
+    for(let output in outputs){
+      regex = new RegExp('[^0-9a-zA-A]' + output + '[^0-9a-zA-A]', 'g');
+      codeStr = codeStr.replace(regex, outputs[output].varname);
+    }
+    return codeStr;
   }
 
   /**
@@ -49,6 +76,7 @@ export default class ShaderNode extends Rete.Component{
       node.data._m_Props._m_OutputsBinding = {};
       node.data._m_Props._m_InputsMap = {};
       node.data._m_Props._m_OutputsMap = {};
+      node.data._m_Props._m_RebuildCode = false;
     }
     node = this._builder(node);
     node.data._m_Props._m_NodeCode = this._getNodeCode(node);
@@ -86,6 +114,10 @@ export default class ShaderNode extends Rete.Component{
     // 更新输入绑定点
     // 对于每个节点,我们只处理输入绑定
     this._updateBinding(node);
+    if(node.data._m_Props._m_RebuildCode){
+      node.data._m_Props._m_NodeCode = this._getNodeCode(node);
+      node.data._m_Props._m_RebuildCode = false;
+    }
     this._updateShaderNodeCode(node);
     console.log(node.data._m_Props._m_Uid + " ShaderNodeCode:\n" + node.data._m_Props._m_ShaderNodeCode);
   }
