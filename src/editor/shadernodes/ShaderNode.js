@@ -7,11 +7,6 @@ import Utils from '../utils/Utils'
  * @date 2022年7月14日14点00分
  */
 export default class ShaderNode extends Rete.Component{
-  _m_Uid = '';
-  _m_InputsMap = {};
-  _m_OutputsMap = {};
-  _m_ShaderNodeCode = '';
-  _m_InputsBinding = {};
   constructor (nodeType) {
     super(nodeType);
     // if(nodeType){

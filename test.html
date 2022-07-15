@@ -20,6 +20,14 @@
     <option value="opel">Opel</option>
     <option value="audi">Audi</option>
   </select>
+  <script>
+    // let str = '12356@ga.com1525';
+    // const regex = /^[a-zA-Z0-9]{1,10}@[a-zA-Z]{1,10}.(com|org)$/g;
+    // console.log(str.replace(regex, '23'));
+    const regex = /[^0-9a-zA-A]Num[^0-9a-zA-A]/g;
+    let str = 'outNum = inNum1 + inNum2;';
+    console.log('str:' + str + '\nreplace:' + str.replace(regex, 'test'));
+  </script>
 </div>
 
 </body>
