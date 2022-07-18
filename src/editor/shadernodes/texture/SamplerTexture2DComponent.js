@@ -3,16 +3,13 @@ import Sockets from '../Sockets';
 import ShaderNode from '../ShaderNode'
 
 export default class SamplerTexture2DComponent extends ShaderNode{
-  // 当前节点表达式
-  _m_ShaderNode = null;
   constructor () {
-    super('SamplerTexture');
-    this._m_ShaderNode = '';
+    super('SamplerTexture2D');
   }
   _builder (node) {
     let inTexture2D = new Rete.Input('inTexture2D', 'Texture', Sockets.s_Texture2DSocket);
-    let inTexCoords = new Rete.Input('inTexCoords', 'TexCoords', Sockets.s_NumArraySocket);
-    let rgbaOut = new Rete.Output('rgbaOut', "RGBA", Sockets.s_NumArraySocket);
+    let inTexCoords = new Rete.Input('inTexCoords', 'TexCoords', Sockets.s_Vector2Socket);
+    let rgbaOut = new Rete.Output('rgbaOut', "RGBA", Sockets.s_Vector4Socket);
     let rOut = new Rete.Output('rOut', "R", Sockets.s_NumSocket);
     let gOut = new Rete.Output('gOut', "G", Sockets.s_NumSocket);
     let bOut = new Rete.Output('bOut', "B", Sockets.s_NumSocket);

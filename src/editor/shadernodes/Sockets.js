@@ -11,6 +11,7 @@ export default class Sockets{
   static s_NumArraySocket = new Rete.Socket('s_NumArraySocket');
   static s_Texture2DSocket = new Rete.Socket('s_Texture2DSocket');
   static s_TextureCubeSocket = new Rete.Socket('s_TextureCubeSocket');
+  static s_Vector2Socket = new Rete.Socket('s_Vector2Socket');
   static s_Vector3Socket = new Rete.Socket('s_Vector3Socket');
   static s_Vector4Socket = new Rete.Socket('s_Vector4Socket');
 }

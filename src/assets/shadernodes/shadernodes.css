@@ -62,9 +62,14 @@
   background-color: #ee0343;
 }
 
-.samplertexture .title{
+.samplertexture2d .title{
   border-radius: 5px 5px 0px 0px !important;
-  background-color: #a176fc;
+  background-color: #8064c9;
+}
+
+.fragmentoutcolor .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: #b43329;
 }
 
 /*上下文菜单*/
@@ -72,8 +77,10 @@
   background-color: #333333dd !important;
   border: 0px solid white !important;
   padding: 5px 10px !important;
+  min-width: 150px;
   font-family: sans-serif !important;
 }
 .context-menu .item:hover {
+  min-width: 150px;
   background-color: #2b5088 !important;
 }

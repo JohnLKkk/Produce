@@ -2,8 +2,8 @@
   <div class="window">
     <div class="topdeftoolbg2"></div>
     <div ref="edit" v-on:mousewheel="zoom"class="one" style="width: 100%;height: 100%;min-width:100%;min-height:100%;background-color: #1a1a1a;overflow:hidden;position:relative;"v-on:mousedown.middle="">
-<!--      <ShaderNode title="原理化BSDF"></ShaderNode>-->
-<!--      <ShaderNode title="漫射BSDF"></ShaderNode>-->
+      <!--      <ShaderNode title="原理化BSDF"></ShaderNode>-->
+      <!--      <ShaderNode title="漫射BSDF"></ShaderNode>-->
     </div>
   </div>
 </template>

@@ -7,6 +7,7 @@ import Utils from '../utils/Utils'
  * @date 2022年7月14日14点00分
  */
 export default class ShaderNode extends Rete.Component{
+  static _S_RECORD_POINT = '_S_RECORD_POINT';
   constructor (nodeType) {
     super(nodeType);
     // if(nodeType){
@@ -70,6 +71,7 @@ export default class ShaderNode extends Rete.Component{
       node.data._m_Props = {};
       node.data._m_Props._m_Uid = node.name + '_' + Utils.nextShaderNodeId();
       node.data._m_Props._m_ShaderNodeCode = '';
+      node.data._m_Props._m_ShaderNodeCodeSource = '';
       node.data._m_Props._m_NodeCode = '';
       node.data._m_Props._m_InputsBinding = {};
       node.data._m_Props._m_InputsConnections = {};
@@ -77,6 +79,8 @@ export default class ShaderNode extends Rete.Component{
       node.data._m_Props._m_InputsMap = {};
       node.data._m_Props._m_OutputsMap = {};
       node.data._m_Props._m_RebuildCode = false;
+      // 如果为输出节点,则将生成输出代码
+      node.data._m_Props._m_IsOutput = false;
     }
     node = this._builder(node);
     node.data._m_Props._m_NodeCode = this._getNodeCode(node);
@@ -119,7 +123,8 @@ export default class ShaderNode extends Rete.Component{
       node.data._m_Props._m_RebuildCode = false;
     }
     this._updateShaderNodeCode(node);
-    console.log(node.data._m_Props._m_Uid + " ShaderNodeCode:\n" + node.data._m_Props._m_ShaderNodeCode);
+    if(node.data._m_Props._m_IsOutput)
+      console.log(node.data._m_Props._m_Uid + " ShaderNodeCode:\n" + node.data._m_Props._m_ShaderNodeCode);
   }
 
   /**
@@ -130,6 +135,58 @@ export default class ShaderNode extends Rete.Component{
    * @param args
    */
   _worker (node, inputs, outputs, ...args) {
+  }
+
+  /**
+   * 初始化已存在的追加点。<br/>
+   * @param {String}[targetNodeCode]
+   * @param {Object}[outputAlreadyNodeCodeMaps]
+   * @private
+   */
+  _initAlreadyLoadNodeCodeMaps(targetNodeCode, outputAlreadyNodeCodeMaps){
+    // 分组lines
+    let lines = targetNodeCode.split('\n');
+    if(lines.length){
+      let recordPoint = null;
+      let outputNewNodeCode = '';
+      for(let line in lines){
+        line = lines[line];
+        recordPoint = line.split(ShaderNode._S_RECORD_POINT);
+        if(recordPoint.length == 2){
+          // 追加记录
+          if(!outputAlreadyNodeCodeMaps[recordPoint[1]]){
+            // 新增nodeCode
+            outputNewNodeCode += line + '\n';
+          }
+          outputAlreadyNodeCodeMaps[recordPoint[1].trim()] = true;
+        }
+      }
+      return outputNewNodeCode;
+    }
+    return '';
+  }
+
+  /**
+   * 添加一个NodeCode。<br/>
+   * @param targetNode
+   * @return outputNewNodeCode
+   * @private
+   */
+  _addNodeCode(targetNode){
+    let targetNodeName = targetNode.data._m_Props._m_Uid;
+    return ShaderNode._S_RECORD_POINT + ' ' + targetNodeName + '\n';
+  }
+  _buildShaderCode(codePoints, shaderNodeCode){
+    let regex = null;
+    for(let codePoint in codePoints){
+      regex = new RegExp(ShaderNode._S_RECORD_POINT + ' ' + codePoint, 'g');
+      // 匹配并替换
+      let targetNode = this.editor.nodes.find(n=>n.data._m_Props._m_Uid == codePoint);
+      if(targetNode){
+        shaderNodeCode = shaderNodeCode.replace(regex, targetNode.data._m_Props._m_ShaderNodeCodeSource);
+      }
+    }
+    return shaderNodeCode;
   }
 
   _updateBinding(node){
@@ -166,21 +223,54 @@ export default class ShaderNode extends Rete.Component{
   _updateShaderNodeCode(node){
     let props = node.data._m_Props;
     let shaderNodeCode = '';
+    let shaderNodeCodeSource = '';
     shaderNodeCode += '// ' + props._m_Uid + ' : ' + 'Begin\n';
+    shaderNodeCodeSource += '// ' + props._m_Uid + ' : ' + 'Begin\n';
+    let checks = {};
+    let outputAlreadyNodeCodeMaps = {};
+    let insertCodes = '';
     // input
     for(let input in node.inputs){
+      insertCodes = '';
       // 判断是否插入连接代码
+      if(node.inputs[input].connections.length){
+        let continueNode = this.editor.nodes.find(n=>n.id == node.inputs[input].connections[0].node);
+        if(!checks[continueNode.data._m_Props._m_Uid]){
+          checks[continueNode.data._m_Props._m_Uid] = true;
+          // 加载continueNode已有的所有insertCodes
+          // 这意味着continueNode应该在当前Node之前就构建完了ShaderNodeCode
+          // 好在ReteNode会按照时序依次构建Node
+          insertCodes += this._initAlreadyLoadNodeCodeMaps(continueNode.data._m_Props._m_ShaderNodeCode, outputAlreadyNodeCodeMaps);
+        }
+        if(!outputAlreadyNodeCodeMaps[continueNode.data._m_Props._m_Uid]){
+          outputAlreadyNodeCodeMaps[continueNode.data._m_Props._m_Uid] = true;
+          insertCodes += this._addNodeCode(continueNode);
+        }
+      }
+      if(insertCodes != ''){
+        shaderNodeCode += insertCodes;
+      }
       shaderNodeCode += props._m_InputsBinding[input];
+      shaderNodeCodeSource += props._m_InputsBinding[input];
     }
 
     // output
     for(let output in node.outputs){
       shaderNodeCode += props._m_OutputsBinding[output];
+      shaderNodeCodeSource += props._m_OutputsBinding[output];
     }
 
     // logic
     shaderNodeCode += props._m_NodeCode;
+    shaderNodeCodeSource += props._m_NodeCode;
     shaderNodeCode += '// ' + props._m_Uid + ' : ' + 'End\n';
+    shaderNodeCodeSource += '// ' + props._m_Uid + ' : ' + 'End\n';
+
+    props._m_ShaderNodeCodeSource = shaderNodeCodeSource;
+    // build shader node code?
+    if(props._m_IsOutput){
+      shaderNodeCode = this._buildShaderCode(outputAlreadyNodeCodeMaps, shaderNodeCode);
+    }
     props._m_ShaderNodeCode = shaderNodeCode;
   }
 }

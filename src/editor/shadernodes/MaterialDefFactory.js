@@ -18,7 +18,9 @@ export default class MaterialDefFactory {
   static editMaterialDef(defId){
     MaterialDefFactory._s_MaterialDef = MaterialDefFactory._s_MaterialDefs[defId];
     if(!MaterialDefFactory._s_MaterialDef){
+      MaterialDefFactory._s_MaterialDef = {
 
+      };
     }
   }
 }
