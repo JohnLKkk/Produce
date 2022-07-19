@@ -8,6 +8,6 @@ export default class DivideComponent extends MathComponent {
     return v2 != 0 ? v1 / v2 : 0;
   }
   _getNodeCodeString (node) {
-    return ' numOut = inNum1 = inNum2 ;\n';
+    return ' numOut = inNum1 / inNum2 ;\n';
   }
 }

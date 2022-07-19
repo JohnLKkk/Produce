@@ -1,9 +1,11 @@
 import Maths from './math/Maths'
 import Textures from './texture/Textures'
 import Outputs from './output/Outputs'
+import Params from './param/Params'
 
 export default class ShaderNodes {
   static _s_Filters = [
+    Params,
     Outputs,
     Maths,
     Textures,

@@ -176,6 +176,14 @@ export default class ShaderNode extends Rete.Component{
     let targetNodeName = targetNode.data._m_Props._m_Uid;
     return ShaderNode._S_RECORD_POINT + ' ' + targetNodeName + '\n';
   }
+
+  /**
+   * 构建ShaderCode。<br/>
+   * @param codePoints
+   * @param shaderNodeCode
+   * @return {*}
+   * @private
+   */
   _buildShaderCode(codePoints, shaderNodeCode){
     let regex = null;
     for(let codePoint in codePoints){

@@ -36,8 +36,8 @@ export default class MathComponent extends ShaderNode {
     //   let num1Node = this.editor.nodes.find(n=>n.id == node.inputs.num1.connections[0].node);
     //   console.log('num1Node:',num1Node);
     // }
-    let n1 = inputs["inNum1"].length ? inputs["inNum1"][0] : node.data.num1;
-    let n2 = inputs["inNum2"].length ? inputs["inNum2"][0] : node.data.num2;
+    let n1 = inputs["inNum1"].length ? inputs["inNum1"][0] : node.data.inNum1;
+    let n2 = inputs["inNum2"].length ? inputs["inNum2"][0] : node.data.inNum2;
     let sum = this.doOperation(n1, n2);
 
     this.editor.nodes

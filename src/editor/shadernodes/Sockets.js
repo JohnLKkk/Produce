@@ -6,7 +6,9 @@ import Rete from "rete";
  * @date 2022年7月9日10点21分
  */
 export default class Sockets{
+  static s_NoContinueSocket = new Rete.Socket('s_NoContinueSocket');
   static s_NumSocket = new Rete.Socket('s_NumSocket');
+  static s_BoolSocket = new Rete.Socket('s_BoolSocket');
   static s_UniversalSocket = new Rete.Socket('s_UniversalSocket');
   static s_NumArraySocket = new Rete.Socket('s_NumArraySocket');
   static s_Texture2DSocket = new Rete.Socket('s_Texture2DSocket');

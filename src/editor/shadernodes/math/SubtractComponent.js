@@ -8,6 +8,6 @@ export default class SubtractComponent extends MathComponent {
     return v1 - v2;
   }
   _getNodeCodeString (node) {
-    return ' numOut = inNum1 + inNum2 ;\n';
+    return ' numOut = inNum1 - inNum2 ;\n';
   }
 }

@@ -4,6 +4,9 @@ import DivideComponent from './DivideComponent'
 import MultiplyComponent from './MultiplyComponent'
 import SubtractComponent from './SubtractComponent'
 import NumberComponent from './NumberComponent'
+import ConstructVec2Component from './ConstructVec2Component'
+import ConstructVec3Component from './ConstructVec3Component'
+import ConstructVec4Component from './ConstructVec4Component'
 
 /**
  * 表示Maths可用节点。<br/>
@@ -12,6 +15,9 @@ import NumberComponent from './NumberComponent'
  */
 export default class Maths {
   static _s_Filters = [
+    ConstructVec2Component,
+    ConstructVec3Component,
+    ConstructVec4Component,
     AddComponent,
     DivideComponent,
     MultiplyComponent,

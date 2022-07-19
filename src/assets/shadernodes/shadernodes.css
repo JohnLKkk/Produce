@@ -54,12 +54,27 @@
   background-color: #2c98b0;
 }
 
+.constructvec2 .title,
+.constructvec3 .title,
+.constructvec4 .title,
 .add .title,
 .divide .title,
 .multiply .title,
 .subtract .title{
   border-radius: 5px 5px 0px 0px !important;
   background-color: #ee0343;
+}
+
+.floatparam .title,
+.boolparam .title,
+.vec2param .title,
+.vec3param .title,
+.vec4param .title,
+.texture2dparam .title,
+.texturecubeparam .title,
+.intparam .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: #2e6bb4;
 }
 
 .samplertexture2d .title{

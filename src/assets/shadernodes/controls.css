@@ -1,6 +1,7 @@
 .control_component_input{
   border: 0px;
   color: white;
+  max-width: 150px;
   border-radius: 2px;
   outline-style: none;
   background: #959595;
@@ -8,5 +9,18 @@
   margin-right: 4px;
 }
 .control_component_input:hover{
+  background: #383838;
+}
+.textcontrol_component_input{
+  border: 0px;
+  color: white;
+  max-width: 150px;
+  border-radius: 2px;
+  outline-style: none;
+  background: #959595;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.textcontrol_component_input:hover{
   background: #383838;
 }
