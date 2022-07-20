@@ -32,6 +32,11 @@
   import DivideComponent from "../editor/shadernodes/math/DivideComponent";
   import '../assets/shadernodes/shadernodes.css'
   import ShaderNodes from '../editor/shadernodes/ShaderNodes'
+  import Params from '../editor/shadernodes/param/Params'
+  import MaterialDefFactory from '../editor/shadernodes/MaterialDefFactory'
+  import ParamComponent from '../editor/shadernodes/param/ParamComponent'
+  import Inputs from '../editor/shadernodes/input/Inputs'
+  import Outputs from '../editor/shadernodes/output/Outputs'
   export default {
     name: 'ShadingEdit',
     components: {ShaderNode},
@@ -64,9 +69,31 @@
       });
       ShaderNodes.registerShaderNodes(editor, engine);
 
+      // 一个测试材质定义
+      MaterialDefFactory.editMaterialDef('TestDef');
       editor.on('process nodecreated noderemoved connectioncreated connectionremoved', async () => {
         await engine.abort();
         await engine.process(editor.toJSON());
+      });
+      editor.on('nodecreate', node => {
+        if(Params.filter(node)){
+          // 添加参数
+          MaterialDefFactory.addParam(node);
+        }
+        else if(Outputs.filterOutputStructure(node)){
+          // 添加传递结构
+          MaterialDefFactory.addVar(node);
+        }
+      });
+      editor.on('noderemoved', node => {
+        if(Params.filter(node)){
+          // 移除参数
+          MaterialDefFactory.removeParam(node);
+        }
+        else if(Outputs.filterOutputStructure(node)){
+          // 移除传递结构
+          MaterialDefFactory.removeVar(node);
+        }
       });
       editor.view.resize();
       AreaPlugin.zoomAt(editor);

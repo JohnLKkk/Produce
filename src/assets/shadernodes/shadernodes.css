@@ -77,12 +77,41 @@
   background-color: #2e6bb4;
 }
 
+.floatinputstructure .title,
+.boolinputstructure .title,
+.vec2inputstructure .title,
+.vec3inputstructure .title,
+.vec4inputstructure .title,
+.intinputstructure .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: #3ba398;
+}
+.inputattribute .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: rgba(255, 255, 255, 0.39);
+}
+
+.floatoutputstructure .title,
+.booloutputstructure .title,
+.vec2outputstructure .title,
+.vec3outputstructure .title,
+.vec4outputstructure .title,
+.intoutputstructure .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: #3ba398;
+}
+
 .samplertexture2d .title{
   border-radius: 5px 5px 0px 0px !important;
   background-color: #8064c9;
 }
 
-.fragmentoutcolor .title{
+.vertexshaderout .title{
+  border-radius: 5px 5px 0px 0px !important;
+  background-color: #d3ae02;
+}
+
+.fragmentshaderout .title{
   border-radius: 5px 5px 0px 0px !important;
   background-color: #b43329;
 }

@@ -12,6 +12,11 @@ export default class ParamComponent extends ShaderNode{
   _getNodeCodeString (node) {
     return '';
   }
+  static getParam(node){
+    let props = node.data._m_Props;
+    return {type:props._m_OutputsMap['paramOut'].type, name:props._m_OutputsMap['paramOut'].varname};
+  }
+
   _getNodeCode(node){
     return '';
   }
@@ -36,9 +41,9 @@ export default class ParamComponent extends ShaderNode{
 
   _builder(node) {
     let out = new Rete.Output('paramOut', 'Value', this._outputSocket());
-    let paramName = new Rete.Input('paramNameIn', 'ParamName', Sockets.s_NoContinueSocket);
+    let paramName = new Rete.Input('inParamName', 'ParamName', Sockets.s_NoContinueSocket);
 
-    paramName.addControl(new TextControl(this.editor, "paramNameIn"));
+    paramName.addControl(new TextControl(this.editor, "inParamName"));
     node.addInput(paramName);
     node.addOutput(out);
 
@@ -49,7 +54,7 @@ export default class ParamComponent extends ShaderNode{
 
   _updateBinding(node){
     let nodeProps = node.data._m_Props;
-    let varname = node.data.paramNameIn;
+    let varname = node.data.inParamName;
     if(varname == undefined || varname.trim() == ''){
       varname = this.getVarName(node, 'paramOut');
     }

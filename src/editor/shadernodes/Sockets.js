@@ -16,4 +16,5 @@ export default class Sockets{
   static s_Vector2Socket = new Rete.Socket('s_Vector2Socket');
   static s_Vector3Socket = new Rete.Socket('s_Vector3Socket');
   static s_Vector4Socket = new Rete.Socket('s_Vector4Socket');
+  static s_Attribute = new Rete.Socket('s_Attribute');
 }
