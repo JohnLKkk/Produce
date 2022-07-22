@@ -8,7 +8,7 @@ export default class FloatParamComponent extends ParamComponent{
   }
 
   _outputSocket () {
-    return Sockets.s_NumSocket;
+    return Sockets.s_PNumSocket;
   }
 
   _paramType () {

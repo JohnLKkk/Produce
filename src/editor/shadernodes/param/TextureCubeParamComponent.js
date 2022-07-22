@@ -8,7 +8,7 @@ export default class TextureCubeParamComponent extends ParamComponent{
   }
 
   _outputSocket () {
-    return Sockets.s_TextureCubeSocket;
+    return Sockets.s_PTextureCubeSocket;
   }
 
   _paramType () {

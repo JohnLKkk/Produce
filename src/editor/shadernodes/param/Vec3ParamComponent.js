@@ -8,7 +8,7 @@ export default class Vec3ParamComponent extends ParamComponent{
   }
 
   _outputSocket () {
-    return Sockets.s_Vector3Socket;
+    return Sockets.s_PVector3Socket;
   }
 
   _paramType () {

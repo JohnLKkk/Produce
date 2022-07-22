@@ -4,14 +4,37 @@ import Sockets from "../Sockets";
 import ShaderNode from '../ShaderNode'
 
 export default class MathComponent extends ShaderNode {
+  static _s_VarTypes = {
+    'bool':0,
+    'int':1,
+    'float':2,
+    'vec2':3,
+    'vec3':4,
+    'vec4':5
+  };
+
+  /**
+   * 提升类型转换,将转换为varType1和varType2中其中的一个类型。<br/>
+   * @param {String}[varType1]
+   * @param {String}[varType2]
+   * @return {String}
+   */
+  static upgradeCast(varType1, varType2){
+    return (MathComponent._s_VarTypes[varType1] > MathComponent._s_VarTypes[varType2]) ? varType1 : varType2;
+  }
+
+  static cast(varType1, varType2){
+
+  }
+
   doOperation(v1, v2) {
     return 0;
   }
 
   _builder(node) {
-    let inp1 = new Rete.Input("inNum1", "Value 1", Sockets.s_NumSocket);
-    let inp2 = new Rete.Input("inNum2", "Value 2", Sockets.s_NumSocket);
-    let out = new Rete.Output("numOut", "Result", Sockets.s_NumSocket);
+    let inp1 = new Rete.Input("inNum1", "Value 1", Sockets.s_OperationSocket);
+    let inp2 = new Rete.Input("inNum2", "Value 2", Sockets.s_OperationSocket);
+    let out = new Rete.Output("numOut", "Result", Sockets.s_OperationSocket);
 
     inp1.addControl(new NumberControl(this.editor, "inNum1"));
     inp2.addControl(new NumberControl(this.editor, "inNum2"));
@@ -45,5 +68,39 @@ export default class MathComponent extends ShaderNode {
       .controls.get("preview")
       .setValue(sum);
     outputs["numOut"] = sum;
+  }
+
+  _updateBinding(node){
+    let nodeProps = node.data._m_Props;
+    // 转换类型
+    let numContinue = super._getContinueNode(node, 'inNum1', 0);
+    if(numContinue){
+      let cont = node.inputs['inNum1'].connections[0].output;
+      if(cont){
+        nodeProps._m_InputsMap['inNum1'].type = numContinue.data._m_Props._m_OutputsMap[cont].type;
+      }
+    }
+    else{
+      nodeProps._m_InputsMap['inNum1'].type = 'float';
+    }
+    numContinue = super._getContinueNode(node, 'inNum2', 0);
+    if(numContinue){
+      let cont = node.inputs['inNum2'].connections[0].output;
+      if(cont){
+        nodeProps._m_InputsMap['inNum2'].type = numContinue.data._m_Props._m_OutputsMap[cont].type;
+      }
+    }
+    else{
+      nodeProps._m_InputsMap['inNum2'].type = 'float';
+    }
+    let type1 = nodeProps._m_InputsMap['inNum1'].type;
+    let type2 = nodeProps._m_InputsMap['inNum2'].type;
+    let castType = MathComponent.upgradeCast(type1, type2);
+    if(type1 == castType){
+      // todo:类型转换,确保运算正确
+    }
+    nodeProps._m_OutputsMap['numOut'].type = castType;
+    this._updateOutputsBinding(node);
+    super._updateBinding(node);
   }
 }

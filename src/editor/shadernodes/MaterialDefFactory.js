@@ -42,6 +42,18 @@ export default class MaterialDefFactory {
   }
 
   /**
+   * 返回当前MatDef的参数集。<br/>
+   * @return {null|*}
+   */
+  static getParams(){
+    let currentMatDef = MaterialDefFactory.getMaterialDef();
+    if(currentMatDef){
+      return currentMatDef.params;
+    }
+    return null;
+  }
+
+  /**
    * 设置一个FsShader。<br/>
    * @param {String}[FsShaderCode]
    * @param {String}[subTechnologyId]

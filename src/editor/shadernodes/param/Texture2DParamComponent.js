@@ -8,7 +8,7 @@ export default class Texture2DParamComponent extends ParamComponent{
   }
 
   _outputSocket () {
-    return Sockets.s_Texture2DSocket;
+    return Sockets.s_PTexture2DSocket;
   }
 
   _paramType () {

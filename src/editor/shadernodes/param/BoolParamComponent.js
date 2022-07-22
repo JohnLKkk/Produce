@@ -8,7 +8,7 @@ export default class BoolParamComponent extends ParamComponent{
   }
 
   _outputSocket () {
-    return Sockets.s_BoolSocket;
+    return Sockets.s_PBoolSocket;
   }
 
   _paramType () {

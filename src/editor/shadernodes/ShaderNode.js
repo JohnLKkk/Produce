@@ -86,6 +86,16 @@ export default class ShaderNode extends Rete.Component{
     node.data._m_Props._m_NodeCode = this._getNodeCode(node);
     // 由于outputsBinding表示输出声明
     // 声明是可以预先定义并且保持不变的
+    this._updateOutputsBinding(node);
+    return node;
+  }
+
+  /**
+   * 更新输出绑定。<br/>
+   * @param node
+   * @private
+   */
+  _updateOutputsBinding(node){
     let dv = null;
     for(let output in node.data._m_Props._m_OutputsMap){
       node.data._m_Props._m_OutputsBinding[output] = node.data._m_Props._m_OutputsMap[output].type + ' ' + node.data._m_Props._m_OutputsMap[output].varname;
@@ -95,7 +105,6 @@ export default class ShaderNode extends Rete.Component{
       }
       node.data._m_Props._m_OutputsBinding[output] += ';\n';
     }
-    return node;
   }
 
   /**
@@ -145,6 +154,21 @@ export default class ShaderNode extends Rete.Component{
    * @param args
    */
   _worker (node, inputs, outputs, ...args) {
+  }
+
+  /**
+   * 返回连接的节点。<br/>
+   * @param node
+   * @param input
+   * @param i
+   * @return {null|InputConnectionData}
+   * @private
+   */
+  _getContinueNode(node, input, i){
+    if(node.inputs[input].connections.length > i){
+      return this.editor.nodes.find(n=>n.id == node.inputs[input].connections[i].node);
+    }
+    return null;
   }
 
   /**

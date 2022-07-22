@@ -8,7 +8,7 @@ export default class IntParamComponent extends ParamComponent{
   }
 
   _outputSocket () {
-    return Sockets.s_NumSocket;
+    return Sockets.s_PNumSocket;
   }
 
   _paramType () {

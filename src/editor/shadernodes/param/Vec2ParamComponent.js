@@ -8,7 +8,7 @@ export default class Vec2ParamComponent extends ParamComponent{
   }
 
   _outputSocket () {
-    return Sockets.s_Vector2Socket;
+    return Sockets.s_PVector2Socket;
   }
 
   _paramType () {

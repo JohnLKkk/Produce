@@ -21,6 +21,9 @@ export default class Inputs {
     Vec3InputStructureComponent,
     Vec4InputStructureComponent
   ];
+  static _s_InputContexts = [
+    InputAttributeComponent
+  ];
   static _s_Filters = [
     InputAttributeComponent,
     BoolInputStructureComponent,
@@ -32,6 +35,17 @@ export default class Inputs {
   ];
   static getGroup(){
     return 'input';
+  }
+  static filterInputContext(component){
+    let r = false;
+    let targetComponentName = component.name + 'Component';
+    for(let c in Inputs._s_InputContexts){
+      if(Inputs._s_InputContexts[c].name == targetComponentName){
+        r = true;
+        break;
+      }
+    }
+    return r;
   }
   static filterInputStructure(component){
     let r = false;
