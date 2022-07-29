@@ -59,7 +59,7 @@ export default class OutputStructureComponent extends ShaderNode{
     node.addOutput(out);
 
     // inputMap
-    node.data._m_Props._m_InputsMap['inVar'] = {type:this._paramType(), varname:this.getVarName(node, 'inVar'), defaultValue:null};
+    node.data._m_Props._m_InputsMap['inVar'] = {type:'', vartype:this._paramType(), varname:this.getVarName(node, 'inVar'), defaultValue:null};
     return node;
   }
 

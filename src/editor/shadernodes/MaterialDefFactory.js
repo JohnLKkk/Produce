@@ -123,7 +123,7 @@ export default class MaterialDefFactory {
               varobj = subTechnology.vars[varobj];
               if(varobj){
                 varobj = varobj.data._m_Props._m_InputsMap['inVar'];
-                vars += varobj.type + ' ' + varobj.varname + ';\n';
+                vars += varobj.vartype + ' ' + varobj.varname + ';\n';
               }
             }
           }
@@ -207,6 +207,11 @@ export default class MaterialDefFactory {
     if(!MaterialDefFactory._s_MaterialDef){
       MaterialDefFactory._s_MaterialDef = {
         defId,
+        meta:{
+          "id":"ShadingEdit@0.1.0",
+          "nodes":{
+          }
+        },
         params:{},
         subTechnologys:{},
         technologys:{}

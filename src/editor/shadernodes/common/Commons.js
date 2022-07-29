@@ -4,10 +4,12 @@
  * @date 2022年7月20日21点16分
  */
 import IfElseBranchComponent from './IfElseBranchComponent'
+import CommonVertComponent from './CommonVertComponent'
 
 export default class Commons {
   static _s_Filters = [
     IfElseBranchComponent,
+    CommonVertComponent,
   ];
   static getGroup(){
     return 'common';

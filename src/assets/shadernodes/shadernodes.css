@@ -86,7 +86,8 @@
   border-radius: 5px 5px 0px 0px !important;
   background-color: #3ba398;
 }
-.inputattribute .title{
+.inputattribute .title,
+.inputmatrix .title{
   border-radius: 5px 5px 0px 0px !important;
   background-color: rgba(255, 255, 255, 0.39);
 }
@@ -106,7 +107,8 @@
   background-color: #8064c9;
 }
 
-.ifelsebranch .title{
+.ifelsebranch .title,
+.commonvert .title{
   border-radius: 5px 5px 0px 0px !important;
   background-color: #71b453;
 }

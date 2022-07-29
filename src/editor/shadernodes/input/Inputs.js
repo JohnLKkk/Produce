@@ -11,6 +11,7 @@ import Vec2InputStructureComponent from './Vec2InputStructureComponent'
 import Vec3InputStructureComponent from './Vec3InputStructureComponent'
 import Vec4InputStructureComponent from './Vec4InputStructureComponent'
 import InputAttributeComponent from './InputAttributeComponent'
+import InputMatrixComponent from './InputMatrixComponent'
 
 export default class Inputs {
   static _s_InputStructureFilters = [
@@ -26,6 +27,7 @@ export default class Inputs {
   ];
   static _s_Filters = [
     InputAttributeComponent,
+    InputMatrixComponent,
     BoolInputStructureComponent,
     IntInputStructureComponent,
     FloatInputStructureComponent,
