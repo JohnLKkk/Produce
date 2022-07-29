@@ -41,6 +41,8 @@ export default class Sockets{
     Sockets.s_Vector2Socket.combineWith(Sockets.s_OperationSocket);
     Sockets.s_Vector3Socket.combineWith(Sockets.s_OperationSocket);
     Sockets.s_Vector4Socket.combineWith(Sockets.s_OperationSocket);
+    Sockets.s_Texture2DSocket.combineWith(Sockets.s_OperationSocket);
+    Sockets.s_TextureCubeSocket.combineWith(Sockets.s_OperationSocket);
 
     Sockets.s_OperationSocket.combineWith(Sockets.s_NumSocket);
     Sockets.s_OperationSocket.combineWith(Sockets.s_NumArraySocket);
@@ -48,6 +50,8 @@ export default class Sockets{
     Sockets.s_OperationSocket.combineWith(Sockets.s_Vector2Socket);
     Sockets.s_OperationSocket.combineWith(Sockets.s_Vector3Socket);
     Sockets.s_OperationSocket.combineWith(Sockets.s_Vector4Socket);
+    Sockets.s_OperationSocket.combineWith(Sockets.s_Texture2DSocket);
+    Sockets.s_OperationSocket.combineWith(Sockets.s_TextureCubeSocket);
 
     Sockets.s_PNumSocket.combineWith(Sockets.s_OperationSocket);
     Sockets.s_PBoolSocket.combineWith(Sockets.s_OperationSocket);

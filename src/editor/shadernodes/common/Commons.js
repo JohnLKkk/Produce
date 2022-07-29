@@ -3,9 +3,11 @@
  * @author JohnKkk
  * @date 2022年7月20日21点16分
  */
+import IfElseBranchComponent from './IfElseBranchComponent'
 
 export default class Commons {
   static _s_Filters = [
+    IfElseBranchComponent,
   ];
   static getGroup(){
     return 'common';

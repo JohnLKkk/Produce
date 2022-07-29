@@ -4,6 +4,7 @@ import Outputs from './output/Outputs'
 import Params from './param/Params'
 import Inputs from './input/Inputs'
 import Sockets from './Sockets'
+import Commons from './common/Commons'
 
 export default class ShaderNodes {
   static _s_Filters = [
@@ -11,6 +12,7 @@ export default class ShaderNodes {
     Inputs,
     Outputs,
     Maths,
+    Commons,
     Textures,
   ];
 

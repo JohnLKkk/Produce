@@ -22,6 +22,7 @@
     "rete-connection-plugin": "^0.2.2",
     "rete-context-menu-plugin": "^0.5.2",
     "rete-vue-render-plugin": "^0.2.2",
+    "rete-task-plugin": "^0.2.2",
     "rete-history-plugin": "^0.2.2",
     "rete-area-plugin": "^0.2.1",
     "splitpanes": "^2.3.8",
