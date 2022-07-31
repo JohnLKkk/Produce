@@ -30,6 +30,31 @@ export default class IfElseBranchComponent extends ShaderNode {
     return node;
   }
 
+  /**
+   * 代码去重。<br/>
+   * @param {String}[str]
+   * @returns {String}
+   * @private
+   */
+  _deduplication(str){
+    let lines = str.split('\n');
+    let result = '';
+    let m = {};
+    let l = null;
+    let filter = {
+      '#if':true, "#ifdef":true, '#else':true, 'else':true, '#endif':true, 'if':true
+    };
+    for(let line in lines){
+      l = lines[line].trim();
+      if(!m[l] || filter[l]){
+        if(!filter[l])
+          m[l] = true;
+        result += lines[line] + '\n';
+      }
+    }
+    return result;
+  }
+
   _updateShaderNodeCode(node){
     let props = node.data._m_Props;
     let continueNode = this._getContinueNode(node, 'inContinue', 0);
@@ -113,6 +138,8 @@ export default class IfElseBranchComponent extends ShaderNode {
     if(true){
       shaderNodeCode = this._buildShaderCode(outputAlreadyNodeCodeMaps, shaderNodeCode);
     }
+    // todo:由于之前设计以插入点排在前面进行代码插入,导致ifelse分支代码节点无法适用于这种方式,所以在这里进行去重
+    shaderNodeCode = this._deduplication(shaderNodeCode);
 
     // output
     for(let output in node.outputs){

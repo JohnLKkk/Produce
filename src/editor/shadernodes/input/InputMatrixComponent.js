@@ -40,24 +40,24 @@ export default class InputMatrixComponent extends ShaderNode{
   }
 
   _builder(node) {
-    let inModelMatrix = new Rete.Output('inModelMatrix', 'InModelMatrix', Sockets.s_Matrix4Socket);
-    let inViewMatrix = new Rete.Output('inViewMatrix', 'InViewMatrix', Sockets.s_Matrix4Socket);
-    let inProjectMatrix = new Rete.Output('inProjectMatrix', 'InProjectMatrix', Sockets.s_Matrix4Socket);
-    let inMVPMatrix = new Rete.Output('inMVPMatrix', 'InMVPMatrix', Sockets.s_Matrix4Socket);
-    let inVPMatrix = new Rete.Output('inVPMatrix', 'InProjectViewMatrix', Sockets.s_Matrix4Socket);
+    let inModelMatrix4x4 = new Rete.Output('inModelMatrix4x4', 'InModelMatrix4x4', Sockets.s_Matrix4Socket);
+    let inViewMatrix4x4 = new Rete.Output('inViewMatrix4x4', 'InViewMatrix4x4', Sockets.s_Matrix4Socket);
+    let inProjectMatrix4x4 = new Rete.Output('inProjectMatrix4x4', 'InProjectMatrix4x4', Sockets.s_Matrix4Socket);
+    let inMVPMatrix4x4 = new Rete.Output('inMVPMatrix4x4', 'InMVPMatrix4x4', Sockets.s_Matrix4Socket);
+    let inVPMatrix4x4 = new Rete.Output('inVPMatrix4x4', 'InProjViewMatrix4x4', Sockets.s_Matrix4Socket);
 
-    node.addOutput(inModelMatrix);
-    node.addOutput(inViewMatrix);
-    node.addOutput(inProjectMatrix);
-    node.addOutput(inMVPMatrix);
-    node.addOutput(inVPMatrix);
+    node.addOutput(inModelMatrix4x4);
+    node.addOutput(inViewMatrix4x4);
+    node.addOutput(inProjectMatrix4x4);
+    node.addOutput(inMVPMatrix4x4);
+    node.addOutput(inVPMatrix4x4);
 
     // outputMap
-    node.data._m_Props._m_OutputsMap['inModelMatrix'] = {type:Try3d.ShaderSource.Context_Data['Context.ModelMatrix'].type, varname:'Context.ModelMatrix', defaultValue:null};
-    node.data._m_Props._m_OutputsMap['inViewMatrix'] = {type:Try3d.ShaderSource.Context_Data['Context.ViewMatrix'].type, varname:'Context.ViewMatrix', defaultValue:null};
-    node.data._m_Props._m_OutputsMap['inProjectMatrix'] = {type:Try3d.ShaderSource.Context_Data['Context.ProjectMatrix'].type, varname:'Context.ProjectMatrix', defaultValue:null};
-    node.data._m_Props._m_OutputsMap['inMVPMatrix'] = {type:Try3d.ShaderSource.Context_Data['Context.ProjectViewModelMatrix'].type, varname:'Context.ProjectViewModelMatrix', defaultValue:null};
-    node.data._m_Props._m_OutputsMap['inVPMatrix'] = {type:Try3d.ShaderSource.Context_Data['Context.ProjectViewMatrix'].type, varname:'Context.ProjectViewMatrix', defaultValue:null};
+    node.data._m_Props._m_OutputsMap['inModelMatrix4x4'] = {type:Try3d.ShaderSource.Context_Data['Context.ModelMatrix'].type, varname:'Context.ModelMatrix', defaultValue:null};
+    node.data._m_Props._m_OutputsMap['inViewMatrix4x4'] = {type:Try3d.ShaderSource.Context_Data['Context.ViewMatrix'].type, varname:'Context.ViewMatrix', defaultValue:null};
+    node.data._m_Props._m_OutputsMap['inProjectMatrix4x4'] = {type:Try3d.ShaderSource.Context_Data['Context.ProjectMatrix'].type, varname:'Context.ProjectMatrix', defaultValue:null};
+    node.data._m_Props._m_OutputsMap['inMVPMatrix4x4'] = {type:Try3d.ShaderSource.Context_Data['Context.ProjectViewModelMatrix'].type, varname:'Context.ProjectViewModelMatrix', defaultValue:null};
+    node.data._m_Props._m_OutputsMap['inVPMatrix4x4'] = {type:Try3d.ShaderSource.Context_Data['Context.ProjectViewMatrix'].type, varname:'Context.ProjectViewMatrix', defaultValue:null};
     return node;
   }
 

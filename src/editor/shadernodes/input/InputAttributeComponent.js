@@ -40,12 +40,12 @@ export default class InputAttributeComponent extends ShaderNode{
   }
 
   _builder(node) {
-    let inPosition = new Rete.Output('inPosition', 'InPosition', Sockets.s_Vector3Socket);
-    let inNormal = new Rete.Output('inNormal', 'InNormal', Sockets.s_Vector3Socket);
-    let inTangent = new Rete.Output('inTangent', 'InTangent', Sockets.s_Vector3Socket);
-    let inUv0 = new Rete.Output('inUv0', 'InUv0', Sockets.s_Vector2Socket);
-    let inJoint0 = new Rete.Output('inJoint0', 'InJoint0', Sockets.s_Vector4Socket);
-    let inWeight0 = new Rete.Output('inWeight0', 'InWeight0', Sockets.s_Vector4Socket);
+    let inPosition = new Rete.Output('inPosition', 'InPosition(vec3)', Sockets.s_Vector3Socket);
+    let inNormal = new Rete.Output('inNormal', 'InNormal(vec3)', Sockets.s_Vector3Socket);
+    let inTangent = new Rete.Output('inTangent', 'InTangent(vec3)', Sockets.s_Vector3Socket);
+    let inUv0 = new Rete.Output('inUv0', 'InUv0(vec2)', Sockets.s_Vector2Socket);
+    let inJoint0 = new Rete.Output('inJoint0', 'InJoint0(int)', Sockets.s_Vector4Socket);
+    let inWeight0 = new Rete.Output('inWeight0', 'InWeight0(vec4)', Sockets.s_Vector4Socket);
 
     node.addOutput(inPosition);
     node.addOutput(inNormal);

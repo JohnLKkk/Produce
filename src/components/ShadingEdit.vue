@@ -15,7 +15,10 @@
           {{ option.text }}
         </option>
       </select>
-      <button style="border: 0;background-color: gray" v-on:click="addMatDef">+</button>
+<!--      add-->
+      <button style="border: 0;background-color: gray;color: white" v-on:click="addMatDef">+</button>
+<!--      show matDefSource-->
+      <button v-show="selectedCurrentMatDef" style="border: 0;background-color: gray;color: white" v-on:click="showMatDef">{}</button>
     </div>
     <div ref="edit" v-on:mousewheel="zoom"class="one" style="width: 100%;height: 100%;min-width:100%;min-height:100%;background-color: #1a1a1a;overflow:hidden;position:relative;"v-on:mousedown.middle="">
       <!--      <ShaderNode title="原理化BSDF"></ShaderNode>-->
@@ -65,6 +68,7 @@
         currentTechnology:[],
         selectedCurrentMatDef:null,
         selectedCurrentTechnology:null,
+        _matDefSourceWindow:null,
         _editor:null,
         _engine:null,
       }
@@ -183,6 +187,20 @@
       });
     },
     methods:{
+      showMatDef:function(e){
+        if(this._matDefSourceWindow){
+          this._matDefSourceWindow.document.getElementById('code').innerHTML = MaterialDefFactory.toMaterialDefString();
+          this._matDefSourceWindow.focus();
+          this._matDefSourceWindow.update();
+        }
+        else{
+          this._matDefSourceWindow = window.open('./static/MaterialDefinitionSource.html', '_bank', 'height=960px,width=800px,toolbar=no,menubar=no,scrollbars=yes,resizable=no,location=no,status=no');
+          this._matDefSourceWindow.onload = ()=>{
+            this._matDefSourceWindow.document.getElementById('code').innerHTML = MaterialDefFactory.toMaterialDefString();
+            this._matDefSourceWindow.update();
+          };
+        }
+      },
       addMatDef:function(e){
         let newMatDef = Utils.nextId() + '_mat';
         let i = this.currentMatDef.length + 1;

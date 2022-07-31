@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MaterialDefinitionSource</title>
+</head>
+<link rel="stylesheet"
+      href="./heighlight/default.min.css">
+<script src="./heighlight/highlight.min.js"></script>
+<script src="./heighlight/glsl.min.js"></script>
+<style>
+  body{
+    margin: 0px;
+    padding: 0px;
+    background-color: #f3f3f3;
+  }
+</style>
+<body>
+<pre>
+  <code class="language-glsl" id="code">
+    matDef:
+Def 8_mat{
+SubTechnology defaultSubDraw{
+Vs_Shader{
+            void main(){
+// VertexShaderOut_3 : Begin
+
+
+// CommonVert_2 : Begin
+vec3 CommonVert_2_inPosition = Context.InPosition;
+mat4 CommonVert_2_inMatrix = Context.ProjectViewModelMatrix;
+vec4 CommonVert_2_projPositionOut;
+CommonVert_2_projPositionOut=CommonVert_2_inMatrix* vec4(CommonVert_2_inPosition, 1.0f) ;
+// CommonVert_2 : End
+
+vec4 VertexShaderOut_3_inPosition = CommonVert_2_projPositionOut;
+ Context.OutPosition =VertexShaderOut_3_inPosition;
+// VertexShaderOut_3 : End
+
+            }
+        }
+Fs_Shader{
+            void main(){
+
+            }
+        }
+Technology{
+Sub_Pass{
+            Pass defaultSubDraw{
+            }
+        }
+}
+  </code>
+</pre>
+<script>
+  function update(){
+    hljs.highlightAll();
+  }
+  window.update = update;
+  update();
+</script>
+</body>
+</html>
