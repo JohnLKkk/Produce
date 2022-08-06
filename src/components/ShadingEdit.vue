@@ -78,7 +78,7 @@
       editor.use(ConnectionPlugin);
       editor.use(VueRenderPlugin);
       editor.use(AreaPlugin);
-      editor.use(HistoryPlugin);
+      // editor.use(HistoryPlugin);
       const engine = new Rete.Engine('ShadingEdit@0.1.0');
       this._editor = editor;
       this._engine = engine;
@@ -198,9 +198,9 @@
           this._matDefSourceWindow.onload = ()=>{
             this._matDefSourceWindow.document.getElementById('code').innerHTML = MaterialDefFactory.toMaterialDefString();
             this._matDefSourceWindow.update();
-          };
-          this._matDefSourceWindow.onunload = ()=>{
-            this._matDefSourceWindow = null;
+            this._matDefSourceWindow.onunload = ()=>{
+              this._matDefSourceWindow = null;
+            };
           };
         }
       },
