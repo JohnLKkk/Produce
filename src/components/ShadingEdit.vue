@@ -199,6 +199,9 @@
             this._matDefSourceWindow.document.getElementById('code').innerHTML = MaterialDefFactory.toMaterialDefString();
             this._matDefSourceWindow.update();
           };
+          this._matDefSourceWindow.onunload = ()=>{
+            this._matDefSourceWindow = null;
+          };
         }
       },
       addMatDef:function(e){
