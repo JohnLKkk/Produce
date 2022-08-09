@@ -1,5 +1,6 @@
 import Events from 'try3d/src/Core/Util/Events'
 import ObjControl from './utils/ObjControl'
+import MaterialDefFactory from './shadernodes/MaterialDefFactory'
 
 export class EditorContext {
   static S_MAIN_CONTROL = 'S_MAIN_CONTROL';
@@ -93,6 +94,7 @@ export class EditorContext {
    */
   initEditor(){
     let objControl = new ObjControl(EditorContext.getScene(0), {id:'OBJ_CONTROL'});
+    MaterialDefFactory.initMaterialDefs();
   }
 
   getRenderer(){return this.m_Renderer;}

@@ -103,14 +103,29 @@
 }
 
 .component_input{
+   border: 0px;
+   border-radius: 2px;
+   outline-style: none;
+   background: #777777;
+   color: #cbcbcb;
+   margin-left: 4px;
+   margin-right: 4px;
+ }
+.component_input:hover{
+  background: #383838;
+}
+
+.component_input_small{
   border: 0px;
   border-radius: 2px;
   outline-style: none;
   background: #777777;
+  color: #cbcbcb;
+  max-width: 70px;
   margin-left: 4px;
   margin-right: 4px;
 }
-.component_input:hover{
+.component_input_small:hover{
   background: #383838;
 }
 

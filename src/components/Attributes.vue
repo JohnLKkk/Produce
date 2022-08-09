@@ -25,7 +25,7 @@
 
         <v-tab id="material_pro" icon="sg_material" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
 <!--          材质数据(只有geometry才有)-->
-          <component v-bind:is="currentObjectAttrTabComponent" class="attributes_tab"></component>
+          <component v-bind:is="currentMaterialTabComponent" class="attributes_tab" v-bind:obj="currentObjData"></component>
         </v-tab>
 
         <v-tab id="texture_pro" icon="sg_texture" style="background-color: rgba(66, 66, 66, 0.53);min-height: 100%;">
@@ -53,6 +53,7 @@
   import LeadingPrinciples from '../editor/leadingPrinciples/LeadingPrinciples'
   import Utils from '../editor/utils/Utils'
   import RendererProperty from './attributes/renderer/RendererProperty'
+  import MaterialProperty from './attributes/material/MaterialProperty'
   export default {
     name: 'Attributes',
     components: {
@@ -60,6 +61,7 @@
       VTab,
 
       RendererProperty,
+      MaterialProperty,
 
       OBJ_Node,
       OBJ_Geometry,
@@ -115,6 +117,14 @@
        */
       currentObjectAttrTabComponent: function() {
         return this.currentObjectAttrTab;
+      },
+
+      /**
+       * 材质属性面包。<br/>
+       * @return {string}
+       */
+      currentMaterialTabComponent: function(){
+        return 'MaterialProperty';
       }
     }
   }

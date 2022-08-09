@@ -50,9 +50,9 @@
                 data:[
                   {
                     content:{
-                      x:this.obj.getDirection()._m_X,
-                      y:this.obj.getDirection()._m_Y,
-                      z:this.obj.getDirection()._m_Z
+                      x:this.obj.getDirection()._m_X.toFixed(2),
+                      y:this.obj.getDirection()._m_Y.toFixed(2),
+                      z:this.obj.getDirection()._m_Z.toFixed(2)
                     },
                     set:(v)=>{
                       console.log('v:',v);
@@ -70,9 +70,9 @@
                 data:[
                   {
                     content:{
-                      x:this.obj.getPosition()._m_X,
-                      y:this.obj.getPosition()._m_Y,
-                      z:this.obj.getPosition()._m_Z
+                      x:this.obj.getPosition()._m_X.toFixed(2),
+                      y:this.obj.getPosition()._m_Y.toFixed(2),
+                      z:this.obj.getPosition()._m_Z.toFixed(2)
                     },
                     set:(v)=>{
                       this.obj.setPositionXYZ(Number(v.x), Number(v.y), Number(v.z));
@@ -104,9 +104,9 @@
                 data:[
                   {
                     content:{
-                      x:this.obj.getPosition()._m_X,
-                      y:this.obj.getPosition()._m_Y,
-                      z:this.obj.getPosition()._m_Z
+                      x:this.obj.getPosition()._m_X.toFixed(2),
+                      y:this.obj.getPosition()._m_Y.toFixed(2),
+                      z:this.obj.getPosition()._m_Z.toFixed(2)
                     },
                     set:(v)=>{
                       this.obj.setPositionXYZ(Number(v.x), Number(v.y), Number(v.z));
@@ -121,9 +121,9 @@
                 data:[
                   {
                     content:{
-                      x:this.obj.getDirection()._m_X,
-                      y:this.obj.getDirection()._m_Y,
-                      z:this.obj.getDirection()._m_Z
+                      x:this.obj.getDirection()._m_X.toFixed(2),
+                      y:this.obj.getDirection()._m_Y.toFixed(2),
+                      z:this.obj.getDirection()._m_Z.toFixed(2)
                     },
                     set:(v)=>{
                       this.obj.setDirectionXYZ(Number(v.x), Number(v.y), Number(v.z));
@@ -139,8 +139,8 @@
                   {
                     content:{
                       spotRange:this.obj.getSpotRange(),
-                      innerAngle:Try3d.MoreMath.toAngle(this.obj.getInnerAngle()),
-                      outerAngle:Try3d.MoreMath.toAngle(this.obj.getOuterAngle())
+                      innerAngle:Try3d.MoreMath.toAngle(this.obj.getInnerAngle().toFixed(2)),
+                      outerAngle:Try3d.MoreMath.toAngle(this.obj.getOuterAngle().toFixed(2))
                     },
                     set:(v)=>{
                       this.obj.setSpotRange(v.spotRange);

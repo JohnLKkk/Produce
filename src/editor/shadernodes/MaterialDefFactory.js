@@ -3,6 +3,8 @@
  * @author JohnKkk
  * @date 2022年7月12日15点35分
  */
+import Try3d from 'try3d/src/Try3d'
+
 export default class MaterialDefFactory {
   static _s_MaterialDef = null;
   static _s_MaterialDefs = {};
@@ -234,5 +236,35 @@ export default class MaterialDefFactory {
         '            }\n' +
         '        }\n'
     };
+  }
+
+  /**
+   * 返回MatDefs。<br/>
+   * @return {{}}
+   */
+  static getMatDefs(){
+    return MaterialDefFactory._s_MaterialDefs;
+  }
+  static _preloadMatDef(matDefStr){
+    let nextMatDef = null;
+    nextMatDef = Try3d.MaterialDef.parse(matDefStr);
+    MaterialDefFactory._s_MaterialDefs[nextMatDef.getName()] = nextMatDef;
+  }
+
+  static initMaterialDefs(){
+    // basic lighting def
+    MaterialDefFactory._preloadMatDef(Try3d.Internal.S_BASIC_LIGHTING_DEF_DATA);
+
+    // S_DEFERRED_LIGHTING_DEF_DATA
+    MaterialDefFactory._preloadMatDef(Try3d.Internal.S_DEFERRED_LIGHTING_DEF_DATA);
+
+    // principled lighting def
+    MaterialDefFactory._preloadMatDef(Try3d.Internal.S_PRINCIPLED_LIGHTING_DEF);
+
+    // S_PRINCIPLED_DEFERRED_LIGHTING_DEF_DATA
+    MaterialDefFactory._preloadMatDef(Try3d.Internal.S_PRINCIPLED_DEFERRED_LIGHTING_DEF_DATA);
+
+    // S_COLOR_DEF_DATA
+    MaterialDefFactory._preloadMatDef(Try3d.Internal.S_COLOR_DEF_DATA);
   }
 }

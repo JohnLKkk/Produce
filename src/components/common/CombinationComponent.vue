@@ -14,6 +14,7 @@
   import BoolComponent from './BoolComponent'
   import TransformComponent from './TransformComponent'
   import ColorComponent from './ColorComponent'
+  import VectorColorComponent from './VectorColorComponent'
 
   export default {
     name: 'CombinationComponent',
@@ -28,6 +29,7 @@
       BoolComponent,
       TransformComponent,
       ColorComponent,
+      VectorColorComponent,
     },
     created () {
       console.log('content:',this.content);
