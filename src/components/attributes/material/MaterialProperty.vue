@@ -29,14 +29,15 @@
           let matDefItem = this.content[0];
           this.content = [];
           let paramValues = material.getParamValues();
+          let paramDescriptors = material.getParamDescriptions();
           let paramContent = {
             type:'Material',
             component:'CombinationComponent',
             data:[]
           };
-          for(let param in paramValues){
-            console.log(param + ':',paramValues);
-            let item = this._parseParamType(param, paramValues[param]);
+          for(let param in paramDescriptors){
+            console.log(param + ':',paramDescriptors[param]);
+            let item = this._parseParamType(paramDescriptors[param].getType(), param, paramValues[param]);
             if(item)
               paramContent.data.push(item);
           }
@@ -44,40 +45,139 @@
           this.content.push(paramContent);
         }
       },
-      _parseParamType:function(paramName, param){
+      _parseParamType:function(type, paramName, param){
         let pV = null;
-        if(param instanceof Try3d.BoolVars){
-          pV = {
-            component:'BoolComponent',
-            data:{
-              typename:paramName,
-              content:{checked:param._m_Bool},
-              set:(v)=>{
-                this.obj.getMaterial().setParam(paramName, new Try3d.BoolVars().valueOf(v));
+        let targetMaterial = this.obj.getMaterial();
+        switch (type) {
+          case 'bool':
+            pV = {
+              component:'BoolComponent',
+              data:{
+                typename:paramName,
+                textAlign:'left',
+                width:'100%',
+                content:{checked:param ? param._m_Bool : false},
+                set:(v)=>{
+                  targetMaterial.setParam(paramName, new Try3d.BoolVars().valueOf(v));
+                }
               }
-            }
-          };
-        }
-        else if(param instanceof Try3d.Vec4Vars){
-          pV = {
-            component:'VectorColorComponent',
-            data:{
-              typename:paramName,
-              content:{
-                R:param._m_X.toFixed(2),
-                G:param._m_Y.toFixed(2),
-                B:param._m_Z.toFixed(2),
-                A:param._m_W.toFixed(2)
-              },
-              set:(v)=>{
-                this.obj.getMaterial().setParam(paramName, new Try3d.Vec4Vars().valueFromXYZW(v.R, v.G, v.B, v.W));
+            };
+            break;
+          case 'vec2':
+            pV = {
+              component: 'VectorColorComponent',
+              data: {
+                typename: paramName,
+                content: param ? {
+                  R: Number(param._m_X).toFixed(2),
+                  G: Number(param._m_Y).toFixed(2)
+                } : {R:0, G:0},
+                set: (v) => {
+                  targetMaterial.setParam(paramName, new Try3d.Vec2Vars().valueFromXYZW(Number(v.R), Number(v.G)));
+                }
               }
-            }
-          };
+            };
+            break;
+          case 'vec3':
+            // todo:待办,添加vec3Vars
+            pV = {
+              component: 'VectorColorComponent',
+              data: {
+                typename: paramName,
+                content: param ? {
+                  R: Number(param._m_X).toFixed(2),
+                  G: Number(param._m_Y).toFixed(2),
+                  B: Number(param._m_Z).toFixed(2)
+                } : {R:0, G:0, B:0},
+                set: (v) => {
+                  targetMaterial.setParam(paramName, new Try3d.Vec2Vars().valueFromXYZW(Number(v.R), Number(v.G), Number(v.B)));
+                }
+              }
+            };
+            break;
+          case 'vec4':
+            let cl = param ? {
+              R: Number(param._m_X).toFixed(2),
+              G: Number(param._m_Y).toFixed(2),
+              B: Number(param._m_Z).toFixed(2),
+              W: Number(param._m_W).toFixed(2)
+            } : {R:0, G:0, B:0, W:1};
+            pV = {
+              component: 'VectorColorComponent',
+              data: {
+                typename: paramName,
+                color:ColorMath.rgbToHex(cl.R, cl.G, cl.B),
+                content: cl,
+                set: (v) => {
+                  targetMaterial.setParam(paramName, new Try3d.Vec4Vars().valueFromXYZW(Number(v.R), Number(v.G), Number(v.B), Number(v.W)));
+                }
+              }
+            };
+            break;
+          case 'int':
+            pV = {
+              component: 'VectorComponent',
+              data: {
+                typename: paramName,
+                content: param ? {
+                  v: Number(param._m_X).toFixed(2),
+                } : {v:0},
+                set: (v) => {
+                  targetMaterial.setParam(paramName, new Try3d.FloatVars().valueOf(Number(v)));
+                }
+              }
+            };
+            break;
+          case 'float':
+            pV = {
+              component: 'NumberComponent',
+              type:paramName,
+              data: {
+                typename: paramName,
+                content: param ? {
+                  v: Number(param._m_Float).toFixed(2),
+                } : {v:0},
+                set: (v) => {
+                  targetMaterial.setParam(paramName, new Try3d.FloatVars().valueOf(Number(v.v)));
+                }
+              }
+            };
+            break;
+          case 'sampler2D':
+            break;
         }
-        else if(param instanceof Try3d.Vec2Vars){
-
-        }
+        // if(param instanceof Try3d.BoolVars){
+        //   pV = {
+        //     component:'BoolComponent',
+        //     data:{
+        //       typename:paramName,
+        //       content:{checked:param._m_Bool},
+        //       set:(v)=>{
+        //         this.obj.getMaterial().setParam(paramName, new Try3d.BoolVars().valueOf(v));
+        //       }
+        //     }
+        //   };
+        // }
+        // else if(param instanceof Try3d.Vec4Vars){
+        //   pV = {
+        //     component:'VectorColorComponent',
+        //     data:{
+        //       typename:paramName,
+        //       content:{
+        //         R:param._m_X.toFixed(2),
+        //         G:param._m_Y.toFixed(2),
+        //         B:param._m_Z.toFixed(2),
+        //         A:param._m_W.toFixed(2)
+        //       },
+        //       set:(v)=>{
+        //         this.obj.getMaterial().setParam(paramName, new Try3d.Vec4Vars().valueFromXYZW(v.R, v.G, v.B, v.W));
+        //       }
+        //     }
+        //   };
+        // }
+        // else if(param instanceof Try3d.Vec2Vars){
+        //
+        // }
         return pV;
       },
       updateView:function(){
@@ -90,14 +190,17 @@
             let matDefs = MaterialDefFactory.getMatDefs();
             let matDefsContent = [];
             for(let matDef in matDefs){
-              matDefsContent.push({text:matDefs[matDef].getName(), value:matDefs[matDef]});
+              if(matDefs[matDef] && matDefs[matDef].getName){
+                matDefsContent.push({text:matDefs[matDef].getName(), value:matDefs[matDef]});
+              }
             }
+            let targetObj = this.obj;
             this.content.push({
               // Material Definition
               type:'Material Definition',
               component:'SelectComponent',
               data:{
-                selected:matDefs[this.obj.getMaterial().getMatDefName()],
+                selected:matDefs[targetObj.getMaterial().getMatDefName()],
                 typename:'Material Definition',
                 content:matDefsContent,
                 set:(v)=>{
@@ -105,9 +208,11 @@
                   // todo:当前每次选择其他matDef作为材质定义时,都创建一个新的基于matDef的material
                   // todo:后续调整为将material缓存到对应的matDef池中,优先检测matDef池中未被利用的material
                   let editorContext = EditorContext.getInstance();
-                  let material = new Try3d.Material(editorContext.getRenderer()._scene, {id:'mat_next_' + Try3d.Tools.nextId(), materialDef:v});
-                  this.obj.setMaterial(material);
-                  this.refMaterialParams(this.obj.getMaterial());
+                  if(targetObj.getMaterial().getMatDefName() != v.getName()){
+                    let material = new Try3d.Material(editorContext.getRenderer()._scene, {id:'mat_next_' + Try3d.Tools.nextId(), materialDef:v});
+                    targetObj.setMaterial(material);
+                    this.refMaterialParams(targetObj.getMaterial());
+                  }
                 }
               }
             });

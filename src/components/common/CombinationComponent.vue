@@ -15,6 +15,7 @@
   import TransformComponent from './TransformComponent'
   import ColorComponent from './ColorComponent'
   import VectorColorComponent from './VectorColorComponent'
+  import NumberComponent from './NumberComponent'
 
   export default {
     name: 'CombinationComponent',
@@ -30,6 +31,7 @@
       TransformComponent,
       ColorComponent,
       VectorColorComponent,
+      NumberComponent,
     },
     created () {
       console.log('content:',this.content);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="text-align: left;margin: 0 auto;width: 40%"><input type="checkbox" id="content.typename" v-model="content.content.checked"><label for="content.typename" style="color: #cbcbcb;font-size: 12px;">{{ content.typename }}</label></div>
+    <div :style="styleObj"><input type="checkbox" id="content.typename" v-model="content.content.checked"><label for="content.typename" style="color: #cbcbcb;font-size: 12px;">{{ content.typename }}</label></div>
   </div>
 </template>
 
@@ -14,6 +14,8 @@
     name: 'BoolComponent',
     props:{
       content:{
+        width:'40%',
+        textAlign:'left',
         typename:null,
         content:{checked:false},
         set:null
@@ -21,6 +23,11 @@
     },
     data(){
       return {
+        styleObj:{
+          textAlign:this.content.textAlign || 'left',
+          margin:'0 auto',
+          width:this.content.width || '40%'
+        },
         isCommand : true
       }
     },

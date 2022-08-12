@@ -62,10 +62,20 @@ const ColorMath = {
   },
 
   rgb_to_hex: function(r, g, b) {
-    let hex_r = (r * 255).toString(16);
-    let hex_g = (g * 255).toString(16);
-    let hex_b = (b * 255).toString(16);
+    let hex_r = (r * 255).toFixed(0).toString(16);
+    let hex_g = (g * 255).toFixed(0).toString(16);
+    let hex_b = (b * 255).toFixed(0).toString(16);
     return '#' + hex_r + hex_g + hex_b;
+  },
+
+  rgbToHex(r, g, b) {
+    r = (r * 255).toFixed(0);
+    g = (g * 255).toFixed(0);
+    b = (b * 255).toFixed(0);
+    if(r == 0 && g == 0 && b == 0){
+      return '#000000';
+    }
+    return '#' + ((r << 16) | (g << 8) | b).toString(16);
   },
 
   hex_to_rgb: function(hex){
@@ -73,6 +83,10 @@ const ColorMath = {
     let g = this.component_from_hex(hex, 1) / 255.0;
     let r = this.component_from_hex(hex, 2) / 255.0;
     return {r, g, b};
+  },
+
+  hexToRgba(hex, opacity) {
+    return {r:parseInt("0x" + hex.slice(1, 3)) / 255.0, g:parseInt("0x" + hex.slice(3, 5)) / 255.0, b:parseInt("0x" + hex.slice(5, 7)) / 255.0};
   },
 
   component_from_hex: function(hex, componentIndex) {
