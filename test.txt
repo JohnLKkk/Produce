@@ -1,0 +1,43 @@
+Def 8_mat{
+SubTechnology defaultSubDraw{
+        Vs_Shader{
+                    void main(){
+                      // VertexShaderOut_3 : Begin
+
+
+                      // TransformVector3_2 : Begin
+                      vec3 TransformVector3_2_inVec3 = Context.InPosition;
+                      mat4 TransformVector3_2_inMatrix4x4 = Context.ProjectViewModelMatrix;
+                      vec4 TransformVector3_2_vec4Out;
+                      TransformVector3_2_vec4Out=TransformVector3_2_inMatrix4x4* vec4(TransformVector3_2_inVec3, 1.0f) ;
+                      // TransformVector3_2 : End
+
+                      vec4 VertexShaderOut_3_inPosition = TransformVector3_2_vec4Out;
+                       Context.OutPosition =VertexShaderOut_3_inPosition;
+                      // VertexShaderOut_3 : End
+
+                    }
+                }
+            Fs_Shader{
+                        void main(){
+                            // FragmentShaderOut_4 : Begin
+                            // ConstructVec4_5 : Begin
+                            float ConstructVec4_5_inX = float(1);
+                            float ConstructVec4_5_inY = float(0);
+                            float ConstructVec4_5_inZ = float(0);
+                            float ConstructVec4_5_inW = float(1);
+                            vec4 ConstructVec4_5_Result = vec4( inX , inY , inZ , inW );
+                            // ConstructVec4_5 : End
+
+                            vec4 FragmentShaderOut_4_inColor = ConstructVec4_5_Result;
+                             Context.OutColor =FragmentShaderOut_4_inColor;
+                            // FragmentShaderOut_4 : End
+
+                        }
+                    }
+Technology{
+Sub_Pass{
+            Pass defaultSubDraw{
+            }
+        }
+}

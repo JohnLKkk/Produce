@@ -8,6 +8,7 @@ import Try3d from 'try3d/src/Try3d'
 export default class MaterialDefFactory {
   static _s_MaterialDef = null;
   static _s_MaterialDefs = {};
+  static _s_CompileMaterialDefs = {};
 
   /**
    * 返回当前正在编辑打开的材质定义。<br/>
@@ -115,6 +116,7 @@ export default class MaterialDefFactory {
       let defaultSubTechnology = '';
       if(currentMatDef.subTechnologys){
         for(let subTechnology in currentMatDef.subTechnologys){
+          // BEGIN
           defaultSubTechnology += 'SubTechnology ' + subTechnology + '{\n';
           subTechnology = currentMatDef.subTechnologys[subTechnology];
 
@@ -148,6 +150,8 @@ export default class MaterialDefFactory {
           defaultSubTechnology += (subTechnology.fs_shader || '') + '\n';
           defaultSubTechnology += '            }\n' +
             '        }\n';
+          // END
+          defaultSubTechnology += '}\n';
         }
       }
       if(defaultSubTechnology.length > 1){
@@ -242,13 +246,22 @@ export default class MaterialDefFactory {
    * 返回MatDefs。<br/>
    * @return {{}}
    */
-  static getMatDefs(){
-    return MaterialDefFactory._s_MaterialDefs;
+  static getCompileMatDefs(){
+    return MaterialDefFactory._s_CompileMaterialDefs;
   }
+  static compileMatDef(matDefStr){
+    MaterialDefFactory._preloadMatDef(matDefStr);
+  }
+
+  /**
+   * 预加载材质定义
+   * @param matDefStr
+   * @private
+   */
   static _preloadMatDef(matDefStr){
     let nextMatDef = null;
     nextMatDef = Try3d.MaterialDef.parse(matDefStr);
-    MaterialDefFactory._s_MaterialDefs[nextMatDef.getName()] = nextMatDef;
+    MaterialDefFactory._s_CompileMaterialDefs[nextMatDef.getName()] = nextMatDef;
   }
 
   static initMaterialDefs(){

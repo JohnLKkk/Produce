@@ -28,7 +28,7 @@ export default class ConstructVec4Component extends ShaderNode{
     nodeProps._m_InputsMap['inW'] = {type:'float', varname:this.getVarName(node, 'inW'), defaultValue:'0.0f'};
 
     // outputMap
-    nodeProps._m_OutputsMap['ResultOut'] = {type:'vec4', varname:this.getVarName(node, 'Result'), defaultValue:'vec4( inX , inY , inZ , inW )'};
+    nodeProps._m_OutputsMap['ResultOut'] = {type:'vec4', varname:this.getVarName(node, 'Result'), defaultValue:'vec4( ' + this.getVarName(node, 'inX') + ' , ' + this.getVarName(node, 'inY') + ' , ' + this.getVarName(node, 'inZ') + ' , ' + this.getVarName(node, 'inW') + ' )'};
 
     return node
       .addInput(inp1)

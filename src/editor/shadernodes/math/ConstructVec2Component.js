@@ -22,7 +22,7 @@ export default class ConstructVec2Component extends ShaderNode{
     nodeProps._m_InputsMap['inY'] = {type:'float', varname:this.getVarName(node, 'inY'), defaultValue:'0.0f'};
 
     // outputMap
-    nodeProps._m_OutputsMap['ResultOut'] = {type:'vec2', varname:this.getVarName(node, 'Result'), defaultValue:'vec2( inX , inY )'};
+    nodeProps._m_OutputsMap['ResultOut'] = {type:'vec2', varname:this.getVarName(node, 'Result'), defaultValue:'vec2( ' + this.getVarName(node, 'inX') + ' , ' + this.getVarName(node, 'inY') + ' )'};
 
     return node
       .addInput(inp1)

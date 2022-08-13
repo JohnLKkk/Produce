@@ -19,7 +19,7 @@
     created () {
       // 第一次加载时刷新一次视图
       this.updateView();
-      EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_OBJECT_UPDATE, ()=>{
+      EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_EVENT_SELECTED2, ()=>{
         this.updateView();
       });
     },
@@ -44,6 +44,16 @@
           this.content.push(matDefItem);
           this.content.push(paramContent);
         }
+      },
+      _getTexture : (imgData, srgb)=>{
+        let editorContext = EditorContext.getInstance();
+        let scene = editorContext.getRenderer()._scene;
+        let texture = new Try3d.Texture2DVars(scene);
+        // texture.setPreloadColor(scene, new Try3d.Vector4(0.2, 0.2, 0.2, 1.0));
+        texture.setImageSrc(scene, imgData);
+        if(srgb)
+          texture.setTextureFormat(Try3d.Texture2DVars.S_TEXTURE_FORMAT.S_SRGBA, Try3d.Texture2DVars.S_TEXTURE_FORMAT.S_RGBA, Try3d.Texture2DVars.S_TEXTURE_FORMAT.S_UNSIGNED_BYTE);
+        return texture;
       },
       _parseParamType:function(type, paramName, param){
         let pV = null;
@@ -144,6 +154,18 @@
             };
             break;
           case 'sampler2D':
+            pV = {
+              component:'ImgComponent',
+              data:{
+                typename:paramName,
+                textAlign:'left',
+                width:'100%',
+                content:{img:param ? param._m_ImageSource.src : null},
+                set:(v)=>{
+                  targetMaterial.setParam(paramName, this._getTexture(v.img));
+                }
+              }
+            };
             break;
         }
         // if(param instanceof Try3d.BoolVars){
@@ -181,13 +203,14 @@
         return pV;
       },
       updateView:function(){
-        if(this.obj){
+        if(this.obj && this.obj != this._lastObj){
+          this._lastObj = this.obj;
           // 构造数据编辑组件数据
           this.content = [];
           if(this.obj instanceof Try3d.Geometry){
             // 获取当前选中geometry的材质
             // MaterialDefinition
-            let matDefs = MaterialDefFactory.getMatDefs();
+            let matDefs = MaterialDefFactory.getCompileMatDefs();
             let matDefsContent = [];
             for(let matDef in matDefs){
               if(matDefs[matDef] && matDefs[matDef].getName){
@@ -236,6 +259,7 @@
     components:{AttrItem},
     data(){
       return {
+        _lastObj:null,
         content:[
         ],
       }

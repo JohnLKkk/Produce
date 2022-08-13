@@ -25,7 +25,7 @@ export default class ConstructVec3Component extends ShaderNode{
     nodeProps._m_InputsMap['inZ'] = {type:'float', varname:this.getVarName(node, 'inZ'), defaultValue:'0.0f'};
 
     // outputMap
-    nodeProps._m_OutputsMap['ResultOut'] = {type:'vec3', varname:this.getVarName(node, 'Result'), defaultValue:'vec3( inX , inY , inZ )'};
+    nodeProps._m_OutputsMap['ResultOut'] = {type:'vec3', varname:this.getVarName(node, 'Result'), defaultValue:'vec3( ' + this.getVarName(node, 'inX') + ' , ' + this.getVarName(node, 'inY') + ' , ' + this.getVarName(node, 'inZ') + ' )'};
 
     return node
       .addInput(inp1)

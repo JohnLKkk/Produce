@@ -19,6 +19,8 @@
       <button style="border: 0;background-color: gray;color: white" v-on:click="addMatDef">+</button>
 <!--      show matDefSource-->
       <button v-show="selectedCurrentMatDef" style="border: 0;background-color: gray;color: white" v-on:click="showMatDef">{}</button>
+<!--      编译-->
+      <button v-show="selectedCurrentMatDef" style="border: 0;background-color: gray;color: white" v-on:click="compile">&</button>
     </div>
     <div ref="edit" v-on:mousewheel="zoom"class="one" style="width: 100%;height: 100%;min-width:100%;min-height:100%;background-color: #1a1a1a;overflow:hidden;position:relative;"v-on:mousedown.middle="">
       <!--      <ShaderNode title="原理化BSDF"></ShaderNode>-->
@@ -187,6 +189,9 @@
       });
     },
     methods:{
+      compile:function(e){
+        MaterialDefFactory.compileMatDef(MaterialDefFactory.toMaterialDefString());
+      },
       showMatDef:function(e){
         if(this._matDefSourceWindow){
           this._matDefSourceWindow.document.getElementById('code').innerHTML = MaterialDefFactory.toMaterialDefString();

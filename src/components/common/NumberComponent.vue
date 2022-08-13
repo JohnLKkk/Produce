@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 5px 0px">
+  <div style="padding: 5px 0px">
     <div v-show="content.typename" style="padding-left:15px;color: #cbcbcb;font-size: 12px;text-align: left">{{content.typename}}</div>
 
     <span style="color: #cbcbcb;font-size: 12px;" v-for="(item, key) in content.content"><input class="component_input" ref="number" type="number" v-model='content.content[key]'><br/></span>

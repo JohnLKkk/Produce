@@ -28,11 +28,11 @@
     created () {
       this.$watch('content.content', (v, o)=>{
         if(this.isCommand){
-          let oldValue = ColorMath.hex_to_rgb(o.replace('#', '0x'));
-          let newValue = ColorMath.hex_to_rgb(v.replace('#', '0x'));
+          let oldValue = ColorMath.hexToRgba(o);
+          let newValue = ColorMath.hexToRgba(v);
           CommandManager.getInstance().executeCommand(new BaseCommand({
-            redo: (v)=>{this.content.set(v);this.isCommand = false;this.content.content = ColorMath.rgb_to_hex(v.r, v.g, v.b);},
-            undo: (v)=>{this.content.set(v);this.isCommand = false;this.content.content = ColorMath.rgb_to_hex(v.r, v.g, v.b);},
+            redo: (v)=>{this.content.set(v);this.isCommand = false;this.content.content = ColorMath.rgbToHex(v.r, v.g, v.b);},
+            undo: (v)=>{this.content.set(v);this.isCommand = false;this.content.content = ColorMath.rgbToHex(v.r, v.g, v.b);},
             redoData: newValue,
             undoData: oldValue
           }));

@@ -16,6 +16,7 @@
   import ColorComponent from './ColorComponent'
   import VectorColorComponent from './VectorColorComponent'
   import NumberComponent from './NumberComponent'
+  import ImgComponent from "./ImgComponent";
 
   export default {
     name: 'CombinationComponent',
@@ -32,6 +33,7 @@
       ColorComponent,
       VectorColorComponent,
       NumberComponent,
+      ImgComponent,
     },
     created () {
       console.log('content:',this.content);

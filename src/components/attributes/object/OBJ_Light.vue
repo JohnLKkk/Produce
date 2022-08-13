@@ -34,7 +34,7 @@
             component:'ColorComponent',
             data:{
               type:'',
-              content:ColorMath.rgb_to_hex(lightColor._m_X, lightColor._m_Y, lightColor._m_Z),
+              content:ColorMath.rgbToHex(lightColor._m_X, lightColor._m_Y, lightColor._m_Z),
               set:(v)=>{
                 this.obj.setColorRGBA(Number(v.r), Number(v.g), Number(v.b), 1.0);
               }
