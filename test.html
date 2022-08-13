@@ -20,7 +20,47 @@
     <option value="opel">Opel</option>
     <option value="audi">Audi</option>
   </select>
+  <div style="width: 100px;height: 100px;">
+    <input id="file" type="file" accept=".png,.jpg,.jpeg,image/png,image/jpg,image/jpeg" style="display: none"/>
+    <canvas id="cvs" width="100px" height="100px" style="background-color: black"></canvas>
+  </div>
   <script>
+    function drawToCanvas(imgData){
+      var cvs = document.getElementById('cvs');
+      var ctx = cvs.getContext('2d');
+      var img = new Image;
+      img.src = imgData;
+      img.onload = function(){//必须onload以后再画
+        ctx.drawImage(img,0,0,cvs.width,cvs.height);
+        strDataURI = cvs.toDataURL();//获取canvas base64数据
+      }
+    }
+    function readFile(){
+      var file = this.files[0];//获取input输入的图片
+      if(!/image\/\w+/.test(file.type)){
+        alert("请确保文件为图像类型");
+        return false;
+      }//判断是否图片，在移动端因为浏览器对调用file类型处理不一样，虽然加了accept = 'image/*'，可是还要再次判断
+      var reader = new FileReader();
+      reader.readAsDataURL(file);//转化成base64数据类型
+      reader.onload = function(e){
+        drawToCanvas(this.result);
+      }
+    }
+    function doInput(id){
+      var inputObj = document.getElementById(id);
+      console.log('inputObj:',inputObj);
+      inputObj.addEventListener('change',readFile,false);
+      inputObj.type = 'file';
+      inputObj.accept = 'image/*';
+      inputObj.click();
+    }
+
+
+    var cvs = document.getElementById('cvs');
+    cvs.onclick = ()=>{
+      doInput('file');
+    };
     // let str = '12356@ga.com1525';
     // const regex = /^[a-zA-Z0-9]{1,10}@[a-zA-Z]{1,10}.(com|org)$/g;
     // console.log(str.replace(regex, '23'));
