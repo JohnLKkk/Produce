@@ -41,11 +41,11 @@ export default class MathComponent extends ShaderNode {
 
     let nodeProps = node.data._m_Props;
     // inputMap
-    nodeProps._m_InputsMap['inNum1'] = {type:'float', varname:this.getVarName(node, 'inNum1'), defaultValue:'0.0f'};
-    nodeProps._m_InputsMap['inNum2'] = {type:'float', varname:this.getVarName(node, 'inNum2'), defaultValue:'0.0f'};
+    nodeProps._m_InputsMap['inNum1'] = {type:'float', varname:this.getVarName(node, 'inNum1'), defaultValue:null};
+    nodeProps._m_InputsMap['inNum2'] = {type:'float', varname:this.getVarName(node, 'inNum2'), defaultValue:null};
 
     // outputMap
-    nodeProps._m_OutputsMap['numOut'] = {type:'float', varname:this.getVarName(node, 'numOut'), defaultValue:'0.0f'};
+    nodeProps._m_OutputsMap['numOut'] = {type:'float', varname:this.getVarName(node, 'numOut'), defaultValue:null};
 
     return node
       .addInput(inp1)
