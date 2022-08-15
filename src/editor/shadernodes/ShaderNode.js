@@ -239,7 +239,8 @@ export default class ShaderNode extends Rete.Component{
     for(let input in node.inputs){
       varPin = nodeProps._m_InputsMap[input];
       if(!varPin)continue;
-      nodeProps._m_InputsBinding[input] = varPin.type + ' ' + varPin.varname;
+      if(!varPin.skip)
+        nodeProps._m_InputsBinding[input] = varPin.type + ' ' + varPin.varname;
       // 置空
       nodeProps._m_InputsConnections[input] = null;
       if(node.inputs[input].connections.length){

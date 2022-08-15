@@ -36,6 +36,28 @@ export default class SamplerTexture2DComponent extends ShaderNode{
       .addOutput(bOut)
       .addOutput(aOut);
   }
+  _updateBinding(node){
+    let nodeProps = node.data._m_Props;
+    let varname = null;
+    let inTexture2DContinue = super._getContinueNode(node, 'inTexture2D', 0);
+    if(inTexture2DContinue) {
+      let cont = node.inputs['inTexture2D'].connections[0].output;
+      if(cont){
+        varname = inTexture2DContinue.data._m_Props._m_OutputsMap[cont].varname;
+      }
+    }
+    if(varname == undefined || varname.trim() == ''){
+      varname = this.getVarName(node, 'inTexture2D');
+      nodeProps._m_InputsMap['inTexture2D'].skip = false;
+    }
+    else{
+      nodeProps._m_InputsMap['inTexture2D'].skip = true;
+    }
+    nodeProps._m_RebuildCode = true;
+    nodeProps._m_InputsMap['inTexture2D'].varname = varname;
+    super._updateBinding(node);
+    nodeProps._m_InputsBinding['inTexture2D'] = null;
+  }
   _getNodeCodeString (node) {
     return ' rgbaOut = texture( inTexture2D , inTexCoords ) ;\n';
   }
