@@ -61,6 +61,8 @@
   import CommandManager from '../editor/command/CommandManager'
   import BaseCommand from '../editor/command/BaseCommand'
   import Utils from '../editor/utils/Utils'
+  import {EditorContext} from '../editor/EditorContext'
+  import Viewer from '../editor/viewer/Viewer'
   export default {
     name: 'ShadingEdit',
     components: {ShaderNode},
@@ -191,6 +193,7 @@
     methods:{
       compile:function(e){
         MaterialDefFactory.compileMatDef(MaterialDefFactory.toMaterialDefString());
+        EditorContext.getInstance().notifyEvent(Viewer.S_VIEWER_MATERIAL_DEF_COMPILE, [null]);
       },
       showMatDef:function(e){
         if(this._matDefSourceWindow){

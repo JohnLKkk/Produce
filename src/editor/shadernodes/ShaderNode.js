@@ -36,6 +36,31 @@ export default class ShaderNode extends Rete.Component{
   }
 
   /**
+   * 代码去重。<br/>
+   * @param {String}[str]
+   * @returns {String}
+   * @private
+   */
+  _deduplication(str){
+    let lines = str.split('\n');
+    let result = '';
+    let m = {};
+    let l = null;
+    let filter = {
+      '#if':true, "#ifdef":true, '#else':true, 'else':true, '#endif':true, 'if':true
+    };
+    for(let line in lines){
+      l = lines[line].trim();
+      if(!m[l] || filter[l]){
+        if(!filter[l])
+          m[l] = true;
+        result += lines[line] + '\n';
+      }
+    }
+    return result;
+  }
+
+  /**
    * 返回节点代码。<br/>
    * @return {string}
    * @private
@@ -318,6 +343,7 @@ export default class ShaderNode extends Rete.Component{
     // build shader node code?
     if(props._m_IsOutput){
       shaderNodeCode = this._buildShaderCode(outputAlreadyNodeCodeMaps, shaderNodeCode);
+      shaderNodeCode = this._deduplication(shaderNodeCode);
     }
     props._m_ShaderNodeCode = shaderNodeCode;
   }

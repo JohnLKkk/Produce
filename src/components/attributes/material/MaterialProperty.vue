@@ -22,6 +22,11 @@
       EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_EVENT_SELECTED2, ()=>{
         this.updateView();
       });
+      EditorContext.getInstance().registerEvent(Viewer.S_VIEWER_MATERIAL_DEF_COMPILE, ()=>{
+        this._forceUpdate = true;
+        this.updateView();
+        this._forceUpdate = false;
+      });
     },
     methods:{
       refMaterialParams:function(material){
@@ -160,7 +165,7 @@
                 typename:paramName,
                 textAlign:'left',
                 width:'100%',
-                content:{img:param ? param._m_ImageSource.src : null},
+                content:{img:param && param._m_ImageSource ? param._m_ImageSource.src : null},
                 set:(v)=>{
                   targetMaterial.setParam(paramName, this._getTexture(v.img));
                 }
@@ -203,8 +208,13 @@
         return pV;
       },
       updateView:function(){
-        if(this.obj && this.obj != this._lastObj){
-          this._lastObj = this.obj;
+        if(this._forceUpdate || (this.obj && this.obj != this._lastObj)){
+          let materialParams = null;
+          if(!this._forceUpdate)
+            this._lastObj = this.obj;
+          else{
+            materialParams = this.content[1];
+          }
           // 构造数据编辑组件数据
           this.content = [];
           if(this.obj instanceof Try3d.Geometry){
@@ -232,7 +242,7 @@
                   // todo:后续调整为将material缓存到对应的matDef池中,优先检测matDef池中未被利用的material
                   let editorContext = EditorContext.getInstance();
                   if(targetObj.getMaterial().getMatDefName() != v.getName()){
-                    let material = new Try3d.Material(editorContext.getRenderer()._scene, {id:'mat_next_' + Try3d.Tools.nextId(), materialDef:v});
+                    let material = new Try3d.Material(editorContext.getRenderer()._scene, {id:'mat_next_' + Try3d.Tools.nextId(), materialDef:MaterialDefFactory.getCompileMatDefs()[v.getName()]});
                     targetObj.setMaterial(material);
                     this.refMaterialParams(targetObj.getMaterial());
                   }
@@ -241,7 +251,11 @@
             });
 
             // MaterialParams
-            this.refMaterialParams(this.obj.getMaterial());
+            if(!this._forceUpdate)
+              this.refMaterialParams(this.obj.getMaterial());
+            else{
+              this.content.push(materialParams);
+            }
           }
         }
       }
@@ -259,6 +273,7 @@
     components:{AttrItem},
     data(){
       return {
+        _forceUpdate:false,
         _lastObj:null,
         content:[
         ],

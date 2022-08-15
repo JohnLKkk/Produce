@@ -30,31 +30,6 @@ export default class IfElseBranchComponent extends ShaderNode {
     return node;
   }
 
-  /**
-   * 代码去重。<br/>
-   * @param {String}[str]
-   * @returns {String}
-   * @private
-   */
-  _deduplication(str){
-    let lines = str.split('\n');
-    let result = '';
-    let m = {};
-    let l = null;
-    let filter = {
-      '#if':true, "#ifdef":true, '#else':true, 'else':true, '#endif':true, 'if':true
-    };
-    for(let line in lines){
-      l = lines[line].trim();
-      if(!m[l] || filter[l]){
-        if(!filter[l])
-          m[l] = true;
-        result += lines[line] + '\n';
-      }
-    }
-    return result;
-  }
-
   _updateShaderNodeCode(node){
     let props = node.data._m_Props;
     let continueNode = this._getContinueNode(node, 'inContinue', 0);
