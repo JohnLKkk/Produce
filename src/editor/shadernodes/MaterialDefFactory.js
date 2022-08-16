@@ -261,6 +261,7 @@ export default class MaterialDefFactory {
   static _preloadMatDef(matDefStr){
     let nextMatDef = null;
     nextMatDef = Try3d.MaterialDef.parse(matDefStr);
+    console.log('编译：\n' + matDefStr + '');
     MaterialDefFactory._s_CompileMaterialDefs[nextMatDef.getName()] = nextMatDef;
   }
 

@@ -53,6 +53,17 @@ export default class MathComponent extends ShaderNode {
       .addControl(new NumberControl(this.editor, "preview", true))
       .addOutput(out);
   }
+  isNumber(value) {
+    return typeof value === 'number' && isFinite(value);
+  }
+
+  isNumberObject(n) {
+    return (Object.prototype.toString.apply(n) === '[object Number]');
+  }
+
+  isCustomNumber(n){
+    return this.isNumber(n) || this.isNumberObject(n);
+  }
 
   _worker(node, inputs, outputs) {
     // if(node.inputs.num1.connections.length){
@@ -60,7 +71,20 @@ export default class MathComponent extends ShaderNode {
     //   console.log('num1Node:',num1Node);
     // }
     let n1 = inputs["inNum1"].length ? inputs["inNum1"][0] : node.data.inNum1;
+    let nodeProps = node.data._m_Props;
+    if(this.isCustomNumber(n1)){
+      nodeProps._m_InputsMap['inNum1'].defaultValue = n1;
+    }
+    else{
+      nodeProps._m_InputsMap['inNum1'].defaultValue = null;
+    }
     let n2 = inputs["inNum2"].length ? inputs["inNum2"][0] : node.data.inNum2;
+    if(this.isCustomNumber(n2)){
+      nodeProps._m_InputsMap['inNum2'].defaultValue = n2;
+    }
+    else{
+      nodeProps._m_InputsMap['inNum2'].defaultValue = null;
+    }
     let sum = this.doOperation(n1, n2);
 
     this.editor.nodes
