@@ -1,7 +1,8 @@
 # produce
 
 > Lightweight 3D editor on the web,It uses [Try3d.Js](https://github.com/JohnLKkk/try3d.git) I wrote as renderer.
-![image](https://github.com/JohnLKkk/Produce/blob/master/Screenshot/a.jpg)
+
+![image](https://github.com/JohnLKkk/Produce/blob/main/Screenshot/a.jpg)
 ## Build Setup
 
 ``` bash
